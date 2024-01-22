@@ -1,23 +1,35 @@
 .navbar {
+	position: relative;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	background-color: #f8f8f8;
-	padding: 1rem;
+	padding: 20px;
 }
 
 .logo {
-	font-size: 1.5rem;
+	font-size: 24px;
 	color: #333;
+
+	&_img {
+		width: 32px;
+		vertical-align: bottom;
+		margin-right: 4px;
+	}
 }
 
 .nav_links {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vh;
 	list-style: none;
 	display: flex;
 }
 
 .nav_links li {
-	padding: 0 1rem;
+	padding: 0 20px;
 }
 
 .nav_links a {
@@ -54,6 +66,9 @@
 	}
 
 	.nav_links.open {
+		position: absolute;
+		top: 0;
+		left: 0;
 		display: flex;
 	}
 
