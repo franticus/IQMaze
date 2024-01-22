@@ -1,0 +1,82 @@
+.quiz {
+  border-radius: 30px;
+  padding: 20px;
+  width: 100vw;
+  max-width: 398px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0 auto;
+  overflow: scroll;
+  padding-bottom: 100px;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    opacity: 0;
+    margin-top: 32px;
+
+    li {
+      background-color: #fff;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      color: #333;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 22px;
+
+      .fade {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+
+        &.show {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+
+      &:hover {
+        background-color: #45c5d6;
+      }
+
+      .quest_icon {
+        width: 60px;
+      }
+    }
+  }
+
+  .show {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+
+    .fade {
+      visibility: visible;
+    }
+
+    .withImage_text {
+      opacity: 1;
+    }
+  }
+}
+
+.questions {
+  display: flex;
+}
+
+.quest_image {
+  width: 300px;
+  height: 300px;
+}

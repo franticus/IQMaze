@@ -87,7 +87,8 @@
 	}
 
 	.iqLabels {
-		width: 100%;
+		width: calc(100vw - 40px);
+		max-width: 400px;
 		display: flex;
 		align-items: flex-start;
 		justify-content: center;
@@ -96,10 +97,15 @@
 		color: #666;
 		margin-bottom: 40px;
 
-		div {
+		&_item {
+			width: 100%;
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			text-align: left;
 			padding: 10px;
 			font-weight: 600;
-			width: 170px;
+			border-bottom: 1px solid #64f5df;
 		}
 	}
 }

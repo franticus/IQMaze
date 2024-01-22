@@ -1,0 +1,38 @@
+.progress {
+  position: relative;
+  height: 9px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #F0F0FF;
+
+  &_container {
+    position: relative;
+    width: 100vw;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    padding-top: 52px;
+
+    gap: 29px;
+    margin: 0 auto 40px auto;
+  }
+
+  &__inner {
+    height: 100%;
+    border-radius: 30px;
+    width: 80%;
+    background: rgb(18, 231, 48);
+    transition: all 0.3s ease-in-out;
+    background: #8C8AFF;
+  }
+
+  &__logo img {
+    width: 32px;
+  }
+
+  &__arrow img {
+    width: 32px;
+  }
+}
