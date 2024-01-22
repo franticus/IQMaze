@@ -1,3 +1,59 @@
+$primary-color: #2a9d8f;
+$text-color: #333;
+$section-padding: 3rem;
+
 .about {
-	padding: 20px;
+	width: calc(100vw - 40px);
+	max-width: 900px;
+	font-family: Arial, sans-serif;
+}
+
+.heroSection {
+	text-align: center;
+	padding: 40px 20px;
+	margin-top: 40px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mainHeading {
+	color: $primary-color;
+	margin-bottom: 1rem;
+}
+
+.introText {
+	margin-bottom: 2rem;
+	color: $text-color;
+}
+
+.heroImage {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+.infoSection {
+	margin-top: 40px;
+	padding: 40px 20px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid #ccc;
+}
+
+.sectionHeading {
+	color: $primary-color;
+	margin-bottom: 1rem;
+}
+
+.sectionText {
+	margin-bottom: 2rem;
+	color: $text-color;
+}
+
+.infoImage {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
 }
