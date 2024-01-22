@@ -13,6 +13,7 @@ body {
   opacity: 1;
   background-image: linear-gradient(#F8F8FF 0.5px, transparent 0.5px), linear-gradient(to right, #F8F8FF 0.5px, #ffffff 0.5px);
   background-size: 10px 10px;
+  color: #0d483f;
 }
 
 a {
