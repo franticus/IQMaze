@@ -30,13 +30,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-direction: column;
       margin-bottom: 12px;
+      border-radius: 4px;
 
-      color: #333;
-      font-size: 18px;
+      font-size: 10px;
       font-style: normal;
       font-weight: 500;
-      line-height: 22px;
 
       .fade {
         visibility: hidden;
@@ -55,7 +55,7 @@
       }
 
       .quest_icon {
-        width: 90px;
+        width: 80px;
       }
     }
   }

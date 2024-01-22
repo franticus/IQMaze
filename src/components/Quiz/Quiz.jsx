@@ -51,15 +51,18 @@ const Quiz = () => {
               console.log('quest:', quest);
 
               return (
-                <li key={quest} onClick={() => onClickVariant()}>
-                  <img
-                    className={s.quest_icon}
-                    src={require(`../../img/quiz/${question.question}/${
-                      index + 1
-                    }.png`)}
-                    alt='icon'
-                  />
-                </li>
+                <>
+                  <li key={quest} onClick={() => onClickVariant()}>
+                    <span>{index + 1}</span>
+                    <img
+                      className={s.quest_icon}
+                      src={require(`../../img/quiz/${question.question}/${
+                        index + 1
+                      }.png`)}
+                      alt='icon'
+                    />
+                  </li>
+                </>
               );
             })}
         </ul>
