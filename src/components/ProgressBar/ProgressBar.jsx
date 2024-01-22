@@ -5,6 +5,9 @@ import mainLogo from '../../img/iq_logo.png';
 const ProgressBar = ({ percentage, stepBack }) => {
   return (
     <div className={style.progress_container}>
+      <button className={style.progress__arrow} onClick={stepBack}>
+        Back
+      </button>
       <div className={style.progress}>
         <div
           style={{ width: `${percentage}%` }}

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { quizData } from './quizData/quizData.js';
 import ProgressBar from '../ProgressBar/ProgressBar.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -9,20 +9,34 @@ import cn from 'classnames';
 const Quiz = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(true);
+  const [showQuiz, setShowQuiz] = useState(false);
   const question = quizData[step];
-  console.log('question:', question.variants[0]);
+  console.log('question:', question);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowQuiz(true);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [step]);
 
   const onClickVariant = () => {
-    if (!question.nextButton) {
-      setTimeout(() => {
-        setShowQuiz(false);
-      }, 300);
+    setTimeout(() => {
+      setShowQuiz(false);
+    }, 300);
 
-      setTimeout(() => {
-        setStep(prev => prev + 1);
-        step !== quizData.length - 1 || navigate('/result');
-      }, 500);
+    setTimeout(() => {
+      setStep(prev => prev + 1);
+      step !== quizData.length - 1 || navigate('/home');
+    }, 500);
+  };
+
+  const stepBack = () => {
+    if (step > 0) {
+      setStep(prev => prev - 1);
     }
   };
 
@@ -33,17 +47,21 @@ const Quiz = () => {
       <>
         <ul className={cn(s.fade, showQuiz ? s.show : '')}>
           {question.variants &&
-            question.variants.map((quest, index) => (
-              <li key={quest} onClick={() => onClickVariant()}>
-                <img
-                  className={s.quest_icon}
-                  src={require(`../../img/quiz/answers_q${step + 1}/${
-                    index + 1
-                  }.png`)}
-                  alt='icon'
-                />
-              </li>
-            ))}
+            question.variants.map((quest, index) => {
+              console.log('quest:', quest);
+
+              return (
+                <li key={quest} onClick={() => onClickVariant()}>
+                  <img
+                    className={s.quest_icon}
+                    src={require(`../../img/quiz/${question.question}/${
+                      index + 1
+                    }.png`)}
+                    alt='icon'
+                  />
+                </li>
+              );
+            })}
         </ul>
       </>
     );
@@ -51,12 +69,14 @@ const Quiz = () => {
 
   return (
     <>
-      <ProgressBar percentage={percentage} />
-      <div>{question.title}</div>
+      <ProgressBar percentage={percentage} stepBack={stepBack} />
+      <div className={s.questions_title}>
+        Q{step + 1}: Choose the correct form for the blanks.
+      </div>
       <div className={s.questions}>
         <img
           className={s.quest_image}
-          src={require(`../../img/quiz/${question.questionImage}.png`)}
+          src={require(`../../img/quiz/${question.question}.png`)}
           alt=''
         />
         <div className={s.quiz_container}>

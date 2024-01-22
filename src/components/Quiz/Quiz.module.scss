@@ -18,6 +18,7 @@
     list-style: none;
     padding: 0;
     width: 100%;
+    max-width: 300px;
     opacity: 0;
     margin-top: 32px;
 
@@ -49,11 +50,12 @@
       }
 
       &:hover {
-        background-color: #45c5d6;
+        background-color: #9ffffb;
+        transform: scale(1.05);
       }
 
       .quest_icon {
-        width: 60px;
+        width: 90px;
       }
     }
   }
@@ -74,6 +76,16 @@
 
 .questions {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  &_title {
+    padding: 0 20px;
+    font-size: 24px;
+    color: #2a9d8f;
+  }
 }
 
 .quest_image {

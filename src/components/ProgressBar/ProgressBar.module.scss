@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    padding-top: 52px;
+    padding-top: 20px;
 
     gap: 29px;
     margin: 0 auto 40px auto;
@@ -25,14 +25,22 @@
     width: 80%;
     background: rgb(18, 231, 48);
     transition: all 0.3s ease-in-out;
-    background: #8C8AFF;
+    background: #2a9d8f;
   }
 
   &__logo img {
     width: 32px;
   }
 
-  &__arrow img {
-    width: 32px;
+  &__arrow {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      border-bottom: 2px solid #2a9d8f;
+    }
   }
 }
