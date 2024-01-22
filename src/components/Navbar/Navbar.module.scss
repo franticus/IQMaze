@@ -49,6 +49,7 @@
 }
 
 .logo {
+    cursor: pointer;
     position: relative;
     z-index: 999;
     font-weight: 700;
@@ -67,6 +68,7 @@
 }
 
 .menu__link {
+    cursor: pointer;
     color: #118272;
     display: inline-block;
     font-size: 14px;
