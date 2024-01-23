@@ -30,7 +30,7 @@ const Quiz = () => {
 
     setTimeout(() => {
       setStep(prev => prev + 1);
-      step !== quizData.length - 1 || navigate('/home');
+      step !== quizData.length - 1 || navigate('/paywall');
     }, 500);
   };
 
@@ -74,7 +74,8 @@ const Quiz = () => {
     <>
       <ProgressBar percentage={percentage} stepBack={stepBack} />
       <div className={s.questions_title}>
-        Q{step + 1}: Choose the correct form for the blanks.
+        Question {step + 1}/{quizData.length}: Choose the correct form for the
+        blanks.
       </div>
       <div className={s.questions}>
         <img
