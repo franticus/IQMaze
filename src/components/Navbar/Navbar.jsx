@@ -10,6 +10,21 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 730) {
+        setIsOpen(false);
+        document.body.style.overflow = 'visible';
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {

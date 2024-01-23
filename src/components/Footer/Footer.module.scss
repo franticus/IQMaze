@@ -3,13 +3,11 @@
     background-color: #fff;
     border-top: 1px solid #b8faf1;
     padding-block: 20px;
-    z-index: 4;
     padding: 60px 20px;
 }
 
 .mainLogo {
     position: relative;
-    z-index: 999;
     width: 32px;
     vertical-align: bottom;
     margin-right: 6px;
@@ -17,7 +15,6 @@
 
 .footer__container {
     position: relative;
-    z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +48,6 @@
 .logo {
     cursor: pointer;
     position: relative;
-    z-index: 999;
     font-weight: 700;
     font-size: 25px;
     color: #0d483f;
