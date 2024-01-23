@@ -11,6 +11,7 @@ const Quiz = () => {
   const [step, setStep] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const question = quizData[step];
+  const isLastQuestion = step === quizData.length - 1;
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -28,9 +29,12 @@ const Quiz = () => {
     }, 300);
 
     setTimeout(() => {
-      setStep(prev => prev + 1);
-      step !== quizData.length - 1 || navigate('/paywall');
+      !isLastQuestion && setStep(prev => prev + 1);
     }, 500);
+
+    setTimeout(() => {
+      isLastQuestion && navigate('/paywall');
+    }, 1000);
   };
 
   const stepBack = () => {
@@ -39,36 +43,32 @@ const Quiz = () => {
     }
   };
 
-  const percentage = Math.round((step / quizData.length) * 100);
+  const percentage = Math.round(((step + 1) / quizData.length) * 100);
 
   const defaultVariant = () => {
     return (
       <>
         <ul className={cn(s.fade, showQuiz ? s.show : '')}>
           {question.variants &&
-            question.variants.map((quest, index) => {
-              return (
-                <>
-                  <li key={quest} onClick={() => onClickVariant()}>
-                    <span>{index + 1}</span>
-                    <img
-                      className={s.quest_icon}
-                      src={require(`../../img/quiz/${question.question}/${
-                        index + 1
-                      }.png`)}
-                      alt='icon'
-                    />
-                  </li>
-                </>
-              );
-            })}
+            question.variants.map((quest, index) => (
+              <li key={quest} onClick={() => onClickVariant()}>
+                <span>{index + 1}</span>
+                <img
+                  className={s.quest_icon}
+                  src={require(`../../img/quiz/${question.question}/${
+                    index + 1
+                  }.png`)}
+                  alt='icon'
+                />
+              </li>
+            ))}
         </ul>
       </>
     );
   };
 
   return (
-    <>
+    <div className={cn(s.fade, showQuiz ? s.show : '')}>
       <ProgressBar percentage={percentage} stepBack={stepBack} />
       <div className={s.questions_title}>
         Question {step + 1}/{quizData.length}: Choose the correct form for the
@@ -84,7 +84,7 @@ const Quiz = () => {
           <div className={s.quiz}>{defaultVariant()}</div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
