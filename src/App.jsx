@@ -6,6 +6,7 @@ import Navbar from './components/Navbar/Navbar';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Paywall from './Pages/Paywall/Paywall';
+import Thanks from './Pages/Thanks/Thanks';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/iqtest' element={<Test />} />
           <Route path='/about' element={<About />} />
           <Route path='/paywall' element={<Paywall />} />
+          <Route path='/thanks' element={<Thanks />} />
         </Routes>
       </div>
       <Footer />

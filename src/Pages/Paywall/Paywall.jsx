@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const Paywall = () => {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
+  const navigate = useNavigate();
 
   const handleEmailChange = event => {
     setEmail(event.target.value);
@@ -20,6 +22,9 @@ const Paywall = () => {
       console.log('Email:', email);
       setIsValid(true);
       // код для отправки email на сервер
+      setTimeout(() => {
+        navigate('/thanks');
+      }, 1000);
     } else {
       setIsValid(false);
     }
