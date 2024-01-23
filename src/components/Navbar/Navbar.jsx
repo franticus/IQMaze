@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './Navbar.module.scss';
 import cn from 'classnames';
 import logo from '../../img/iq_logo.png';
@@ -8,6 +8,18 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pageLinks = ['Home', 'IQTest', 'About'];
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'visible';
+    }
+
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+  }, [isOpen]);
 
   return (
     <div className={isOpen ? s.menu_open : ''}>

@@ -11,7 +11,6 @@ const Quiz = () => {
   const [step, setStep] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const question = quizData[step];
-  console.log('question:', question);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -48,8 +47,6 @@ const Quiz = () => {
         <ul className={cn(s.fade, showQuiz ? s.show : '')}>
           {question.variants &&
             question.variants.map((quest, index) => {
-              console.log('quest:', quest);
-
               return (
                 <>
                   <li key={quest} onClick={() => onClickVariant()}>

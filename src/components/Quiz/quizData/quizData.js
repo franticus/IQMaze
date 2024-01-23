@@ -12,11 +12,11 @@ export const quizData = [
     variants: ['1', '2', '3', '4', '5', '6'],
   },
   {
-    question: 'q1',
+    question: 'q4',
     variants: ['1', '2', '3', '4', '5', '6'],
   },
   {
-    question: 'q1',
+    question: 'q5',
     variants: ['1', '2', '3', '4', '5', '6'],
   },
 ];
