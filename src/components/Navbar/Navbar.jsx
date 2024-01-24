@@ -63,7 +63,6 @@ const Navbar = () => {
                 {pageLinks.map(link => (
                   <li
                     onClick={() => {
-                      setIsOpen(!isOpen);
                       navigate(`/${link.toLowerCase()}`);
                     }}
                     className={cn(s.menu__item, s.menu__link)}
