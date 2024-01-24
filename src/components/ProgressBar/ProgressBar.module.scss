@@ -1,3 +1,16 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto 40px auto;
+
+  .time {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
 .progress {
   position: relative;
   height: 9px;
@@ -16,7 +29,6 @@
     padding-top: 20px;
 
     gap: 29px;
-    margin: 0 auto 40px auto;
   }
 
   &__inner {
