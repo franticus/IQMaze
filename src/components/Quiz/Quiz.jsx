@@ -9,7 +9,6 @@ import cn from 'classnames';
 const Quiz = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  console.log('step:', step);
   const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizData[step];
