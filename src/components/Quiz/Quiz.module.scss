@@ -81,6 +81,10 @@
   }
 }
 
+.preventClick {
+  pointer-events: none;
+}
+
 .questions {
   display: flex;
   align-items: center;

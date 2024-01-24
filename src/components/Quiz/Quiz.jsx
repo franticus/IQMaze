@@ -9,13 +9,16 @@ import cn from 'classnames';
 const Quiz = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  console.log('step:', step);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizData[step];
   const isLastQuestion = step === quizData.length - 1;
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowQuiz(true);
+      setPointerEvents(false);
     }, 100);
 
     return () => {
@@ -24,6 +27,7 @@ const Quiz = () => {
   }, [step]);
 
   const onClickVariant = () => {
+    setPointerEvents(true);
     setTimeout(() => {
       setShowQuiz(false);
     }, 300);
@@ -47,28 +51,32 @@ const Quiz = () => {
 
   const defaultVariant = () => {
     return (
-      <>
-        <ul className={cn(s.fade, showQuiz ? s.show : '')}>
-          {question.variants &&
-            question.variants.map((quest, index) => (
-              <li key={`${quest}-${step}`} onClick={() => onClickVariant()}>
-                <span>{index + 1}</span>
-                <img
-                  className={s.quest_icon}
-                  src={require(`../../img/quiz/${question.question}/${
-                    index + 1
-                  }.png`)}
-                  alt='icon'
-                />
-              </li>
-            ))}
-        </ul>
-      </>
+      <ul className={cn(s.fade, showQuiz ? s.show : '')}>
+        {question.variants &&
+          question.variants.map((quest, index) => (
+            <li key={`${quest}-${step}`} onClick={() => onClickVariant()}>
+              <span>{index + 1}</span>
+              <img
+                className={s.quest_icon}
+                src={require(`../../img/quiz/${question.question}/${
+                  index + 1
+                }.png`)}
+                alt='icon'
+              />
+            </li>
+          ))}
+      </ul>
     );
   };
 
   return (
-    <div className={cn(s.fade, showQuiz ? s.show : '')}>
+    <div
+      className={cn(
+        s.fade,
+        showQuiz ? s.show : '',
+        pointerEvents && s.preventClick
+      )}
+    >
       <ProgressBar percentage={percentage} stepBack={stepBack} />
       <div className={s.questions_title}>
         Question {step + 1}/{quizData.length}: Choose the correct form for the
