@@ -51,7 +51,7 @@ const Quiz = () => {
         <ul className={cn(s.fade, showQuiz ? s.show : '')}>
           {question.variants &&
             question.variants.map((quest, index) => (
-              <li key={quest} onClick={() => onClickVariant()}>
+              <li key={`${quest}-${step}`} onClick={() => onClickVariant()}>
                 <span>{index + 1}</span>
                 <img
                   className={s.quest_icon}
