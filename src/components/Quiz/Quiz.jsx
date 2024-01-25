@@ -8,7 +8,7 @@ import cn from 'classnames';
 
 const Quiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(50);
   const [showQuiz, setShowQuiz] = useState(false);
   const [seriesScores, setSeriesScores] = useState({
     A: 0,

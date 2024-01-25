@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.jpg';
@@ -9,44 +10,73 @@ const Paywall = () => {
   const [iqValue, setIqValue] = useState(0);
   const navigate = useNavigate();
 
+  const iqTable = {
+    15: 62,
+    16: 65,
+    17: 65,
+    18: 66,
+    19: 67,
+    20: 69,
+    21: 70,
+    22: 71,
+    23: 72,
+    24: 73,
+    25: 75,
+    26: 76,
+    27: 77,
+    28: 79,
+    29: 80,
+    30: 82,
+    31: 83,
+    32: 84,
+    33: 86,
+    34: 87,
+    35: 88,
+    36: 90,
+    37: 91,
+    38: 92,
+    39: 94,
+    40: 95,
+    41: 96,
+    42: 98,
+    43: 99,
+    44: 100,
+    45: 102,
+    46: 104,
+    47: 106,
+    48: 108,
+    49: 110,
+    50: 112,
+    51: 114,
+    52: 116,
+    53: 118,
+    54: 120,
+    55: 122,
+    56: 124,
+    57: 126,
+    58: 128,
+    59: 130,
+    60: 140,
+  };
+
   const calculateIQ = () => {
     const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
-    const seriesScores = {
-      A: 0,
-      B: 0,
-      C: 0,
-      D: 0,
-      E: 0,
-    };
-
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
       return;
     }
 
-    Object.keys(seriesScoresLocal).forEach(level => {
-      const count = seriesScoresLocal[level];
-      seriesScores[level] = count;
-    });
+    console.log('seriesScoresLocal:', seriesScoresLocal);
+    let totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
+      (total, num) => total + num,
+      16
+    );
 
-    const iqTable = {
-      A: [8, 9, 10, 11, 12],
-      B: [8, 9, 10, 11, 12],
-      C: [4, 5, 6, 7, 8],
-      D: [2, 3, 4, 5, 6],
-      E: [0, 1, 2, 3, 4],
-    };
-
-    let iq = 0;
-    Object.keys(seriesScores).forEach(series => {
-      const score = seriesScores[series];
-      if (iqTable[series][score]) {
-        iq += iqTable[series][score];
-      }
-    });
+    const iq = iqTable[totalCorrectAnswers] || 'Unknown';
 
     setIqValue(iq);
-    console.log('IQ Score:', iq);
+    console.log('Calculated IQ Score:', iq);
+    console.log('Total Correct Answers:', totalCorrectAnswers);
   };
   useEffect(() => {
     calculateIQ();
