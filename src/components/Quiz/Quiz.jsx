@@ -12,6 +12,9 @@ const Quiz = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizData[step];
+  const style = {
+    backgroundImage: `url(${require(`../../img/quiz/${question.question}.png`)})`,
+  };
   const isLastQuestion = step === quizData.length - 1;
 
   useEffect(() => {
@@ -24,6 +27,10 @@ const Quiz = () => {
       clearTimeout(timeoutId);
     };
   }, [step]);
+
+  const recordAnswer = index => {
+    console.log(`Q${step + 1}: ${index}`);
+  };
 
   const onClickVariant = () => {
     setPointerEvents(true);
@@ -52,18 +59,25 @@ const Quiz = () => {
     return (
       <ul className={cn(s.fade, showQuiz ? s.show : '')}>
         {question.variants &&
-          question.variants.map((quest, index) => (
-            <li key={`${quest}-${step}`} onClick={() => onClickVariant()}>
-              <span>{index + 1}</span>
-              <img
-                className={s.quest_icon}
-                src={require(`../../img/quiz/${question.question}/${
-                  index + 1
-                }.png`)}
-                alt='icon'
-              />
-            </li>
-          ))}
+          question.variants.map((quest, index) => {
+            return (
+              <li
+                key={`${quest}-${step}`}
+                onClick={() => {
+                  recordAnswer(index + 1);
+                  onClickVariant();
+                }}
+              >
+                <span>{index + 1}</span>
+                <div
+                  className={cn(s.quest_icon, {
+                    [s[`quest_icon_${index + 1}`]]: true,
+                  })}
+                  style={style}
+                ></div>
+              </li>
+            );
+          })}
       </ul>
     );
   };
@@ -82,11 +96,7 @@ const Quiz = () => {
         blanks.
       </div>
       <div className={s.questions}>
-        <img
-          className={s.quest_image}
-          src={require(`../../img/quiz/${question.question}.png`)}
-          alt=''
-        />
+        <div className={s.quest_image} style={style}></div>
         <div className={s.quiz_container}>
           <div className={s.quiz}>{defaultVariant()}</div>
         </div>

@@ -52,17 +52,41 @@
         }
       }
 
-      & img {
-        transition: all 0.2s ease-in-out;
-      }
-
-      & img:hover {
-        background-color: #9ffffb;
-        transform: scale(1.05);
-      }
-
       .quest_icon {
+        height: 50px;
         width: 80px;
+        background-size: 310%;
+        background-repeat: no-repeat;
+        transition: all 0.2s ease-in-out;
+        border-radius: 10px;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        &_1 {
+          background-position: 5px -141px;
+        }
+
+        &_2 {
+          background-position: -82px -141px;
+        }
+
+        &_3 {
+          background-position: -170px -141px;
+        }
+
+        &_4 {
+          background-position: 5px -207px;
+        }
+
+        &_5 {
+          background-position: -82px -207px;
+        }
+
+        &_6 {
+          background-position: -170px -207px;
+        }
       }
     }
   }
@@ -101,8 +125,8 @@
 }
 
 .quest_image {
-  width: 300px;
-  height: 300px;
+  width: 340px;
+  height: 220px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
