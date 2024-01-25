@@ -69,7 +69,7 @@ const Paywall = () => {
     console.log('seriesScoresLocal:', seriesScoresLocal);
     let totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
       (total, num) => total + num,
-      16
+      0
     );
 
     const iq = iqTable[totalCorrectAnswers] || 'Unknown';
