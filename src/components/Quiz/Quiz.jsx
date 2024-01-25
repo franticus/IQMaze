@@ -8,7 +8,7 @@ import cn from 'classnames';
 
 const Quiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(25);
   const [showQuiz, setShowQuiz] = useState(false);
   const [seriesScores, setSeriesScores] = useState({
     A: 0,
@@ -92,6 +92,7 @@ const Quiz = () => {
               <div
                 className={cn(s.quest_icon, {
                   [s[`quest_icon_${index + 1}`]]: true,
+                  [s[`quest_icon_square_${index + 1}`]]: step >= 24,
                 })}
                 style={style}
               ></div>
@@ -116,7 +117,12 @@ const Quiz = () => {
         the correct form for the blanks.
       </div>
       <div className={s.questions}>
-        <div className={s.quest_image} style={style}></div>
+        <div
+          className={cn(s.quest_image, {
+            [s[`quest_image_square`]]: step >= 24,
+          })}
+          style={style}
+        ></div>
         <div className={s.quiz_container}>
           <div className={s.quiz}>{defaultVariant()}</div>
         </div>

@@ -87,6 +87,38 @@
         &_6 {
           background-position: -170px -207px;
         }
+
+        &_square {
+          &_1 {
+            background-position: 5px -168px;
+            background-size: 370%;
+          }
+
+          &_2 {
+            background-position: -70px -168px;
+            background-size: 370%;
+          }
+
+          &_3 {
+            background-position: -146px -168px;
+            background-size: 370%;
+          }
+
+          &_4 {
+            background-position: 5px -230px;
+            background-size: 370%;
+          }
+
+          &_5 {
+            background-position: -70px -230px;
+            background-size: 370%;
+          }
+
+          &_6 {
+            background-position: -146px -230px;
+            background-size: 370%;
+          }
+        }
       }
     }
   }
@@ -128,6 +160,10 @@
   width: 340px;
   height: 220px;
   background: #fff;
-  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &_square {
+    width: 300px;
+    height: 250px;
+  }
 }
