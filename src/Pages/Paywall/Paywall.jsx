@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.jpg';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,51 @@ import { useNavigate } from 'react-router-dom';
 const Paywall = () => {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
+  const [iqValue, setIqValue] = useState(0);
   const navigate = useNavigate();
+
+  const calculateIQ = () => {
+    const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
+    const seriesScores = {
+      A: 0,
+      B: 0,
+      C: 0,
+      D: 0,
+      E: 0,
+    };
+
+    if (!seriesScoresLocal) {
+      console.log('No quiz data found.');
+      return;
+    }
+
+    Object.keys(seriesScoresLocal).forEach(level => {
+      const count = seriesScoresLocal[level];
+      seriesScores[level] = count;
+    });
+
+    const iqTable = {
+      A: [8, 9, 10, 11, 12],
+      B: [8, 9, 10, 11, 12],
+      C: [4, 5, 6, 7, 8],
+      D: [2, 3, 4, 5, 6],
+      E: [0, 1, 2, 3, 4],
+    };
+
+    let iq = 0;
+    Object.keys(seriesScores).forEach(series => {
+      const score = seriesScores[series];
+      if (iqTable[series][score]) {
+        iq += iqTable[series][score];
+      }
+    });
+
+    setIqValue(iq);
+    console.log('IQ Score:', iq);
+  };
+  useEffect(() => {
+    calculateIQ();
+  }, []);
 
   const handleEmailChange = event => {
     setEmail(event.target.value);
@@ -34,6 +78,7 @@ const Paywall = () => {
     <div className={s.paywall}>
       <section className={s.heroSection}>
         <h1 className={s.mainHeading}>Well done!</h1>
+        <h4 className={s.mainHeading}>IQ: {iqValue}</h4>
         <p className={s.introText}>
           You have finished the IQ test.
           <br /> A certificate will be sent to the email address you entered,

@@ -10,8 +10,14 @@ const Quiz = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
-  const [trueAnswers, setTrueAnswers] = useState(0);
-  console.log('trueAnswers:', trueAnswers);
+  const [seriesScores, setSeriesScores] = useState({
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+  });
+  console.log('seriesScores:', seriesScores);
   const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizData[step];
   const style = {
@@ -28,16 +34,22 @@ const Quiz = () => {
     return () => clearTimeout(timeoutId);
   }, [step]);
 
+  useEffect(() => {
+    localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
+  }, [seriesScores]);
+
   const recordAnswer = useCallback(
     index => {
       const isTrueAnswer = question.true === index;
-      console.log(`Q${step + 1}: ${index} , ${isTrueAnswer}`);
 
       if (isTrueAnswer) {
-        setTrueAnswers(prev => prev + 1);
+        setSeriesScores(prevScores => ({
+          ...prevScores,
+          [question.level]: prevScores[question.level] + 1,
+        }));
       }
     },
-    [question.true, step]
+    [question.true, question.level]
   );
 
   const onClickVariant = useCallback(() => {
@@ -50,6 +62,7 @@ const Quiz = () => {
       }, 500);
     } else {
       setTimeout(() => {
+        localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
         navigate('/paywall');
       }, 1000);
     }
@@ -99,8 +112,8 @@ const Quiz = () => {
     >
       <ProgressBar percentage={percentage} stepBack={stepBack} />
       <div className={s.questions_title}>
-        Question {step + 1}/{quizData.length}: Choose the correct form for the
-        blanks.
+        (Level {question.level}) Question {step + 1}/{quizData.length}: Choose
+        the correct form for the blanks.
       </div>
       <div className={s.questions}>
         <div className={s.quest_image} style={style}></div>
