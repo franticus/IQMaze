@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { quizData } from './quizData/quizData.js';
 import ProgressBar from '../ProgressBar/ProgressBar.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,8 @@ const Quiz = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [trueAnswers, setTrueAnswers] = useState(0);
+  console.log('trueAnswers:', trueAnswers);
   const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizData[step];
   const style = {
@@ -23,64 +25,69 @@ const Quiz = () => {
       setPointerEvents(false);
     }, 100);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    return () => clearTimeout(timeoutId);
   }, [step]);
 
-  const recordAnswer = index => {
-    console.log(`Q${step + 1}: ${index}`);
-  };
+  const recordAnswer = useCallback(
+    index => {
+      const isTrueAnswer = question.true === index;
+      console.log(`Q${step + 1}: ${index} , ${isTrueAnswer}`);
 
-  const onClickVariant = () => {
+      if (isTrueAnswer) {
+        setTrueAnswers(prev => prev + 1);
+      }
+    },
+    [question.true, step]
+  );
+
+  const onClickVariant = useCallback(() => {
     setPointerEvents(true);
-    setTimeout(() => {
-      setShowQuiz(false);
-    }, 300);
+    setShowQuiz(false);
 
-    setTimeout(() => {
-      !isLastQuestion && setStep(prev => prev + 1);
-    }, 500);
+    if (!isLastQuestion) {
+      setTimeout(() => {
+        setStep(prev => prev + 1);
+      }, 500);
+    } else {
+      setTimeout(() => {
+        navigate('/paywall');
+      }, 1000);
+    }
+  }, [isLastQuestion, navigate]);
 
-    setTimeout(() => {
-      isLastQuestion && navigate('/paywall');
-    }, 1000);
-  };
-
-  const stepBack = () => {
+  const stepBack = useCallback(() => {
     if (step > 0) {
       setStep(prev => prev - 1);
     }
-  };
+  }, [step]);
 
   const percentage = Math.round(((step + 1) / quizData.length) * 100);
 
-  const defaultVariant = () => {
-    return (
+  const defaultVariant = useCallback(
+    () => (
       <ul className={cn(s.fade, showQuiz ? s.show : '')}>
         {question.variants &&
-          question.variants.map((quest, index) => {
-            return (
-              <li
-                key={`${quest}-${step}`}
-                onClick={() => {
-                  recordAnswer(index + 1);
-                  onClickVariant();
-                }}
-              >
-                <span>{index + 1}</span>
-                <div
-                  className={cn(s.quest_icon, {
-                    [s[`quest_icon_${index + 1}`]]: true,
-                  })}
-                  style={style}
-                ></div>
-              </li>
-            );
-          })}
+          question.variants.map((quest, index) => (
+            <li
+              key={`${quest}-${step}`}
+              onClick={() => {
+                recordAnswer(index + 1);
+                onClickVariant();
+              }}
+            >
+              <span>{index + 1}</span>
+              <div
+                className={cn(s.quest_icon, {
+                  [s[`quest_icon_${index + 1}`]]: true,
+                })}
+                style={style}
+              ></div>
+            </li>
+          ))}
       </ul>
-    );
-  };
+    ),
+    [question.variants, recordAnswer, onClickVariant, showQuiz, step, style]
+  );
 
   return (
     <div
