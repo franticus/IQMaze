@@ -5,7 +5,7 @@ import mainLogo from '../../img/iq_logo.png';
 import { useNavigate } from 'react-router-dom';
 
 const ProgressBar = ({ percentage, stepBack }) => {
-  const [timer, setTimer] = useState(20 * 60);
+  const [timer, setTimer] = useState(40 * 60);
   const navigate = useNavigate();
 
   useEffect(() => {

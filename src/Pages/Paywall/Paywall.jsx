@@ -9,7 +9,12 @@ const Paywall = () => {
   // const [isValid, setIsValid] = useState(true);
   const [name, setName] = useState('');
   const [iqValue, setIqValue] = useState(0);
+  const userName = JSON.parse(localStorage.getItem('userName'));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    userName !== '' && navigate('/');
+  }, []);
 
   const iqTable = {
     15: 62,
@@ -119,7 +124,6 @@ const Paywall = () => {
     <div className={s.paywall}>
       <section className={s.heroSection}>
         <h1 className={s.mainHeading}>Well done!</h1>
-        <h4 className={s.mainHeading}>IQ: {iqValue}</h4>
         <p className={s.introText}>
           You have finished the IQ test. <br /> Please enter your first and last
           name to receive your certificate.
