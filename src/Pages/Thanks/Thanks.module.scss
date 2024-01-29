@@ -8,30 +8,6 @@ $section-padding: 3rem;
 	font-family: Arial, sans-serif;
 	font-weight: 600;
 
-	input[type='email'] {
-		display: block;
-		margin-top: 10px;
-		width: 100%;
-		max-width: 400px;
-		padding: .375rem .75rem;
-		font-size: 1rem;
-		line-height: 1.5;
-		color: #495057;
-		background-color: #fff;
-		background-clip: padding-box;
-		border: 1px solid #ced4da;
-		border-radius: .25rem;
-		transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-
-		&:focus {
-			color: #495057;
-			background-color: #fff;
-			border-color: #80bdff;
-			outline: 0;
-			box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
-		}
-	}
-
 	button {
 		cursor: pointer;
 		margin-top: 10px;
@@ -63,36 +39,6 @@ $section-padding: 3rem;
 		}
 	}
 
-	.invalid {
-		border-color: #dc3545;
-
-		&:focus {
-			border-color: #dc3545;
-			box-shadow: 0 0 0 .2rem rgba(220, 53, 69, .25);
-		}
-	}
-
-	.error {
-		color: #dc3545;
-		margin-top: .25rem;
-		font-size: .875em;
-	}
-
-	.list {
-		padding: 20px;
-		padding-left: 40px;
-		width: calc(100vw - 40px);
-		max-width: 600px;
-		list-style: disc;
-		display: flex;
-		flex-direction: column;
-		text-align: left;
-		gap: 10px;
-		font-size: 20px;
-		font-weight: 500;
-		color: #333;
-	}
-
 }
 
 .heroSection {
@@ -116,7 +62,6 @@ $section-padding: 3rem;
 }
 
 .introText {
-	margin-bottom: 2rem;
 	font-size: 18px;
 	color: $text-color;
 }
@@ -151,4 +96,42 @@ $section-padding: 3rem;
 	max-width: 100%;
 	height: auto;
 	border-radius: 8px;
+}
+
+.certificate {
+	position: relative;
+
+	&_name {
+		position: absolute;
+		top: 34%;
+		left: 50%;
+		transform: translate(-50%, 0%);
+		font-size: 24px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+		text-transform: capitalize;
+	}
+
+	&_iq {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, 0%);
+		font-size: 42px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+	}
+
+	&_date {
+		position: absolute;
+		top: 76%;
+		left: 20%;
+		transform: translate(-50%, 0%);
+		font-size: 14px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+	}
 }

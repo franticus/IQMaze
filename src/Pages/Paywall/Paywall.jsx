@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import s from './Paywall.module.scss';
-import certificate from '../../img/certificate.jpg';
+import certificate from '../../img/certificate.png';
 import { useNavigate } from 'react-router-dom';
 
 const Paywall = () => {
-  const [email, setEmail] = useState('');
-  const [isValid, setIsValid] = useState(true);
+  // const [email, setEmail] = useState('');
+  // const [isValid, setIsValid] = useState(true);
+  const [name, setName] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const navigate = useNavigate();
 
@@ -72,7 +73,7 @@ const Paywall = () => {
       0
     );
 
-    const iq = iqTable[totalCorrectAnswers] || 'Unknown';
+    const iq = iqTable[totalCorrectAnswers] || '62';
 
     setIqValue(iq);
     console.log('Calculated IQ Score:', iq);
@@ -82,26 +83,36 @@ const Paywall = () => {
     calculateIQ();
   }, []);
 
-  const handleEmailChange = event => {
-    setEmail(event.target.value);
+  // const handleEmailChange = event => {
+  //   setEmail(event.target.value);
+  // };
+
+  const handleNameChange = event => {
+    setName(event.target.value);
   };
 
-  const validateEmail = email => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
+  // const validateEmail = email => {
+  //   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return re.test(email);
+  // };
 
   const handleSubmit = () => {
-    if (validateEmail(email)) {
-      console.log('Email:', email);
-      setIsValid(true);
-      // код для отправки email на сервер
-      setTimeout(() => {
-        navigate('/thanks');
-      }, 1000);
-    } else {
-      setIsValid(false);
-    }
+    // if (validateEmail(email)) {
+    //   console.log('Email:', email);
+    //   setIsValid(true);
+    //   // код для отправки email на сервер
+    //   setTimeout(() => {
+    //     navigate('/thanks');
+    //   }, 1000);
+    // } else {
+    //   setIsValid(false);
+    // }
+
+    setTimeout(() => {
+      localStorage.setItem('userName', JSON.stringify(name));
+      localStorage.setItem('iqScore', JSON.stringify(iqValue));
+      navigate('/thanks');
+    }, 1000);
   };
 
   return (
@@ -110,11 +121,10 @@ const Paywall = () => {
         <h1 className={s.mainHeading}>Well done!</h1>
         <h4 className={s.mainHeading}>IQ: {iqValue}</h4>
         <p className={s.introText}>
-          You have finished the IQ test.
-          <br /> A certificate will be sent to the email address you entered,
-          <br /> so enter it correctly.
+          You have finished the IQ test. <br /> Please enter your first and last
+          name to receive your certificate.
         </p>
-        <label htmlFor='emailInput'>Email:</label>
+        {/* <label htmlFor='emailInput'>Email:</label>
         <input
           id='emailInput'
           type='email'
@@ -125,6 +135,14 @@ const Paywall = () => {
         {!isValid && (
           <p className={s.error}>Please enter a valid email address.</p>
         )}
+        <button onClick={handleSubmit}>Get my IQ score</button> */}
+        <label htmlFor='emailInput'>Your first and last name:</label>
+        <input
+          id='nameInput'
+          type='text'
+          value={name}
+          onChange={handleNameChange}
+        />
         <button onClick={handleSubmit}>Get my IQ score</button>
         <h2 className={s.mainHeading}>Information on Test Results</h2>
         <ul className={s.list}>
@@ -140,11 +158,8 @@ const Paywall = () => {
             ranking with a scale of more than 5 million people worldwide.
           </li>
           <li className={s.list_item}>
-            You can see the job relevance according to Mensa IQ, percentile, and
+            You can see the job relevance according to IQMaze, percentile, and
             IQ score.
-          </li>
-          <li className={s.list_item}>
-            The link to the test results will be sent to the email you entered.
           </li>
         </ul>
       </section>
