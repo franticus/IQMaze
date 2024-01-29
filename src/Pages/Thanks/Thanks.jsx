@@ -17,7 +17,7 @@ const Thanks = () => {
   });
 
   useEffect(() => {
-    userName !== '' && navigate('/');
+    userName === '' && navigate('/');
   }, []);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ const Thanks = () => {
       setFontSize({
         name: `${certificateWidth / 20}px`,
         iq: `${certificateWidth / 14}px`,
+        iqText: `${certificateWidth / 30}px`,
         date: `${certificateWidth / 40}px`,
       });
     };
@@ -58,12 +59,51 @@ const Thanks = () => {
             {iqValue}
           </div>
           <div
+            className={s.certificate_iqText}
+            style={{ fontSize: fontSize.iqText }}
+          >
+            IQ
+          </div>
+          <div
             className={s.certificate_date}
             style={{ fontSize: fontSize.date }}
           >
             {date}
           </div>
         </div>
+
+        <div className={s.iqDistribution}>
+          <div className={s.iqTitle}>IQ Score Distribution Graph</div>
+          <div className={s.iqLabels_container}>
+            <div className={s.iqLabels}>
+              <div className={s.iqLabels_item}>
+                <div>Above 145</div>
+                <div>Genius or near genius</div>
+              </div>
+              <div className={s.iqLabels_item}>
+                <div>130 ~ 145</div>
+                <div>Very superior</div>
+              </div>
+              <div className={s.iqLabels_item}>
+                <div>115 ~ 130</div>
+                <div>Superior</div>
+              </div>
+              <div className={s.iqLabels_item}>
+                <div>85 ~ 115</div>
+                <div>Normal</div>
+              </div>
+              <div className={s.iqLabels_item}>
+                <div>70 ~ 85</div>
+                <div>Dullness</div>
+              </div>
+              <div className={s.iqLabels_item}>
+                <div>Below 70</div>
+                <div>Borderline Deficiency</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button onClick={() => navigate('/home')}>Go to IQMaze</button>
       </section>
     </div>

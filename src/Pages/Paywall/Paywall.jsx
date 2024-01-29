@@ -9,11 +9,11 @@ const Paywall = () => {
   // const [isValid, setIsValid] = useState(true);
   const [name, setName] = useState('');
   const [iqValue, setIqValue] = useState(0);
-  const userName = JSON.parse(localStorage.getItem('userName'));
+  const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
 
   useEffect(() => {
-    userName !== '' && navigate('/');
+    !seriesScoresLocal && navigate('/');
   }, []);
 
   const iqTable = {
@@ -66,7 +66,6 @@ const Paywall = () => {
   };
 
   const calculateIQ = () => {
-    const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
       return;
