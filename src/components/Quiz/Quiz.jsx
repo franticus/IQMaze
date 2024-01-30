@@ -103,6 +103,21 @@ const Quiz = () => {
     [question.variants, recordAnswer, onClickVariant, showQuiz, step, style]
   );
 
+  const skip = () => {
+    localStorage.setItem(
+      'seriesScores',
+      JSON.stringify({
+        A: 12,
+        B: 8,
+        C: 4,
+        D: 2,
+        E: 3,
+      })
+    );
+
+    navigate('/paywall');
+  };
+
   return (
     <div
       className={cn(
@@ -127,6 +142,7 @@ const Quiz = () => {
           <div className={s.quiz}>{defaultVariant()}</div>
         </div>
       </div>
+      <button onClick={() => skip()}>Skip</button>
     </div>
   );
 };
