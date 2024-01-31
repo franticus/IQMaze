@@ -12,6 +12,7 @@ const Thanks = () => {
   const date = new Date().toLocaleDateString();
   const [isUserValid, setIsUserValid] = useState(false);
   const certificateRef = useRef();
+  const uniqueVisitorId = window.uniqueVisitorId;
   const [fontSize, setFontSize] = useState({
     name: '1rem',
     iq: '2rem',
@@ -25,7 +26,7 @@ const Thanks = () => {
   useEffect(() => {
     axios
       .post('check.php', {
-        userID_0: 'uniqueVisitorId',
+        userID_0: uniqueVisitorId,
       })
       .then(response => {
         if (response.data.success) {
