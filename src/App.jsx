@@ -7,13 +7,11 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Paywall from './Pages/Paywall/Paywall';
 import Thanks from './Pages/Thanks/Thanks';
-import { UniqueIDProvider } from './components/UniqueIDProvider';
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <UniqueIDProvider />
       <div className='app'>
         <Routes>
           <Route path='/' element={<Home />} />
