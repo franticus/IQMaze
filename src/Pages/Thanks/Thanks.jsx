@@ -32,7 +32,7 @@ const Thanks = () => {
         console.log('response:', response);
         console.log('response.data:', response.data);
         if (response.data.success) {
-          setIsUserValid(true);
+          response.data.success ? setIsUserValid(true) : setIsUserValid(false);
         } else {
           setIsUserValid(false);
         }
