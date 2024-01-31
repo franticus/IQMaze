@@ -5,8 +5,6 @@ import certificate from '../../img/certificate.png';
 import { useNavigate } from 'react-router-dom';
 
 const Paywall = () => {
-  // const [email, setEmail] = useState('');
-  // const [isValid, setIsValid] = useState(true);
   const [name, setName] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
@@ -87,31 +85,11 @@ const Paywall = () => {
     calculateIQ();
   }, []);
 
-  // const handleEmailChange = event => {
-  //   setEmail(event.target.value);
-  // };
-
   const handleNameChange = event => {
     setName(event.target.value);
   };
 
-  // const validateEmail = email => {
-  //   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return re.test(email);
-  // };
-
   const handleSubmit = () => {
-    // if (validateEmail(email)) {
-    //   console.log('Email:', email);
-    //   setIsValid(true);
-    //   // код для отправки email на сервер
-    //   setTimeout(() => {
-    //     navigate('/thanks');
-    //   }, 1000);
-    // } else {
-    //   setIsValid(false);
-    // }
-
     setTimeout(() => {
       localStorage.setItem('userName', JSON.stringify(name));
       localStorage.setItem('iqScore', JSON.stringify(iqValue));
@@ -127,18 +105,6 @@ const Paywall = () => {
           You have finished the IQ test. <br /> Please enter your first and last
           name to receive your certificate.
         </p>
-        {/* <label htmlFor='emailInput'>Email:</label>
-        <input
-          id='emailInput'
-          type='email'
-          value={email}
-          onChange={handleEmailChange}
-          className={!isValid ? s.invalid : ''}
-        />
-        {!isValid && (
-          <p className={s.error}>Please enter a valid email address.</p>
-        )}
-        <button onClick={handleSubmit}>Get my IQ score</button> */}
         <label htmlFor='emailInput'>Your first and last name:</label>
         <input
           id='nameInput'

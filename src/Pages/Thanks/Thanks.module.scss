@@ -195,3 +195,16 @@ $section-padding: 3rem;
 		}
 	}
 }
+
+.return {
+	cursor: pointer;
+	margin-top: 20px;
+	padding: 20px 40px;
+	display: flex;
+	background: #007bff;
+	color: #fff;
+
+	&_block {
+		margin: 20px;
+	}
+}
