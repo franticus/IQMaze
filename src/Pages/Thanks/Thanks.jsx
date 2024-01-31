@@ -31,7 +31,7 @@ const Thanks = () => {
         if (response.data.success) {
           setIsUserValid(true);
         } else {
-          navigate('/');
+          setIsUserValid(false);
         }
       })
       .catch(error => {
