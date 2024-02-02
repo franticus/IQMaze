@@ -46,7 +46,7 @@ const Thanks = () => {
 
     const intervalId = setInterval(() => {
       sendRequest();
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, [uniqueVisitorId]);
