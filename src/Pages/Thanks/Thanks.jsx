@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import s from './Thanks.module.scss';
 import { useNavigate } from 'react-router-dom';
 import certificate from '../../img/certificate.png';
+import Loader from '../../components/Loader/Loader';
 import axios from 'axios';
 
 const Thanks = () => {
@@ -19,18 +20,13 @@ const Thanks = () => {
     date: '1rem',
   });
 
-  // useEffect(() => {
-  //   userName === '' && navigate('/');
-  // }, []);
-
   useEffect(() => {
     axios
       .post('check.php', {
         userID_0: uniqueVisitorId,
       })
       .then(response => {
-        console.log('response:', response);
-        console.log('response.data:', response.data);
+        // console.log('response.data:', response.data);
         if (response.data.success) {
           response.data.success ? setIsUserValid(true) : setIsUserValid(false);
         } else {
@@ -140,10 +136,7 @@ const Thanks = () => {
         </div>
       ) : (
         <div className={s.return_block}>
-          <div>Чтото пошло не так</div>
-          <button className={s.return} onClick={() => navigate('/')}>
-            На главную
-          </button>
+          <Loader />
         </div>
       )}
     </>

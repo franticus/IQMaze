@@ -17,7 +17,6 @@ const Quiz = () => {
     D: 0,
     E: 0,
   });
-  console.log('seriesScores:', seriesScores);
   const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizData[step];
   const style = {

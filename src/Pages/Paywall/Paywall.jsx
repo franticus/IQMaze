@@ -8,6 +8,7 @@ const Paywall = () => {
   const [name, setName] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
+  const uniqueVisitorId = window.uniqueVisitorId;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,7 +94,8 @@ const Paywall = () => {
     setTimeout(() => {
       localStorage.setItem('userName', JSON.stringify(name));
       localStorage.setItem('iqScore', JSON.stringify(iqValue));
-      navigate('/thanks');
+      const encodedName = encodeURIComponent(name);
+      window.location.href = `https://mel.store/sergeiantonov235/74467?hidden_0=${uniqueVisitorId}&name=${encodedName}`;
     }, 1000);
   };
 
