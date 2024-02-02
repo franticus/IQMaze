@@ -21,22 +21,35 @@ const Thanks = () => {
   });
 
   useEffect(() => {
-    axios
-      .post('check.php', {
-        userID_0: uniqueVisitorId,
-      })
-      .then(response => {
-        // console.log('response.data:', response.data);
-        if (response.data.success) {
-          response.data.success ? setIsUserValid(true) : setIsUserValid(false);
-        } else {
-          setIsUserValid(false);
-        }
-      })
-      .catch(error => {
-        console.error('Произошла ошибка: ' + error);
-      });
-  }, []);
+    const sendRequest = () => {
+      axios
+        .post('check.php', { userID_0: uniqueVisitorId })
+        .then(response => {
+          console.log('response.data:', response.data);
+          if (response.data.success) {
+            if (response.data.success === true) {
+              setIsUserValid(true);
+              clearInterval(intervalId);
+            } else if (response.data.success === false) {
+              setIsUserValid(false);
+            }
+          } else {
+            setIsUserValid(false);
+          }
+        })
+        .catch(error => {
+          console.error('Произошла ошибка: ' + error);
+        });
+    };
+
+    sendRequest();
+
+    const intervalId = setInterval(() => {
+      sendRequest();
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [uniqueVisitorId]);
 
   useEffect(() => {
     const updateFontSize = () => {
