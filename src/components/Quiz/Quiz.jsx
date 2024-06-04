@@ -8,7 +8,7 @@ import cn from 'classnames';
 
 const Quiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(24);
   const [showQuiz, setShowQuiz] = useState(false);
   const [seriesScores, setSeriesScores] = useState({
     A: 0,
@@ -77,7 +77,13 @@ const Quiz = () => {
 
   const defaultVariant = useCallback(
     () => (
-      <ul className={cn(s.fade, showQuiz ? s.show : '')}>
+      <ul
+        className={cn(
+          s.fade,
+          showQuiz ? s.show : '',
+          step >= 24 ? s.eight : ''
+        )}
+      >
         {question.variants &&
           question.variants.map((quest, index) => (
             <li
@@ -108,9 +114,9 @@ const Quiz = () => {
       JSON.stringify({
         A: 12,
         B: 8,
-        C: 4,
-        D: 2,
-        E: 3,
+        C: 6,
+        D: 6,
+        E: 6,
       })
     );
 
