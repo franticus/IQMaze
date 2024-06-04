@@ -47,6 +47,14 @@ const Quiz = () => {
           [question.level]: prevScores[question.level] + 1,
         }));
       }
+
+      // Отправка события в dataLayer при ответе на первый вопрос
+      if (step === 0) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'firstQuestionAnswered',
+        });
+      }
     },
     [question.true, question.level]
   );
