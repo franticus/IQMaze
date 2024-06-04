@@ -29,6 +29,7 @@ const Thanks = () => {
     };
 
     updateFontSize();
+    window.addEventListener('load', updateFontSize);
     window.addEventListener('resize', updateFontSize);
 
     return () => {
