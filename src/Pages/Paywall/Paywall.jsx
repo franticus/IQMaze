@@ -1,19 +1,26 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
 import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+
+const url = 'https://stripeiq-frantunn.amvera.io';
+// const publicKey =
+//   'pk_live_51Huk90BbDeRYiB9tviB7TIaYaMB0uYOyK7wIPE6Q4LNOhuSyJTY7rxW9M30YFkIOp2RDOngiLmGnp5uBh00EirHF00tQNCRo3i';
+const publicKeyDEV =
+  'pk_test_51PNcn6RrQfUQC5MYaOchK1YrrDtBrxRDbyzQ2rfUIw7QhiIPmOU0vLYBq17pyMSQKAw99bqVnmeYGELIq2KOncST00ysRkRCO0';
+
+const stripePromise = loadStripe(publicKeyDEV);
 
 const Paywall = () => {
   const [name, setName] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
-  const uniqueVisitorId = window.uniqueVisitorId;
   const navigate = useNavigate();
 
   useEffect(() => {
-    !seriesScoresLocal && navigate('/');
-  }, []);
+    if (!seriesScoresLocal) navigate('/');
+  }, [navigate, seriesScoresLocal]);
 
   const iqTable = {
     15: 62,
@@ -82,21 +89,55 @@ const Paywall = () => {
     console.log('Calculated IQ Score:', iq);
     console.log('Total Correct Answers:', totalCorrectAnswers);
   };
+
   useEffect(() => {
     calculateIQ();
-  }, []);
+  });
 
   const handleNameChange = event => {
     setName(event.target.value);
   };
 
-  const handleSubmit = () => {
-    setTimeout(() => {
-      localStorage.setItem('userName', JSON.stringify(name));
-      localStorage.setItem('iqScore', JSON.stringify(iqValue));
-      const encodedName = encodeURIComponent(name);
-      window.location.href = `https://mel.store/sergeiantonov235/74467?hidden_0=${uniqueVisitorId}&name=${encodedName}`;
-    }, 1000);
+  const handleSubmit = async () => {
+    localStorage.setItem('userName', JSON.stringify(name));
+    localStorage.setItem('iqScore', JSON.stringify(iqValue));
+
+    const stripe = await stripePromise;
+
+    try {
+      const response = await fetch(`${url}/get-api-key`, { method: 'GET' });
+
+      if (!response.ok) {
+        console.error('Failed to get API key');
+        return;
+      }
+
+      const { apiKey } = await response.json();
+
+      const sessionResponse = await fetch(`${url}/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${encodeURIComponent(apiKey)}`,
+        },
+      });
+
+      const session = await sessionResponse.json();
+
+      if (sessionResponse.ok) {
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
+
+        if (result.error) {
+          alert(result.error.message);
+        }
+      } else {
+        console.error('Error creating checkout session:', session);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
