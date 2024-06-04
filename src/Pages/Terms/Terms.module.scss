@@ -1,0 +1,13 @@
+$primary-color: #2a9d8f;
+$text-color: #333;
+$section-padding: 3rem;
+
+.Terms {
+	width: calc(100vw - 40px);
+	max-width: 900px;
+	font-family: Arial, sans-serif;
+
+	p {
+		margin: 20px 0;
+	}
+}

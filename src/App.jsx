@@ -1,5 +1,7 @@
 import './index.css';
 import About from './Pages/About/About';
+import PrivacyPolicy from './Pages/PrivacyPolicy/PrivacyPolicy';
+import Terms from './Pages/Terms/Terms';
 import Home from './Pages/Home/Home';
 import Test from './Pages/Test/Test';
 import Navbar from './components/Navbar/Navbar';
@@ -18,6 +20,8 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/iqtest' element={<Test />} />
           <Route path='/about' element={<About />} />
+          <Route path='/privacy' element={<PrivacyPolicy />} />
+          <Route path='/terms' element={<Terms />} />
           <Route path='/paywall' element={<Paywall />} />
           <Route path='/thanks' element={<Thanks />} />
         </Routes>
