@@ -87,6 +87,11 @@ $section-padding: 3rem;
 		}
 	}
 
+	.disabled {
+		pointer-events: none;
+		filter: saturate(0);
+	}
+
 	.invalid {
 		border-color: #dc3545;
 

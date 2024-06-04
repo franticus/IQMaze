@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
 import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
+import cn from 'classnames';
 
 const url = 'https://stripeiq-frantunn.amvera.io';
 // const publicKey =
@@ -92,7 +94,7 @@ const Paywall = () => {
 
   useEffect(() => {
     calculateIQ();
-  });
+  }, []);
 
   const handleNameChange = event => {
     setName(event.target.value);
@@ -155,7 +157,13 @@ const Paywall = () => {
           value={name}
           onChange={handleNameChange}
         />
-        <button onClick={handleSubmit}>Get my IQ score</button>
+        <button
+          onClick={handleSubmit}
+          disabled={!name.trim()}
+          className={cn(!name.trim() && s.disabled)}
+        >
+          Get my IQ score
+        </button>
         <h2 className={s.mainHeading}>Information on Test Results</h2>
         <ul className={s.list}>
           <li className={s.list_item}>
