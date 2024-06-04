@@ -61,6 +61,7 @@
         border-radius: 10px;
 
         &:hover {
+          cursor: pointer;
           transform: scale(1.1);
         }
 
@@ -89,6 +90,11 @@
         }
 
         &_square {
+          &:hover {
+            cursor: pointer;
+            transform: scale(1.1);
+          }
+
           &_1 {
             background-position: 5px -168px;
             background-size: 370%;
