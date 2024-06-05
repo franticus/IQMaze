@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const pageLinks = ['Home', 'IQTest', 'About', 'Privacy', 'Terms'];
+  const pageLinks = [
+    'Home',
+    'IQTest',
+    'About',
+    'Privacy Policy',
+    'Terms of Use',
+  ];
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,7 +70,8 @@ const Navbar = () => {
                   <li
                     onClick={() => {
                       setIsOpen(false);
-                      navigate(`/${link.toLowerCase()}`);
+                      const route = link.split(' ')[0].toLowerCase();
+                      navigate(`/${route}`);
                     }}
                     className={cn(s.menu__item, s.menu__link)}
                     key={link}
