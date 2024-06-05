@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 
 const CheckoutButton = () => {
   const [stripe, setStripe] = useState(null);
-  const url = 'https://stripeiq-frantunn.amvera.io';
+  const url = 'https://iqmazestripe-myfirst27.amvera.io';
   // const publicKey =
   //   'pk_live_51Huk90BbDeRYiB9tviB7TIaYaMB0uYOyK7wIPE6Q4LNOhuSyJTY7rxW9M30YFkIOp2RDOngiLmGnp5uBh00EirHF00tQNCRo3i';
   const publicKeyDEV =
