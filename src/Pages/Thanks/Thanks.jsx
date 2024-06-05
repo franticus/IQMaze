@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import s from './Thanks.module.scss';
 import { useNavigate } from 'react-router-dom';
 import certificate from '../../img/certificate.png';
-// import Loader from '../../components/Loader/Loader';
+import html2canvas from 'html2canvas';
 
 const Thanks = () => {
   const navigate = useNavigate();
@@ -37,6 +36,15 @@ const Thanks = () => {
     };
   }, []);
 
+  const downloadCertificate = () => {
+    html2canvas(certificateRef.current).then(canvas => {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'certificate.png';
+      link.click();
+    });
+  };
+
   return (
     <>
       <div className={s.thanks}>
@@ -44,7 +52,7 @@ const Thanks = () => {
           <h1 className={s.mainHeading}>Thank you!</h1>
           <p className={s.introText}>
             You have finished the IQ test.
-            <br /> There is your certificate.
+            <br /> Here is your certificate.
           </p>
           <div className={s.certificate} ref={certificateRef}>
             <img src={certificate} alt='certificate' className={s.heroImage} />
@@ -70,6 +78,8 @@ const Thanks = () => {
               {date}
             </div>
           </div>
+
+          <button onClick={downloadCertificate}>Download Certificate</button>
 
           <div className={s.iqDistribution}>
             <div className={s.iqTitle}>IQ Score Distribution Graph</div>
@@ -102,13 +112,9 @@ const Thanks = () => {
               </div>
             </div>
           </div>
-
           <button onClick={() => navigate('/home')}>Go to IQMaze</button>
         </section>
       </div>
-      {/* <div className={s.return_block}>
-          <Loader />
-        </div> */}
     </>
   );
 };
