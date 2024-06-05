@@ -4,6 +4,25 @@
     border-top: 1px solid #b8faf1;
     padding-block: 20px;
     padding: 60px 20px;
+
+    .link {
+        cursor: pointer;
+        margin: 0 6px;
+        color: #0d483f;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 24px;
+        transition: 0.5s;
+        border-bottom: 2px solid transparent;
+
+        &:hover {
+            border-bottom: 2px solid #0d483f;
+            transition: 0.5s;
+            color: #000;
+        }
+    }
 }
 
 .mainLogo {
