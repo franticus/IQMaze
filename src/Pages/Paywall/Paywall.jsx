@@ -7,12 +7,12 @@ import { loadStripe } from '@stripe/stripe-js';
 import cn from 'classnames';
 
 const url = 'https://iqmazestripe-myfirst27.amvera.io';
-// const publicKey =
-//   'pk_live_51Huk90BbDeRYiB9tviB7TIaYaMB0uYOyK7wIPE6Q4LNOhuSyJTY7rxW9M30YFkIOp2RDOngiLmGnp5uBh00EirHF00tQNCRo3i';
-const publicKeyDEV =
-  'pk_test_51PNcn6RrQfUQC5MYaOchK1YrrDtBrxRDbyzQ2rfUIw7QhiIPmOU0vLYBq17pyMSQKAw99bqVnmeYGELIq2KOncST00ysRkRCO0';
+const publicKey =
+  'pk_live_51Huk90BbDeRYiB9tviB7TIaYaMB0uYOyK7wIPE6Q4LNOhuSyJTY7rxW9M30YFkIOp2RDOngiLmGnp5uBh00EirHF00tQNCRo3i';
+// const publicKeyDEV =
+//   'pk_test_51PNcn6RrQfUQC5MYaOchK1YrrDtBrxRDbyzQ2rfUIw7QhiIPmOU0vLYBq17pyMSQKAw99bqVnmeYGELIq2KOncST00ysRkRCO0';
 
-const stripePromise = loadStripe(publicKeyDEV);
+const stripePromise = loadStripe(publicKey);
 
 const Paywall = () => {
   const [name, setName] = useState('');
