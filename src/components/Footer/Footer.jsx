@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import s from './Footer.module.scss';
 import logo from '../../img/iq_logo.png';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ const Footer = () => {
 
   const handleNavigate = path => {
     navigate(path);
-    window.scrollTo(0, 0); // Прокрутка страницы наверх
+    window.scrollTo(0, 0);
   };
 
   return (
