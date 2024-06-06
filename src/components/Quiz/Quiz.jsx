@@ -145,20 +145,20 @@ const Quiz = () => {
     [question.variants, recordAnswer, onClickVariant, showQuiz, step, style]
   );
 
-  const skip = () => {
-    localStorage.setItem(
-      'seriesScores',
-      JSON.stringify({
-        A: 12,
-        B: 8,
-        C: 6,
-        D: 6,
-        E: 6,
-      })
-    );
+  // const skip = () => {
+  //   localStorage.setItem(
+  //     'seriesScores',
+  //     JSON.stringify({
+  //       A: 12,
+  //       B: 8,
+  //       C: 6,
+  //       D: 6,
+  //       E: 6,
+  //     })
+  //   );
 
-    navigate('/analyzing');
-  };
+  //   navigate('/analyzing');
+  // };
 
   return (
     <div
@@ -187,7 +187,7 @@ const Quiz = () => {
           <div className={s.quiz}>{defaultVariant()}</div>
         </div>
       </div>
-      <button onClick={() => skip()}>Skip</button>
+      {/* <button onClick={() => skip()}>Skip</button> */}
     </div>
   );
 };
