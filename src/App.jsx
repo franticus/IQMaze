@@ -10,10 +10,12 @@ import Footer from './components/Footer/Footer';
 import Analyzing from './Pages/Analyzing/Analyzing';
 import Paywall from './Pages/Paywall/Paywall';
 import Thanks from './Pages/Thanks/Thanks';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <div className='app'>
         <div className='wrapper'>
