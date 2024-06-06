@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
+import { iqTable } from './iqTable.js';
 import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import cn from 'classnames';
@@ -9,13 +10,12 @@ import cn from 'classnames';
 const url = 'https://iqmazestripe-myfirst27.amvera.io';
 const publicKey =
   'pk_live_51Huk90BbDeRYiB9tviB7TIaYaMB0uYOyK7wIPE6Q4LNOhuSyJTY7rxW9M30YFkIOp2RDOngiLmGnp5uBh00EirHF00tQNCRo3i';
-// const publicKeyDEV =
-//   'pk_test_51PNcn6RrQfUQC5MYaOchK1YrrDtBrxRDbyzQ2rfUIw7QhiIPmOU0vLYBq17pyMSQKAw99bqVnmeYGELIq2KOncST00ysRkRCO0';
 
 const stripePromise = loadStripe(publicKey);
 
 const Paywall = () => {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
@@ -24,62 +24,12 @@ const Paywall = () => {
     if (!seriesScoresLocal) navigate('/');
   }, [navigate, seriesScoresLocal]);
 
-  const iqTable = {
-    15: 62,
-    16: 65,
-    17: 65,
-    18: 66,
-    19: 67,
-    20: 69,
-    21: 70,
-    22: 71,
-    23: 72,
-    24: 73,
-    25: 75,
-    26: 76,
-    27: 77,
-    28: 79,
-    29: 80,
-    30: 82,
-    31: 83,
-    32: 84,
-    33: 86,
-    34: 87,
-    35: 88,
-    36: 90,
-    37: 91,
-    38: 92,
-    39: 94,
-    40: 95,
-    41: 96,
-    42: 98,
-    43: 99,
-    44: 100,
-    45: 102,
-    46: 104,
-    47: 106,
-    48: 108,
-    49: 110,
-    50: 112,
-    51: 114,
-    52: 116,
-    53: 118,
-    54: 120,
-    55: 122,
-    56: 124,
-    57: 126,
-    58: 128,
-    59: 130,
-    60: 140,
-  };
-
   const calculateIQ = () => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
       return;
     }
 
-    console.log('seriesScoresLocal:', seriesScoresLocal);
     let totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
       (total, num) => total + num,
       0
@@ -88,8 +38,6 @@ const Paywall = () => {
     const iq = iqTable[totalCorrectAnswers] || '62';
 
     setIqValue(iq);
-    console.log('Calculated IQ Score:', iq);
-    console.log('Total Correct Answers:', totalCorrectAnswers);
   };
 
   useEffect(() => {
@@ -100,8 +48,25 @@ const Paywall = () => {
     setName(event.target.value);
   };
 
-  const handleSubmit = async () => {
+  const handleEmailChange = event => {
+    setEmail(event.target.value);
+  };
+
+  const validateEmail = email => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    if (!validateEmail(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
     localStorage.setItem('userName', JSON.stringify(name));
+    localStorage.setItem('userEmail', JSON.stringify(email));
     localStorage.setItem('iqScore', JSON.stringify(iqValue));
 
     const stripe = await stripePromise;
@@ -122,6 +87,7 @@ const Paywall = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${encodeURIComponent(apiKey)}`,
         },
+        body: JSON.stringify({ name, email, iqValue }),
       });
 
       const session = await sessionResponse.json();
@@ -145,41 +111,62 @@ const Paywall = () => {
   return (
     <div className={s.paywall}>
       <section className={s.heroSection}>
-        <h1 className={s.mainHeading}>Well done!</h1>
+        <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
         <p className={s.introText}>
-          You have finished the IQ test. <br /> Please enter your first and last
-          name to receive your certificate.
+          Enter your name and email <br />
+          to access our comprehensive IQ test. <br />
+          Discover your intellectual capabilities,
+          <br /> understand your strengths and areas for improvement, <br />
+          and embark on a journey of cognitive growth.
         </p>
-        <label htmlFor='emailInput'>Your first and last name:</label>
-        <input
-          id='nameInput'
-          type='text'
-          value={name}
-          onChange={handleNameChange}
-        />
-        <button
-          onClick={handleSubmit}
-          disabled={!name.trim()}
-          className={cn(!name.trim() && s.disabled)}
-        >
-          Get my IQ score
-        </button>
+
+        <label htmlFor='nameInput'>Your first and last name:</label>
+        <form onSubmit={handleSubmit}>
+          <input
+            id='nameInput'
+            placeholder='Your Name'
+            type='text'
+            value={name}
+            required
+            onChange={handleNameChange}
+          />
+          <label htmlFor='emailInput'>Your email:</label>
+          <input
+            id='emailInput'
+            placeholder='Email'
+            type='email'
+            value={email}
+            required
+            onChange={handleEmailChange}
+          />
+          <button
+            type='submit'
+            disabled={!name.trim() || !email.trim()}
+            className={cn((!name.trim() || !email.trim()) && s.disabled)}
+          >
+            Get my IQ score
+          </button>
+        </form>
         <h2 className={s.mainHeading}>Information on Test Results</h2>
         <ul className={s.list}>
           <li className={s.list_item}>
-            The following certificate will be issued with the information you
-            entered.
+            After entering your details, you'll receive a personalized and
+            signed certificate displaying your test results.
           </li>
           <li>
             <img src={certificate} alt='certificate' className={s.heroImage} />
           </li>
           <li className={s.list_item}>
-            Certificate Sample This test is the only IQ test that derives a
-            ranking with a scale of more than 5 million people worldwide.
+            This certificate is unique and tailored for you, reflecting your IQ
+            score and ranking among over 5 million people worldwide.
           </li>
           <li className={s.list_item}>
-            You can see the job relevance according to IQMaze, percentile, and
-            IQ score.
+            Understand your job relevance with detailed insights from IQMaze,
+            including your percentile and IQ score.
+          </li>
+          <li className={s.list_item}>
+            Don't miss out on this opportunity to validate and celebrate your
+            intellectual achievements!
           </li>
         </ul>
       </section>
