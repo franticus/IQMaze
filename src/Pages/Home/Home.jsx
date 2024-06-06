@@ -14,7 +14,9 @@ const Home = () => {
     <div className={s.home}>
       <div className={s.hero}>
         <div className={s.did}>12,502 people did this test last week.</div>
-        <div className={s.title}>Test your IQ!</div>
+        <div className={s.title}>
+          Test your <span className={s.title_iq}>IQ!</span>
+        </div>
         <div className={s.description}>
           The IQ Test is to assess an intellectual abilities formed by general
           experience, not affected by training or learning. You can figure out
@@ -127,7 +129,7 @@ const Home = () => {
           validated IQ test today and start your journey towards personal and
           professional growth.
         </p>
-        <button className={s.ctaButton} onClick={() => navigate('/iqtest')}>
+        <button className={s.button} onClick={() => navigate('/iqtest')}>
           Start IQ test
         </button>
       </section>
