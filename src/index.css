@@ -7,9 +7,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html,
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
   opacity: 1;
   background-image: linear-gradient(#F8F8FF 0.5px, transparent 0.5px), linear-gradient(to right, #F8F8FF 0.5px, #ffffff 0.5px);
   background-size: 10px 10px;
@@ -38,4 +45,15 @@ ul {
   justify-content: center;
   overflow: hidden;
   padding-bottom: 60px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 375px);
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
 }

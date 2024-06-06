@@ -1,4 +1,5 @@
 import './index.css';
+import './fonts.css';
 import PrivacyPolicy from './Pages/PrivacyPolicy/PrivacyPolicy';
 import Terms from './Pages/Terms/Terms';
 import Home from './Pages/Home/Home';
@@ -15,16 +16,20 @@ function App() {
     <Router>
       <Navbar />
       <div className='app'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/home' element={<Home />} />
-          <Route path='/iqtest' element={<Test />} />
-          <Route path='/privacy' element={<PrivacyPolicy />} />
-          <Route path='/terms' element={<Terms />} />
-          <Route path='/analyzing' element={<Analyzing />} />
-          <Route path='/paywall' element={<Paywall />} />
-          <Route path='/thanks' element={<Thanks />} />
-        </Routes>
+        <div className='wrapper'>
+          <main>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/iqtest' element={<Test />} />
+              <Route path='/privacy' element={<PrivacyPolicy />} />
+              <Route path='/terms' element={<Terms />} />
+              <Route path='/analyzing' element={<Analyzing />} />
+              <Route path='/paywall' element={<Paywall />} />
+              <Route path='/thanks' element={<Thanks />} />
+            </Routes>
+          </main>
+        </div>
       </div>
       <Footer />
     </Router>

@@ -120,11 +120,11 @@ const Paywall = () => {
           and embark on a journey of cognitive growth.
         </p>
 
-        <label htmlFor='nameInput'>Your first and last name:</label>
         <form onSubmit={handleSubmit}>
+          <label htmlFor='nameInput'>Your first and last name:</label>
           <input
             id='nameInput'
-            placeholder='Your Name'
+            placeholder='Your first and last name'
             type='text'
             value={name}
             required

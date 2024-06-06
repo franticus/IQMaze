@@ -5,22 +5,28 @@ $section-padding: 3rem;
 .paywall {
 	width: calc(100vw - 40px);
 	max-width: 900px;
-	font-family: Arial, sans-serif;
 	font-weight: 600;
 	font-size: 18px;
 	animation: fadeIn 1s ease-in-out forwards;
 
 	form {
+		text-align: left;
 		width: 100%;
+		max-width: 400px;
 		display: flex;
-		align-items: center;
-		justify-content: center;
 		flex-direction: column;
+		margin: 0 auto;
+	}
+
+	label {
+		color: $primary-color;
+		font-size: 12px;
+		font-weight: 600;
 	}
 
 	input[type='email'] {
 		display: block;
-		margin-top: 10px;
+		margin: 2px 0 10px 0;
 		width: 100%;
 		max-width: 400px;
 		padding: .375rem .75rem;
@@ -44,7 +50,7 @@ $section-padding: 3rem;
 
 	input[type='text'] {
 		display: block;
-		margin: 10px 0;
+		margin: 2px 0 10px 0;
 		width: 100%;
 		max-width: 400px;
 		padding: .375rem .75rem;
@@ -127,8 +133,8 @@ $section-padding: 3rem;
 		flex-direction: column;
 		text-align: left;
 		gap: 10px;
-		font-size: 18px;
-		font-weight: 500;
+		font-size: 16px;
+		font-weight: 400;
 		color: #333;
 	}
 
@@ -165,9 +171,8 @@ $section-padding: 3rem;
 
 .introText {
 	font-weight: 400;
-	line-height: 22px;
 	margin-bottom: 2rem;
-	font-size: 18px;
+	font-size: 16px;
 	color: $text-color;
 }
 
