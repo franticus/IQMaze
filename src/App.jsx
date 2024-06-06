@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import './index.css';
 import './fonts.css';
 import PrivacyPolicy from './Pages/PrivacyPolicy/PrivacyPolicy';
@@ -11,8 +12,23 @@ import Analyzing from './Pages/Analyzing/Analyzing';
 import Paywall from './Pages/Paywall/Paywall';
 import Thanks from './Pages/Thanks/Thanks';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import { getUserId } from './helpers/userId';
 
 function App() {
+  useEffect(() => {
+    const userId = getUserId();
+    console.log('userId:', userId);
+
+    if (typeof window !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'appLoad',
+        timestamp: new Date().toISOString(),
+        userId: userId,
+      });
+    }
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />

@@ -7,6 +7,7 @@ import ProgressBar from '../ProgressBar/ProgressBar.jsx';
 import { useNavigate } from 'react-router-dom';
 import s from './Quiz.module.scss';
 import cn from 'classnames';
+import { getUserId } from '../../helpers/userId.js';
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -57,14 +58,34 @@ const Quiz = () => {
         }));
       }
 
+      const userId = getUserId();
+
       if (step === 0) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: 'firstQuestionAnswered',
+          userId: userId,
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      if ((step + 1) % 12 === 0) {
+        const eventMap = {
+          A: 'A_QuestionsAnswered',
+          B: 'B_QuestionsAnswered',
+          C: 'C_QuestionsAnswered',
+          D: 'D_QuestionsAnswered',
+          E: 'E_QuestionsAnswered',
+        };
+
+        window.dataLayer.push({
+          event: eventMap[question.level],
+          userId: userId,
+          timestamp: new Date().toISOString(),
         });
       }
     },
-    [question.true, question.level]
+    [question.true, question.level, step]
   );
 
   const onClickVariant = useCallback(() => {
