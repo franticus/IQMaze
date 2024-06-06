@@ -1,0 +1,34 @@
+.analyzing {
+	text-align: center;
+	padding: 20px;
+
+	.mainHeading {
+		font-size: 2em;
+		margin-bottom: 20px;
+	}
+
+	.description {
+		font-size: 1.2em;
+		margin-bottom: 40px;
+	}
+
+	.progressContainer {
+		width: 80%;
+		height: 30px;
+		background-color: #e0e0e0;
+		border-radius: 15px;
+		margin: 0 auto;
+		overflow: hidden;
+	}
+
+	.progressBar {
+		height: 100%;
+		background-color: #76c7c0;
+		transition: width 0.5s ease;
+	}
+
+	.progressText {
+		font-size: 1.2em;
+		margin-top: 20px;
+	}
+}

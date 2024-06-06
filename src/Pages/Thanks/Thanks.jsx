@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import s from './Thanks.module.scss';
 import { useNavigate } from 'react-router-dom';
-import certificate from '../../img/certificate.png';
+import certificate from '../../img/certificate_empty.png';
 import html2canvas from 'html2canvas';
 
 const Thanks = () => {

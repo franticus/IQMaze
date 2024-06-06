@@ -1,0 +1,72 @@
+.checkList {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 20px;
+
+	label {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		opacity: 0.5;
+
+		&[data-selected="true"] {
+			opacity: 1;
+
+			.checkBox svg {
+				opacity: 1;
+				stroke-dashoffset: 0;
+			}
+		}
+	}
+
+	.checkLabel {
+		display: inline-flex;
+		align-items: center;
+		cursor: pointer;
+		padding: 2px;
+		margin: -2px;
+		pointer-events: none;
+		position: relative;
+	}
+
+	.checkInput {
+		border: 0;
+		clip: rect(0 0 0 0);
+		clip-path: inset(50%);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+		white-space: nowrap;
+	}
+
+	.checkBox {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		margin-right: 8px;
+		border: 2px solid #76c7c0;
+		border-radius: 50%;
+		overflow: hidden;
+		position: relative;
+
+		svg {
+			color: #76c7c0;
+			width: 18px;
+			height: 18px;
+			opacity: 0;
+			stroke-dasharray: 22;
+			stroke-dashoffset: 44;
+			transition: opacity 1s, stroke-dashoffset 0.25s linear 0.2s;
+		}
+	}
+
+	.checkText {
+		font-size: 16px;
+	}
+}
