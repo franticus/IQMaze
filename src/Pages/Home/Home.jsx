@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import s from './Home.module.scss';
 import { useNavigate } from 'react-router-dom';
 import about_1 from '../../img/about_1.jpg';
@@ -11,9 +13,16 @@ import Testimonials from '../../components/Testimonials/Testimonials';
 const Home = () => {
   const navigate = useNavigate('/test');
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
     <div className={s.home}>
-      <div className={s.hero}>
+      <div className={s.hero} data-aos='fade-up'>
         <div className={s.did}>12,502 people did this test last week.</div>
         <div className={s.title}>
           Test your <span className={s.title_iq}>IQ!</span>
@@ -32,7 +41,7 @@ const Home = () => {
         </button>
       </div>
 
-      <section className={s.heroSection}>
+      <section className={s.heroSection} data-aos='fade-down'>
         <div className={s.heroContent}>
           <h1 className={s.mainHeading}>
             Unlock Your Cognitive Potential with IQMaze
@@ -51,7 +60,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className={s.featuresSection}>
+      <section className={s.featuresSection} data-aos='fade-right'>
         <h2 className={s.sectionHeading}>Why Choose IQMaze?</h2>
         <div className={s.features}>
           <div className={s.featureItem}>
@@ -81,9 +90,11 @@ const Home = () => {
         </div>
       </section>
 
-      <Testimonials />
+      <div data-aos='fade-left'>
+        <Testimonials />
+      </div>
 
-      <section className={s.communitySection}>
+      <section className={s.communitySection} data-aos='fade-down'>
         <h2 className={s.sectionHeading}>Join the IQMaze Community</h2>
         <p className={s.sectionText}>
           Connect with like-minded individuals, share your results, and
@@ -98,7 +109,7 @@ const Home = () => {
         />
       </section>
 
-      <section className={s.ctaSection}>
+      <section className={s.ctaSection} data-aos='fade-up'>
         <h2 className={s.sectionHeading}>Get Started with IQMaze</h2>
         <p className={s.sectionText}>
           Ready to discover your cognitive strengths? Take our scientifically
