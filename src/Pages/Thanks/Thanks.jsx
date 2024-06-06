@@ -3,6 +3,8 @@ import s from './Thanks.module.scss';
 import { useNavigate } from 'react-router-dom';
 import certificate from '../../img/certificate_empty.png';
 import html2canvas from 'html2canvas';
+import { getIQDescription } from './getIQDescription';
+import graph from '../../img/graph.jpg';
 
 const Thanks = () => {
   const navigate = useNavigate();
@@ -81,6 +83,11 @@ const Thanks = () => {
 
           <button onClick={downloadCertificate}>Download Certificate</button>
 
+          <div className={s.iqDescription}>
+            <h2>Result description</h2>
+            <p>{getIQDescription(iqValue)}</p>
+          </div>
+
           <div className={s.iqDistribution}>
             <div className={s.iqTitle}>IQ Score Distribution Graph</div>
             <div className={s.iqLabels_container}>
@@ -111,7 +118,9 @@ const Thanks = () => {
                 </div>
               </div>
             </div>
+            <img src={graph} alt='IQ Distribution' className={s.iqImage} />
           </div>
+
           <button onClick={() => navigate('/home')}>Go to IQMaze</button>
         </section>
       </div>
