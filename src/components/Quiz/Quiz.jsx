@@ -30,7 +30,6 @@ const Quiz = () => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
-      once: true,
     });
   }, []);
 
@@ -181,7 +180,6 @@ const Quiz = () => {
             [s[`quest_image_square`]]: step >= 24,
           })}
           style={style}
-          data-aos='fade-right'
         ></div>
         <div className={s.quiz_container} data-aos='fade-left'>
           <div className={s.quiz}>{defaultVariant()}</div>
