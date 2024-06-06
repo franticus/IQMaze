@@ -2,11 +2,11 @@ import React from 'react';
 import s from './CheckList.module.scss';
 
 const items = [
-  { label: 'Memory', value: 'memory' },
-  { label: 'Speed', value: 'speed' },
-  { label: 'Reaction', value: 'reaction' },
-  { label: 'Concentration', value: 'concentration' },
-  { label: 'Logic', value: 'logic' },
+  { label: 'Testing Your Memory', value: 'memory' },
+  { label: 'Analyzing Your Speed', value: 'speed' },
+  { label: 'Measuring Your Reaction Time', value: 'reaction' },
+  { label: 'Assessing Your Concentration', value: 'concentration' },
+  { label: 'Evaluating Your Logic Skills', value: 'logic' },
 ];
 
 const CheckList = ({ currentStep }) => {
