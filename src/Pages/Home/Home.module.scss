@@ -1,10 +1,21 @@
+$primary-color: #0d766e;
+$text-color: #333;
+$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+$border-radius: 8px;
+$section-padding: 3rem;
+
+section {
+	width: 100%;
+	max-width: 900px;
+}
+
 .home {
-	padding: 40px 20px;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	gap: 20px;
+	padding: 40px 20px;
 	animation: fadeIn 1s ease-in-out forwards;
 
 	@keyframes fadeIn {
@@ -18,7 +29,7 @@
 	}
 
 	.hero {
-		width: calc(100vw - 40px);
+		width: 100%;
 		max-width: 900px;
 		display: flex;
 		align-items: center;
@@ -28,95 +39,313 @@
 		padding: 40px 20px;
 		margin-bottom: 40px;
 		background: #fff;
-		border-radius: 8px;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	}
+		border-radius: $border-radius;
+		box-shadow: $box-shadow;
 
-	.did {
-		font-size: 22px;
-		font-weight: 500;
-	}
+		.did {
+			font-size: 22px;
+			font-weight: 500;
+		}
 
-	.title {
-		font-size: 42px;
-		font-weight: 600;
-	}
+		.title {
+			font-size: 42px;
+			font-weight: 600;
+		}
 
-	.description {
-		font-size: 16px;
-		font-weight: 400;
-		text-align: center;
-		max-width: 600px;
-	}
+		.description {
+			font-size: 16px;
+			font-weight: 400;
+			text-align: center;
+			max-width: 600px;
+		}
 
-	.button {
-		cursor: pointer;
-		padding: 20px 40px;
-		border-radius: 8px;
-		border: 1px solid #333;
-		transition: all 0.3s ease-in-out;
-		background: #9ffffb;
-		font-size: 20px;
-		text-transform: uppercase;
-		font-weight: 600;
-
-		&:hover {
-			background: #0d483f;
+		.button {
+			cursor: pointer;
+			padding: 20px 40px;
+			border-radius: $border-radius;
+			border: 1px solid $primary-color;
+			transition: all 0.3s ease-in-out;
+			background: $primary-color;
+			font-size: 20px;
+			text-transform: uppercase;
+			font-weight: 600;
 			color: #fff;
+
+			&:hover {
+				background: darken($primary-color, 10%);
+				border-color: darken($primary-color, 10%);
+			}
+		}
+	}
+
+	.features {
+		width: 100%;
+		max-width: 900px;
+		margin: 40px 0;
+		padding: $section-padding;
+		border-radius: $border-radius;
+
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			font-size: 32px;
+			color: $primary-color;
+		}
+
+		.featureItems {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			gap: 20px;
+
+			.featureItem {
+				flex: 1;
+				min-width: 250px;
+				text-align: center;
+
+				img {
+					max-width: 100%;
+					height: auto;
+					margin-bottom: 10px;
+					border-radius: $border-radius;
+				}
+
+				h3 {
+					font-size: 24px;
+					margin-bottom: 10px;
+					color: $primary-color;
+				}
+
+				p {
+					font-size: 16px;
+					color: $text-color;
+				}
+			}
+		}
+	}
+
+	.testimonials {
+		width: 100%;
+		max-width: 900px;
+		margin: 40px 0;
+		padding: $section-padding;
+		background: #fff;
+		border-radius: $border-radius;
+
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			font-size: 32px;
+			color: $primary-color;
+		}
+
+		.testimonialItems {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+
+			.testimonialItem {
+				padding: 20px;
+				border-radius: $border-radius;
+				box-shadow: $box-shadow;
+				text-align: center;
+
+				p {
+					margin-bottom: 10px;
+					font-size: 16px;
+					color: $text-color;
+
+					&:last-child {
+						margin-bottom: 0;
+						font-weight: 600;
+						color: $primary-color;
+					}
+				}
+			}
 		}
 	}
 }
 
-.iqDistribution {
-	width: calc(100vw - 40px);
-	max-width: 900px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 40px 20px;
-	background: #fff;
+.heroSection {
+	padding: 60px 20px;
 	border-radius: 8px;
+	text-align: center;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-	.iqTitle {
-		font-size: 34px;
-		color: #333;
-		margin-bottom: 16px;
+	.heroContent {
+		max-width: 700px;
+		margin: 0 auto;
 	}
 
-	.iqImage {
-		width: 100%;
-		max-width: 600px;
+	.mainHeading {
+		color: $primary-color;
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.introText {
+		color: $text-color;
+		font-size: 1.2rem;
+		margin-bottom: 2rem;
+	}
+
+	.heroImage {
+		max-width: 100%;
 		height: auto;
-		margin-bottom: 16px;
+		border-radius: 8px;
+	}
+}
+
+.featuresSection {
+	padding: 60px 20px;
+	background: #fff;
+	border-radius: 8px;
+	margin-top: 40px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+	.sectionHeading {
+		color: $primary-color;
+		font-size: 2rem;
+		text-align: center;
+		margin-bottom: 2rem;
 	}
 
-	.iqLabels_container {
+	.features {
 		display: flex;
-		align-items: flex-start;
-		justify-content: center;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		gap: 20px;
+
+		.featureItem {
+			flex: 1 1 calc(33% - 20px);
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			text-align: center;
+
+			.featureImage {
+				max-width: 100%;
+				height: auto;
+				border-radius: 8px;
+				margin-bottom: 1rem;
+			}
+
+			.featureTitle {
+				color: $primary-color;
+				font-size: 1.5rem;
+				margin-bottom: 1rem;
+			}
+
+			.featureText {
+				color: $text-color;
+				font-size: 1rem;
+			}
+		}
+	}
+}
+
+.testimonialSection {
+	padding: 60px 20px;
+	border-radius: 8px;
+	margin-top: 40px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+	.sectionHeading {
+		color: $primary-color;
+		font-size: 2rem;
+		text-align: center;
+		margin-bottom: 2rem;
 	}
 
-	.iqLabels {
-		width: calc(100vw - 40px);
-		max-width: 400px;
+	.testimonials {
 		display: flex;
-		align-items: flex-start;
-		justify-content: center;
 		flex-direction: column;
-		font-size: 14px;
-		color: #666;
-		margin-bottom: 40px;
+		gap: 20px;
 
-		&_item {
-			width: 100%;
-			display: flex;
-			align-items: flex-start;
-			justify-content: space-between;
-			text-align: left;
-			padding: 10px;
-			font-weight: 600;
-			border-bottom: 1px solid #64f5df;
+		.testimonialItem {
+			background: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			text-align: center;
+
+			.testimonialText {
+				color: $text-color;
+				font-size: 1rem;
+				margin-bottom: 1rem;
+			}
+
+			.testimonialAuthor {
+				color: $primary-color;
+				font-size: 1rem;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.communitySection {
+	padding: 60px 20px;
+	background: #fff;
+	border-radius: 8px;
+	margin-top: 40px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+
+	.sectionHeading {
+		color: $primary-color;
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	.sectionText {
+		color: $text-color;
+		font-size: 1.2rem;
+		margin-bottom: 2rem;
+	}
+
+	.communityImage {
+		max-width: 100%;
+		height: auto;
+		border-radius: 8px;
+	}
+}
+
+.ctaSection {
+	padding: 60px 20px;
+	background: $primary-color;
+	border-radius: 8px;
+	margin-top: 40px;
+	text-align: center;
+	color: #fff;
+
+	.sectionHeading {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.sectionText {
+		font-size: 1.2rem;
+		margin-bottom: 2rem;
+	}
+
+	.ctaButton {
+		background: #fff;
+		color: $primary-color;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 1rem;
+		font-weight: bold;
+		text-transform: uppercase;
+		transition: background 0.3s, color 0.3s;
+		border: 2px solid transparent;
+
+		&:hover {
+			background: $primary-color;
+			color: #fff;
+			border: 2px solid #fff;
 		}
 	}
 }

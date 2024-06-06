@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const pageLinks = ['Home', 'IQTest', 'About'];
+  const pageLinks = ['Home', 'IQTest'];
   const navigate = useNavigate();
 
   useEffect(() => {
