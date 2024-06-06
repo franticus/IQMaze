@@ -8,7 +8,7 @@ import cn from 'classnames';
 
 const Quiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(58);
   const [showQuiz, setShowQuiz] = useState(false);
   const [seriesScores, setSeriesScores] = useState({
     A: 0,
@@ -70,7 +70,7 @@ const Quiz = () => {
     } else {
       setTimeout(() => {
         localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
-        navigate('/paywall');
+        navigate('/analyzing');
       }, 1000);
     }
   }, [isLastQuestion, navigate]);
@@ -128,7 +128,7 @@ const Quiz = () => {
       })
     );
 
-    navigate('/paywall');
+    navigate('/analyzing');
   };
 
   return (

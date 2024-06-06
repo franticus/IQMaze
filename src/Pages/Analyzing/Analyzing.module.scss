@@ -1,6 +1,7 @@
 .analyzing {
 	text-align: center;
 	padding: 20px;
+	animation: fadeIn 1s ease-in-out forwards;
 
 	.mainHeading {
 		font-size: 2em;
@@ -30,5 +31,15 @@
 	.progressText {
 		font-size: 1.2em;
 		margin-top: 20px;
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+
+		100% {
+			opacity: 1;
+		}
 	}
 }

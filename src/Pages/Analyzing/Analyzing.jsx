@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import s from './Analyzing.module.scss';
 import CheckList from '../../components/CheckList/CheckList';
+import { useNavigate } from 'react-router-dom';
 
 const Analyzing = () => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
   const totalSteps = 5;
 
   useEffect(() => {
@@ -24,6 +26,12 @@ const Analyzing = () => {
     };
   }, []);
 
+  if (progress === 100) {
+    setTimeout(() => {
+      navigate('/paywall');
+    }, 2000);
+  }
+
   useEffect(() => {
     const stepInterval = setInterval(() => {
       setCurrentStep(oldStep => {
@@ -33,7 +41,7 @@ const Analyzing = () => {
         }
         return oldStep + 1;
       });
-    }, 2000);
+    }, 1800);
 
     return () => {
       clearInterval(stepInterval);
