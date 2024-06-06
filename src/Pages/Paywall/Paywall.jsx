@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
 import { iqTable } from './iqTable.js';
@@ -19,6 +21,13 @@ const Paywall = () => {
   const [iqValue, setIqValue] = useState(0);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
 
   useEffect(() => {
     if (!seriesScoresLocal) navigate('/');
@@ -110,7 +119,7 @@ const Paywall = () => {
 
   return (
     <div className={s.paywall}>
-      <section className={s.heroSection}>
+      <section className={s.heroSection} data-aos='fade-up'>
         <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
         <p className={s.introText}>
           Enter your name and email <br />
@@ -120,7 +129,7 @@ const Paywall = () => {
           and embark on a journey of cognitive growth.
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} data-aos='fade-right'>
           <label htmlFor='nameInput'>Your first and last name:</label>
           <input
             id='nameInput'
@@ -147,8 +156,10 @@ const Paywall = () => {
             Get my IQ score
           </button>
         </form>
-        <h2 className={s.mainHeading}>Information on Test Results</h2>
-        <ul className={s.list}>
+        <h2 className={s.mainHeading} data-aos='fade-left'>
+          Information on Test Results
+        </h2>
+        <ul className={s.list} data-aos='fade-left'>
           <li className={s.list_item}>
             After entering your details, you'll receive a personalized and
             signed certificate displaying your test results. <br /> (The photo

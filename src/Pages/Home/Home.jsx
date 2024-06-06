@@ -94,7 +94,7 @@ const Home = () => {
         <Testimonials />
       </div>
 
-      <section className={s.communitySection} data-aos='fade-down'>
+      <section className={s.communitySection} data-aos='fade-up'>
         <h2 className={s.sectionHeading}>Join the IQMaze Community</h2>
         <p className={s.sectionText}>
           Connect with like-minded individuals, share your results, and

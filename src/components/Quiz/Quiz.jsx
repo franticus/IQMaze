@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import { quizData } from './quizData/quizData.js';
 import ProgressBar from '../ProgressBar/ProgressBar.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +27,13 @@ const Quiz = () => {
   const isLastQuestion = step === quizData.length - 1;
 
   useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
+  useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowQuiz(true);
       setPointerEvents(false);
@@ -48,7 +57,6 @@ const Quiz = () => {
         }));
       }
 
-      // Отправка события в dataLayer при ответе на первый вопрос
       if (step === 0) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -139,8 +147,10 @@ const Quiz = () => {
         pointerEvents && s.preventClick
       )}
     >
-      <ProgressBar percentage={percentage} stepBack={stepBack} />
-      <div className={s.questions_title}>
+      <div data-aos='fade-down'>
+        <ProgressBar percentage={percentage} stepBack={stepBack} />
+      </div>
+      <div className={s.questions_title} data-aos='fade-down'>
         (Level {question.level}) Question {step + 1}/{quizData.length}: Choose
         the correct form for the blanks.
       </div>
@@ -150,8 +160,9 @@ const Quiz = () => {
             [s[`quest_image_square`]]: step >= 24,
           })}
           style={style}
+          data-aos='fade-right'
         ></div>
-        <div className={s.quiz_container}>
+        <div className={s.quiz_container} data-aos='fade-left'>
           <div className={s.quiz}>{defaultVariant()}</div>
         </div>
       </div>

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import s from './Thanks.module.scss';
 import { useNavigate } from 'react-router-dom';
 import certificate from '../../img/certificate_empty.png';
@@ -17,6 +19,13 @@ const Thanks = () => {
     iq: '2rem',
     date: '1rem',
   });
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
 
   useEffect(() => {
     const updateFontSize = () => {
@@ -50,13 +59,17 @@ const Thanks = () => {
   return (
     <>
       <div className={s.thanks}>
-        <section className={s.heroSection}>
+        <section className={s.heroSection} data-aos='fade-up'>
           <h1 className={s.mainHeading}>Thank you!</h1>
           <p className={s.introText}>
             You have finished the IQ test.
             <br /> Here is your certificate.
           </p>
-          <div className={s.certificate} ref={certificateRef}>
+          <div
+            className={s.certificate}
+            ref={certificateRef}
+            data-aos='fade-up'
+          >
             <img src={certificate} alt='certificate' className={s.heroImage} />
             <div
               className={s.certificate_name}
@@ -81,14 +94,16 @@ const Thanks = () => {
             </div>
           </div>
 
-          <button onClick={downloadCertificate}>Download Certificate</button>
+          <button onClick={downloadCertificate} data-aos='fade-up'>
+            Download Certificate
+          </button>
 
-          <div className={s.iqDescription}>
+          <div className={s.iqDescription} data-aos='fade-up'>
             <h2>Result description</h2>
             <p>{getIQDescription(iqValue)}</p>
           </div>
 
-          <div className={s.iqDistribution}>
+          <div className={s.iqDistribution} data-aos='fade-up'>
             <div className={s.iqTitle}>IQ Score Distribution Graph</div>
             <div className={s.iqLabels_container}>
               <div className={s.iqLabels}>
@@ -121,7 +136,9 @@ const Thanks = () => {
             <img src={graph} alt='IQ Distribution' className={s.iqImage} />
           </div>
 
-          <button onClick={() => navigate('/home')}>Go to IQMaze</button>
+          <button onClick={() => navigate('/home')} data-aos='fade-up'>
+            Go to IQMaze
+          </button>
         </section>
       </div>
     </>
