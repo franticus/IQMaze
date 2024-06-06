@@ -6,6 +6,7 @@ import about_2 from '../../img/about_2.jpg';
 import about_3 from '../../img/about_3.jpg';
 import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
+import Testimonials from '../../components/Testimonials/Testimonials';
 
 const Home = () => {
   const navigate = useNavigate('/test');
@@ -80,32 +81,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className={s.testimonialSection}>
-        <h2 className={s.sectionHeading}>What Our Users Say</h2>
-        <div className={s.testimonials}>
-          <div className={s.testimonialItem}>
-            <p className={s.testimonialText}>
-              "IQMaze provided me with incredible insights into my cognitive
-              abilities. It’s an eye-opener!"
-            </p>
-            <p className={s.testimonialAuthor}>- Alex, Software Engineer</p>
-          </div>
-          <div className={s.testimonialItem}>
-            <p className={s.testimonialText}>
-              "The detailed analysis helped me understand my strengths and how
-              to improve my weaknesses."
-            </p>
-            <p className={s.testimonialAuthor}>- Maria, University Student</p>
-          </div>
-          <div className={s.testimonialItem}>
-            <p className={s.testimonialText}>
-              "As a recruiter, IQMaze’s tests are invaluable for evaluating
-              candidates’ cognitive skills."
-            </p>
-            <p className={s.testimonialAuthor}>- John, HR Specialist</p>
-          </div>
-        </div>
-      </section>
+      <Testimonials />
 
       <section className={s.communitySection}>
         <h2 className={s.sectionHeading}>Join the IQMaze Community</h2>

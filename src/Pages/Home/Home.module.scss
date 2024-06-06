@@ -172,42 +172,6 @@ section {
 		}
 	}
 
-	.testimonialSection {
-		background: #fff;
-
-		.sectionHeading {
-			color: $primary-color;
-			font-size: 24px;
-			margin-bottom: 1rem;
-		}
-
-		.testimonials {
-			display: flex;
-			flex-direction: column;
-			gap: 20px;
-
-			.testimonialItem {
-				background: #fff;
-				padding: 20px;
-				border-radius: 8px;
-				box-shadow: $box-shadow;
-				text-align: center;
-
-				.testimonialText {
-					color: $text-color;
-					font-size: 16px;
-					margin-bottom: 1rem;
-				}
-
-				.testimonialAuthor {
-					color: $primary-color;
-					font-size: 1rem;
-					font-weight: bold;
-				}
-			}
-		}
-	}
-
 	.communitySection {
 		background: #fff;
 
