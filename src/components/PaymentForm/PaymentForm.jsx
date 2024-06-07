@@ -107,8 +107,8 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
           </button>
           <div className={s.priceInfo}>
             <div className={s.priceItem}>
-              <span>Price without discount:</span>
-              <del>USD 9.90</del>
+              <span>Previous price:</span>
+              <span className={s.oldPrice}>USD 19.90</span>
             </div>
             <div className={s.priceItem}>
               <span>Your discount:</span>
@@ -117,7 +117,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
             <div className={s.priceSeparator}></div>
             <div className={s.priceTotal}>
               <span>Total Price:</span>
-              <span>USD 1.90</span>
+              <span className={s.total}>USD 1.90</span>
             </div>
           </div>
           <div className={s.terms}>
@@ -133,9 +133,9 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
             </span>
           </div>
           <div className={s.warning}>
-            Please note that this is a one-time payment of USD 1.90 to access
-            your comprehensive IQ test results. You will not be enrolled in any
-            subscription, and there are no recurring charges.
+            Please note that <strong>this is a one-time payment</strong> of USD
+            1.90 to access your comprehensive IQ test results. You will not be
+            enrolled in any subscription, and there are no recurring charges.
           </div>
         </form>
       </div>

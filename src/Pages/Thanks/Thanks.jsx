@@ -43,10 +43,9 @@ const Thanks = () => {
     window.addEventListener('resize', updateFontSize);
 
     return () => {
-      window.addEventListener('load', updateFontSize);
       window.removeEventListener('resize', updateFontSize);
     };
-  }, []);
+  }, [fontSize]);
 
   const downloadCertificate = () => {
     html2canvas(certificateRef.current).then(canvas => {
