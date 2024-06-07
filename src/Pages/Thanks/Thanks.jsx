@@ -43,6 +43,7 @@ const Thanks = () => {
     window.addEventListener('resize', updateFontSize);
 
     return () => {
+      window.addEventListener('load', updateFontSize);
       window.removeEventListener('resize', updateFontSize);
     };
   }, []);
@@ -98,12 +99,12 @@ const Thanks = () => {
             Download Certificate
           </button>
 
-          <div className={s.iqDescription} data-aos='fade-up'>
+          <div className={s.iqDescription} data-aos='fade-right'>
             <h2>Result description</h2>
             <p>{getIQDescription(iqValue)}</p>
           </div>
 
-          <div className={s.iqDistribution} data-aos='fade-up'>
+          <div className={s.iqDistribution} data-aos='fade-left'>
             <div className={s.iqTitle}>IQ Score Distribution Graph</div>
             <div className={s.iqLabels_container}>
               <div className={s.iqLabels}>

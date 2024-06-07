@@ -10,12 +10,13 @@ import {
 import s from './PaymentForm.module.scss';
 import cn from 'classnames';
 
-import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
+import { url, urlDEV } from '../../key.js';
 import { useNavigate } from 'react-router-dom';
 
 const PaymentForm = ({ name, email, amount, apiKey }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [emailInput, setEmailInput] = useState(email);
 
@@ -54,7 +55,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
         setIsProcessing(false);
       } else {
         if (result.paymentIntent.status === 'succeeded') {
-          alert('Payment Successful!');
+          navigate('/thanks');
         }
         setIsProcessing(false);
       }
