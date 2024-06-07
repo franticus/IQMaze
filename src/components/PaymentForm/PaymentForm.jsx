@@ -109,6 +109,11 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
       <h2 className={s.formTitle}>Almost Done!</h2>
       <div className={s.paymentFormWrapper}>
         <form onSubmit={handleSubmit} className={s.paymentForm}>
+          {paymentRequest && (
+            <div className={s.paymentRequestWrapper}>
+              <PaymentRequestButtonElement options={{ paymentRequest }} />
+            </div>
+          )}
           <div className={s.cardDetails}>
             <label>Card number</label>
             <CardNumberElement className={s.cardElement} />
@@ -173,11 +178,6 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
             enrolled in any subscription, and there are no recurring charges.
           </div>
         </form>
-        {paymentRequest && (
-          <div className={s.paymentRequestWrapper}>
-            <PaymentRequestButtonElement options={{ paymentRequest }} />
-          </div>
-        )}
       </div>
     </>
   );
