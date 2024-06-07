@@ -64,7 +64,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
     }
 
     try {
-      const response = await fetch(`${urlDEV}/create-payment-intent`, {
+      const response = await fetch(`${url}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

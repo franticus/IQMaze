@@ -15,7 +15,7 @@ import { getUserId } from '../../helpers/userId';
 
 import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
 
-const stripePromise = loadStripe(publicKeyDEV);
+const stripePromise = loadStripe(publicKey);
 
 const Paywall = () => {
   const [name, setName] = useState('');
@@ -35,7 +35,7 @@ const Paywall = () => {
 
     const fetchApiKey = async () => {
       try {
-        const response = await fetch(`${urlDEV}/get-api-key`, {
+        const response = await fetch(`${url}/get-api-key`, {
           method: 'GET',
         });
         const { apiKey } = await response.json();
