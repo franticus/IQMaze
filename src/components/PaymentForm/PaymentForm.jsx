@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
+  PaymentRequestButtonElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
@@ -21,6 +22,28 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [emailInput, setEmailInput] = useState(email);
+  const [paymentRequest, setPaymentRequest] = useState(null);
+
+  useEffect(() => {
+    if (stripe) {
+      const pr = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: {
+          label: 'Total',
+          amount: amount * 100,
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+      });
+
+      pr.canMakePayment().then(result => {
+        if (result) {
+          setPaymentRequest(pr);
+        }
+      });
+    }
+  }, [stripe, amount]);
 
   const handleDatalayerEvent = () => {
     window.dataLayer = window.dataLayer || [];
@@ -150,6 +173,11 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
             enrolled in any subscription, and there are no recurring charges.
           </div>
         </form>
+        {paymentRequest && (
+          <div className={s.paymentRequestWrapper}>
+            <PaymentRequestButtonElement options={{ paymentRequest }} />
+          </div>
+        )}
       </div>
     </>
   );
