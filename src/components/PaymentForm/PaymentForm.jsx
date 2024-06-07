@@ -11,6 +11,7 @@ import s from './PaymentForm.module.scss';
 import cn from 'classnames';
 
 import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentForm = ({ name, email, amount, apiKey }) => {
   const stripe = useStripe();
@@ -69,32 +70,17 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
 
   return (
     <form onSubmit={handleSubmit} className={s.paymentForm}>
-      <div className={s.paymentMethod}>
-        <button type='button' className={s.paypalButton}>
-          PayPal
-        </button>
-        <div className={s.orSeparator}>or</div>
-      </div>
       <div className={s.cardDetails}>
         <label>Card number</label>
-        <CardNumberElement
-          className={s.cardElement}
-          options={{ style: { base: { color: '#fff' } } }}
-        />
+        <CardNumberElement className={s.cardElement} />
         <div className={s.cardInfo}>
           <div className={s.cardExpiry}>
             <label>Card expires</label>
-            <CardExpiryElement
-              className={s.cardElement}
-              options={{ style: { base: { color: '#fff' } } }}
-            />
+            <CardExpiryElement className={s.cardElement} />
           </div>
           <div className={s.cardCvc}>
             <label>Security number</label>
-            <CardCvcElement
-              className={s.cardElement}
-              options={{ style: { base: { color: '#fff' } } }}
-            />
+            <CardCvcElement className={s.cardElement} />
           </div>
         </div>
         <div className={s.emailField}>
@@ -117,39 +103,35 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
       </button>
       <div className={s.priceInfo}>
         <div className={s.priceItem}>
-          <span>Your personalized plan:</span>
-          <span>USD 24.99</span>
+          <span>Price without discount:</span>
+          <del>USD 9.90</del>
         </div>
         <div className={s.priceItem}>
-          <span>Introductory offer discount:</span>
-          <span>-USD 5.00</span>
+          <span>Your discount:</span>
+          <span className={s.discount}>90%</span>
         </div>
         <div className={s.priceSeparator}></div>
         <div className={s.priceTotal}>
           <span>Total Price:</span>
-          <span>USD 19.99</span>
+          <span>USD 1.90</span>
         </div>
       </div>
       <div className={s.terms}>
         <span>
           By continuing, you agree with the{' '}
-          <a href='/terms-conditions/' target='_blank' rel='noreferrer'>
+          <a href='#/terms' target='_blank' rel='noreferrer'>
             Terms & Conditions
           </a>{' '}
           and{' '}
-          <a
-            href='/web-privacy-policy-jun-2023/'
-            target='_blank'
-            rel='noreferrer'
-          >
+          <a href='#/privacy' target='_blank' rel='noreferrer'>
             Privacy Policy.
           </a>
         </span>
       </div>
       <div className={s.warning}>
-        By continuing, you agree that if you don’t cancel at least 24 hours
-        prior to the end of the first renewal period, you will automatically be
-        charged the full price of USD 19.99 every 1 month until you cancel.
+        Please note that this is a one-time payment of USD 1.90 to access your
+        comprehensive IQ test results. You will not be enrolled in any
+        subscription, and there are no recurring charges.
       </div>
     </form>
   );
