@@ -159,7 +159,7 @@ const Paywall = () => {
               <PaymentForm
                 name={name}
                 email={email}
-                amount={1900}
+                amount={1.9}
                 apiKey={apiKey}
               />
             </div>
