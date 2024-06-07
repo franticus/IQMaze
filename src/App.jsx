@@ -17,7 +17,6 @@ import { getUserId } from './helpers/userId';
 function App() {
   useEffect(() => {
     const userId = getUserId();
-    console.log('userId:', userId);
 
     if (typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];

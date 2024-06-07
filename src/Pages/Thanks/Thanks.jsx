@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Thanks.module.scss';
@@ -17,35 +17,36 @@ const Thanks = () => {
   const [fontSize, setFontSize] = useState({
     name: '1rem',
     iq: '2rem',
+    iqText: '2rem',
     date: '1rem',
   });
 
-  useEffect(() => {
+  const updateFontSize = () => {
+    const certificateWidth = certificateRef?.current?.offsetWidth;
+    setFontSize({
+      name: `${certificateWidth / 20}px`,
+      iq: `${certificateWidth / 14}px`,
+      iqText: `${certificateWidth / 30}px`,
+      date: `${certificateWidth / 40}px`,
+    });
+  };
+
+  useLayoutEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 2000,
       once: true,
     });
-  }, []);
-
-  useEffect(() => {
-    const updateFontSize = () => {
-      const certificateWidth = certificateRef?.current?.offsetWidth;
-      setFontSize({
-        name: `${certificateWidth / 20}px`,
-        iq: `${certificateWidth / 14}px`,
-        iqText: `${certificateWidth / 30}px`,
-        date: `${certificateWidth / 40}px`,
-      });
-    };
 
     updateFontSize();
-    window.addEventListener('load', updateFontSize);
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
     window.addEventListener('resize', updateFontSize);
 
     return () => {
       window.removeEventListener('resize', updateFontSize);
     };
-  }, [fontSize]);
+  }, []);
 
   const downloadCertificate = () => {
     html2canvas(certificateRef.current).then(canvas => {
