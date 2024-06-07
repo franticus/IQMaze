@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
@@ -9,11 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import cn from 'classnames';
 
-const url = 'https://iqmazestripe-myfirst27.amvera.io';
-const publicKey =
-  'pk_live_51Huk90BbDeRYiB9tviB7TIaYaMB0uYOyK7wIPE6Q4LNOhuSyJTY7rxW9M30YFkIOp2RDOngiLmGnp5uBh00EirHF00tQNCRo3i';
+import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
 
-const stripePromise = loadStripe(publicKey);
+const stripePromise = loadStripe(publicKeyDEV);
 
 const Paywall = () => {
   const [name, setName] = useState('');
