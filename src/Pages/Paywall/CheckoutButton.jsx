@@ -17,7 +17,7 @@ const CheckoutButton = () => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch(`${url}/get-api-key`, { method: 'GET' });
+      const response = await fetch(`${urlDEV}/get-api-key`, { method: 'GET' });
 
       if (!response.ok) {
         console.error('Failed to get API key');
@@ -26,7 +26,7 @@ const CheckoutButton = () => {
 
       const { apiKey } = await response.json();
 
-      const sessionResponse = await fetch(`${url}/create-checkout-session`, {
+      const sessionResponse = await fetch(`${urlDEV}/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
