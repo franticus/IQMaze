@@ -11,6 +11,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
+import { getUserId } from '../../helpers/userId';
 
 import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
 
@@ -24,6 +25,7 @@ const Paywall = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
+  const userId = getUserId();
 
   useEffect(() => {
     AOS.init({
@@ -97,6 +99,15 @@ const Paywall = () => {
     setShowPaymentForm(true);
   };
 
+  const handleButtonClick = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'show_checkout',
+      timestamp: new Date().toISOString(),
+      userId: userId,
+    });
+  };
+
   return (
     <Elements stripe={stripePromise}>
       <div className={s.paywall}>
@@ -137,18 +148,21 @@ const Paywall = () => {
               type='submit'
               disabled={!name.trim() || !email.trim()}
               className={cn((!name.trim() || !email.trim()) && s.disabled)}
+              onClick={handleButtonClick}
             >
               Continue
             </button>
           </form>
 
           {showPaymentForm && apiKey && (
-            <PaymentForm
-              name={name}
-              email={email}
-              amount={1900}
-              apiKey={apiKey}
-            />
+            <div className={s.paymentFormWrapper}>
+              <PaymentForm
+                name={name}
+                email={email}
+                amount={1900}
+                apiKey={apiKey}
+              />
+            </div>
           )}
 
           <h2 className={s.mainHeading} data-aos='fade-left'>
