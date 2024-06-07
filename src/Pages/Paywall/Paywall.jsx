@@ -21,6 +21,7 @@ const Paywall = () => {
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const [apiKey, setApiKey] = useState('');
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
 
@@ -93,6 +94,7 @@ const Paywall = () => {
     localStorage.setItem('userName', JSON.stringify(name));
     localStorage.setItem('userEmail', JSON.stringify(email));
     localStorage.setItem('iqScore', JSON.stringify(iqValue));
+    setShowPaymentForm(true);
   };
 
   return (
@@ -108,7 +110,11 @@ const Paywall = () => {
             and embark on a journey of cognitive growth.
           </p>
 
-          <form onSubmit={handleSubmit} data-aos='fade-right'>
+          <form
+            className={s.userForm}
+            onSubmit={handleSubmit}
+            data-aos='fade-right'
+          >
             <label htmlFor='nameInput'>Your first and last name:</label>
             <input
               id='nameInput'
@@ -132,11 +138,11 @@ const Paywall = () => {
               disabled={!name.trim() || !email.trim()}
               className={cn((!name.trim() || !email.trim()) && s.disabled)}
             >
-              Get my IQ score
+              Continue
             </button>
           </form>
 
-          {apiKey && (
+          {showPaymentForm && apiKey && (
             <PaymentForm
               name={name}
               email={email}

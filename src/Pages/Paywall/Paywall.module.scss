@@ -9,7 +9,7 @@ $section-padding: 3rem;
 	font-size: 18px;
 	animation: fadeIn 1s ease-in-out forwards;
 
-	form {
+	.userForm {
 		text-align: left;
 		width: 100%;
 		max-width: 400px;
@@ -84,8 +84,8 @@ $section-padding: 3rem;
 		text-align: center;
 		vertical-align: middle;
 		user-select: none;
-		background-color: #007bff;
-		border: 1px solid #007bff;
+		background-color: #0D7664;
+		border: 1px solid #0D7664;
 		padding: .375rem .75rem;
 		font-size: 1rem;
 		line-height: 1.5;
@@ -94,8 +94,8 @@ $section-padding: 3rem;
 
 		&:hover {
 			color: #fff;
-			background-color: #0056b3;
-			border-color: #0056b3;
+			background-color: #12a499;
+			border-color: #12a499;
 		}
 
 		&:focus {

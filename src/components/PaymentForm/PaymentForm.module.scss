@@ -7,10 +7,27 @@
 	padding: 2rem;
 	border-radius: 10px;
 	font-weight: 400;
+	text-align: left;
+	width: 100%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 40px;
+	margin: 0 auto;
 
 	button {
 		margin-bottom: 20px;
 	}
+}
+
+.formTitle {
+	margin: 20px 0;
+}
+
+.paymentFormWrapper {
+	box-shadow: 0 4px 8px #17c7b8;
+	margin-bottom: 40px;
+	border-radius: 10px;
 }
 
 .cardDetails {
@@ -81,7 +98,7 @@
 }
 
 .discount {
-	color: #118e0a;
+	color: #0d766e;
 	font-weight: 600;
 }
 
@@ -93,7 +110,7 @@
 .priceTotal {
 	display: flex;
 	font-weight: 600;
-	color: #118e0a;
+	color: #0d766e;
 	justify-content: space-between;
 }
 
