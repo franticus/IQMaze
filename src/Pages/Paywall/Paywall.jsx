@@ -128,25 +128,34 @@ const Paywall = () => {
     if (method === 'card') {
       setShowPaymentForm(true);
     } else {
-      const response = await fetch(`${apiUrl}/create-checkout-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: 190, // 1.90 USD in cents
-          email: email, // Передаем email
-        }),
-      });
+      try {
+        const response = await fetch(`${apiUrl}/create-checkout-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`, // Добавляем заголовок Authorization
+          },
+          body: JSON.stringify({
+            amount: 190, // 1.90 USD in cents
+            email: email, // Передаем email
+          }),
+        });
 
-      const session = await response.json();
-      const stripe = await stripePromise;
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
+        if (!response.ok) {
+          throw new Error('Failed to create checkout session');
+        }
 
-      if (result.error) {
-        console.error(result.error.message);
+        const session = await response.json();
+        const stripe = await stripePromise;
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
+
+        if (result.error) {
+          console.error(result.error.message);
+        }
+      } catch (error) {
+        console.error('Error creating checkout session:', error);
       }
     }
   };
