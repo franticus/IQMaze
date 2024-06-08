@@ -26,6 +26,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [emailInput, setEmailInput] = useState(email);
   const [paymentRequest, setPaymentRequest] = useState(null);
+  const [error, setError] = useState(null); // Добавлено состояние для хранения ошибки
 
   useEffect(() => {
     if (stripe) {
@@ -61,6 +62,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
     event.preventDefault();
     handleDatalayerEvent();
     setIsProcessing(true);
+    setError(null); // Сброс ошибки перед началом обработки
 
     if (!stripe || !elements) {
       return;
@@ -90,6 +92,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
 
       if (result.error) {
         console.error(result.error.message);
+        setError(result.error.message); // Установка ошибки в состояние
         setIsProcessing(false);
       } else {
         if (result.paymentIntent.status === 'succeeded') {
@@ -99,6 +102,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
       }
     } catch (error) {
       console.error('Error:', error);
+      setError('An unexpected error occurred. Please try again.'); // Установка ошибки в состояние
       setIsProcessing(false);
     }
   };
@@ -147,6 +151,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
           >
             {isProcessing ? 'Processing...' : 'Get my IQ score'}
           </button>
+          {error && <div className={s.error}>{error}</div>}{' '}
           <div className={s.priceInfo}>
             <div className={s.priceItem}>
               <span>Previous price:</span>
