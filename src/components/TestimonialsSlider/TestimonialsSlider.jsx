@@ -24,9 +24,7 @@ const TestimonialsSlider = ({ testimonials = testimonialsData }) => {
 
   return (
     <>
-      <div className={s.mainTitle}>
-        Hear What Our Users Are Saying About the IQMaze
-      </div>
+      <div className={s.mainTitle}>What Our Users Are Saying About IQMaze</div>
       <div className='testimonials-container'>
         <div className='testimonials-swiper'>
           <Swiper {...swiperParams}>
