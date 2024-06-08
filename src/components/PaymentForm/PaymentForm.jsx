@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
-  PaymentRequestButtonElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
@@ -25,29 +24,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [emailInput, setEmailInput] = useState(email);
-  const [paymentRequest, setPaymentRequest] = useState(null);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (stripe) {
-      const pr = stripe.paymentRequest({
-        country: 'US',
-        currency: 'usd',
-        total: {
-          label: 'Total',
-          amount: amount * 100,
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-      });
-
-      pr.canMakePayment().then(result => {
-        if (result) {
-          setPaymentRequest(pr);
-        }
-      });
-    }
-  }, [stripe, amount]);
 
   const handleDatalayerEvent = () => {
     window.dataLayer = window.dataLayer || [];
@@ -119,11 +96,6 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
     <>
       <div className={s.paymentFormWrapper}>
         <form onSubmit={handleSubmit} className={s.paymentForm}>
-          {paymentRequest && (
-            <div className={s.paymentRequestWrapper}>
-              <PaymentRequestButtonElement options={{ paymentRequest }} />
-            </div>
-          )}
           <div className={s.cardDetails}>
             <label>Card number</label>
             <CardNumberElement className={s.cardElement} />
