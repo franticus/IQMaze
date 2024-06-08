@@ -15,6 +15,9 @@ import { getUserId } from '../../helpers/userId';
 import { url, urlDEV } from '../../key.js';
 import { useNavigate } from 'react-router-dom';
 
+const currentUrl = window.location.href;
+const apiUrl = currentUrl.includes('iq-check140') ? url : urlDEV;
+
 const PaymentForm = ({ name, email, amount, apiKey }) => {
   const userId = getUserId();
   const stripe = useStripe();
@@ -64,7 +67,7 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
     }
 
     try {
-      const response = await fetch(`${url}/create-payment-intent`, {
+      const response = await fetch(`${apiUrl}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
