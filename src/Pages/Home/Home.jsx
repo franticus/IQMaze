@@ -11,13 +11,22 @@ import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 
 const Home = () => {
-  const navigate = useNavigate('/test');
+  const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({
       duration: 1000,
     });
   }, []);
+
+  const handleStartTest = () => {
+    // Удаление полей из локального хранилища
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+
+    // Навигация к странице теста
+    navigate('/iqtest');
+  };
 
   return (
     <div className={s.home}>
@@ -35,7 +44,7 @@ const Home = () => {
           As it requires concentration for a given amount of time, please
           conduct the test in a quiet and comfortable place.
         </div>
-        <button className={s.button} onClick={() => navigate('/iqtest')}>
+        <button className={s.button} onClick={handleStartTest}>
           Start IQ test
         </button>
       </div>
@@ -115,7 +124,7 @@ const Home = () => {
           validated IQ test today and start your journey towards personal and
           professional growth.
         </p>
-        <button className={s.button} onClick={() => navigate('/iqtest')}>
+        <button className={s.button} onClick={handleStartTest}>
           Start IQ test
         </button>
       </section>
