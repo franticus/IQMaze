@@ -99,6 +99,7 @@ const Quiz = () => {
       setTimeout(() => {
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userName');
+        localStorage.removeItem('completePayment');
         localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
         navigate('/analyzing');
       }, 1000);
@@ -149,6 +150,7 @@ const Quiz = () => {
   const skip = () => {
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userName');
+    localStorage.removeItem('completePayment');
     localStorage.setItem(
       'seriesScores',
       JSON.stringify({

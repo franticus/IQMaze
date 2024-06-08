@@ -108,7 +108,9 @@ const Thanks = () => {
 
           <div className={s.iqDescription} data-aos='fade-right'>
             <h2>Result description</h2>
-            <p>{getIQDescription(iqValue)}</p>
+            <div
+              dangerouslySetInnerHTML={{ __html: getIQDescription(iqValue) }}
+            />
           </div>
 
           <div className={s.iqDistribution} data-aos='fade-left'>
