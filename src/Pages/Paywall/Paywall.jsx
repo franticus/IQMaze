@@ -15,7 +15,11 @@ import { getUserId } from '../../helpers/userId';
 
 import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
 
-const stripePromise = loadStripe(publicKey);
+const currentUrl = window.location.href;
+const stripePromise = loadStripe(
+  currentUrl.includes('iq-check140') ? publicKey : publicKeyDEV
+);
+const apiUrl = currentUrl.includes('iq-check140') ? url : urlDEV;
 
 const Paywall = () => {
   const [name, setName] = useState('');
@@ -35,7 +39,7 @@ const Paywall = () => {
 
     const fetchApiKey = async () => {
       try {
-        const response = await fetch(`${url}/get-api-key`, {
+        const response = await fetch(`${apiUrl}/get-api-key`, {
           method: 'GET',
         });
         const { apiKey } = await response.json();
