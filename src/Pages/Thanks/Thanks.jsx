@@ -41,6 +41,12 @@ const Thanks = () => {
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
     }, 100);
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 1000);
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 3000);
     window.addEventListener('resize', updateFontSize);
 
     return () => {
