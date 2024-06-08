@@ -103,6 +103,14 @@ $section-padding: 3rem;
 		}
 	}
 
+	.paymentOptions {
+		margin-bottom: 80px;
+	}
+
+	.paymentButton {
+		margin: 4px 0;
+	}
+
 	.disabled {
 		pointer-events: none;
 		filter: saturate(0);

@@ -14,6 +14,7 @@ import cn from 'classnames';
 import { getUserId } from '../../helpers/userId';
 
 import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
+import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 
 const currentUrl = window.location.href;
 const stripePromise = loadStripe(
@@ -195,19 +196,22 @@ const Paywall = () => {
             </button>
           </form>
 
+          <ValueProposition />
+
           {showPaymentOptions && (
             <div className={s.paymentOptions}>
+              <div className={s.price}>Total price: $1.90</div>
               <button
                 className={s.paymentButton}
                 onClick={() => handlePaymentMethodSelection('card')}
               >
-                Оплатить картой
+                Pay by Card
               </button>
               <button
                 className={s.paymentButton}
                 onClick={() => handlePaymentMethodSelection('gpay_applepay')}
               >
-                Оплатить через GPay или Apple Pay
+                Pay by GPay or Apple Pay
               </button>
             </div>
           )}

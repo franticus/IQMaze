@@ -1,0 +1,45 @@
+.valueProposition {
+	padding: 20px;
+	border-radius: 12px;
+	margin-bottom: 20px;
+	font-weight: 400;
+	max-width: 600px;
+
+	.heading {
+		font-size: 24px;
+		margin-bottom: 24px;
+		color: #0d766e;
+	}
+
+	.section {
+		display: flex;
+		align-items: center;
+		margin-bottom: 24px;
+		transition: all 0.3s ease;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.section:nth-child(even) {
+		flex-direction: column-reverse;
+	}
+
+	.image {
+		width: 60%;
+		margin: 0 20px;
+		border-radius: 12px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.subHeading {
+		font-size: 18px;
+		margin-bottom: 10px;
+		color: #0d766e;
+	}
+
+	p {
+		font-size: 14px;
+		line-height: 1.8;
+		color: #0d766e;
+	}
+}
