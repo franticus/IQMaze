@@ -205,13 +205,13 @@ const Paywall = () => {
             <div className={s.paymentOptions}>
               <div className={s.price}>Total price: $1.90</div>
               <button
-                className={s.paymentButtonBlick}
+                className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
                 onClick={() => handlePaymentMethodSelection('card')}
               >
                 Pay by Card
               </button>
               <button
-                className={s.paymentButtonBlick}
+                className={cn(s.paymentButtonBlick, s.paymentButtonBlick_gpay)}
                 onClick={() => handlePaymentMethodSelection('gpay_applepay')}
               >
                 Pay by GPay or Apple Pay

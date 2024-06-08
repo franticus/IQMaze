@@ -15,30 +15,30 @@ const ValueProposition = () => {
   return (
     <div className={s.valueProposition}>
       <h2 className={s.heading} data-aos='fade-up'>
-        Что мы предлагаем:
+        What We Offer:
       </h2>
 
       <div className={s.section} data-aos='fade-right'>
         <img src={certificateImage} alt='IQ Certificate' className={s.image} />
         <div className={s.text}>
-          <h3 className={s.subHeading}>Персонализированный сертификат IQ</h3>
+          <h3 className={s.subHeading}>Personalized IQ Certificate</h3>
           <p>
-            После покупки результатов теста вы получите персонализированный
-            сертификат IQ, который включает ваш результат, рейтинг и другие
-            ценные данные. Этот сертификат уникален для вас и предоставляет
-            профессиональную оценку ваших когнитивных способностей.
+            After purchasing the test results, you will receive a personalized
+            IQ certificate that includes your score, ranking, and other valuable
+            data. This certificate is unique to you and provides a professional
+            assessment of your cognitive abilities.
           </p>
         </div>
       </div>
 
       <div className={s.section} data-aos='fade-left'>
         <div className={s.text}>
-          <h3 className={s.subHeading}>Детализированный анализ результатов</h3>
+          <h3 className={s.subHeading}>Detailed Analysis of Results</h3>
           <p>
-            Вместе с сертификатом вы получите подробный разбор результатов теста
-            IQ. Включает информацию по различным когнитивным областям, сильным
-            сторонам и областям для улучшения. Понимайте свои интеллектуальные
-            способности всесторонне.
+            Along with the certificate, you will receive a detailed breakdown of
+            your IQ test results. This includes information on various cognitive
+            areas, strengths, and areas for improvement. Understand your
+            intellectual capabilities comprehensively.
           </p>
         </div>
         <img src={girl} alt='IQ Distribution Chart' className={s.image} />
@@ -48,27 +48,25 @@ const ValueProposition = () => {
         <img src={man} alt='Job Relevance' className={s.image} />
         <div className={s.text}>
           <h3 className={s.subHeading}>
-            Инсайты для профессионального развития
+            Insights for Professional Development
           </h3>
           <p>
-            Узнайте, как ваш IQ соотносится с различными рабочими ролями и
-            отраслями. Наши инсайты предоставляют информацию о том, как ваши
-            когнитивные способности соответствуют различным карьерным путям,
-            помогая вам принимать обоснованные решения о профессиональном
-            развитии.
+            Learn how your IQ relates to different job roles and industries. Our
+            insights provide information on how your cognitive abilities align
+            with various career paths, helping you make informed decisions about
+            your professional development.
           </p>
         </div>
       </div>
 
       <div className={s.section} data-aos='fade-left'>
         <div className={s.text}>
-          <h3 className={s.subHeading}>Глобальный рейтинг</h3>
+          <h3 className={s.subHeading}>Global Ranking</h3>
           <p>
-            Узнайте, как вы сравниваетесь с более чем 5 миллионами тестируемых
-            по всему миру. Ваш результат и процентильное ранжирование предлагают
-            глобальный взгляд на вашу когнитивную производительность,
-            подчеркивая ваши интеллектуальные сильные стороны в конкурентном
-            контексте.
+            Discover how you compare with over 5 million test-takers worldwide.
+            Your score and percentile ranking offer a global perspective on your
+            cognitive performance, highlighting your intellectual strengths in a
+            competitive context.
           </p>
         </div>
         <img src={chart} alt='Global Ranking' className={s.image} />
@@ -76,12 +74,13 @@ const ValueProposition = () => {
 
       <div className={s.section} data-aos='fade-up'>
         <div className={s.text}>
-          <h3 className={s.subHeading}>Поддержите развитие IQMaze</h3>
+          <h3 className={s.subHeading}>Support the Development of IQMaze</h3>
           <p>
-            Ваш разовый платеж всего 1,90 доллара США помогает нам поддерживать
-            работу IQMaze и совершенствоваться. Этот небольшой вклад позволяет
-            нам поддерживать веб-сайт, добавлять новые функции и предоставлять
-            лучший опыт для всех пользователей. Спасибо за вашу поддержку!
+            Your <strong>one-time payment</strong> of just{' '}
+            <strong>$1.90</strong> helps us keep IQMaze running and improving.
+            This small contribution allows us to maintain the website, add new
+            features, and provide a better experience for all users.{' '}
+            <strong>Thank you for your support!</strong>
           </p>
         </div>
       </div>

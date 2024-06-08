@@ -126,6 +126,14 @@ $section-padding: 3rem;
 		font-weight: 600;
 		color: #fff;
 
+		&_card {
+			background: #5b41c6;
+		}
+
+		&_gpay {
+			background: #333;
+		}
+
 		&::after {
 			content: '';
 			position: absolute;
