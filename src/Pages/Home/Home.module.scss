@@ -241,6 +241,12 @@ section {
 		font-weight: 600;
 		color: #fff;
 
+		&_last {
+			background: #333;
+			font-size: 14px;
+			padding: 20px 40px;
+		}
+
 		&::after {
 			content: '';
 			position: absolute;

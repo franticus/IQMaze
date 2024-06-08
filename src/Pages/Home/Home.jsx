@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Home.module.scss';
@@ -9,23 +9,27 @@ import about_3 from '../../img/about_3.jpg';
 import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
+import cn from 'classnames';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [showLastResults, setShowLastResults] = useState(false);
 
   useEffect(() => {
     AOS.init({
       duration: 1000,
     });
+
+    const completePayment = localStorage.getItem('completePayment');
+    setShowLastResults(completePayment);
   }, []);
 
   const handleStartTest = () => {
-    // Удаление полей из локального хранилища
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
-
-    // Навигация к странице теста
     navigate('/iqtest');
+  };
+
+  const handleShowLastResults = () => {
+    navigate('/thanks');
   };
 
   return (
@@ -47,6 +51,14 @@ const Home = () => {
         <button className={s.button} onClick={handleStartTest}>
           Start IQ test
         </button>
+        {showLastResults && (
+          <button
+            className={cn(s.button, s.button_last)}
+            onClick={handleShowLastResults}
+          >
+            Show Last Results
+          </button>
+        )}
       </div>
 
       <section className={s.heroSection} data-aos='fade-down'>

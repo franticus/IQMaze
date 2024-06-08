@@ -32,6 +32,7 @@ const Thanks = () => {
   };
 
   useLayoutEffect(() => {
+    localStorage.setItem('completePayment', true);
     AOS.init({
       duration: 2000,
       once: true,
