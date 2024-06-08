@@ -72,7 +72,14 @@ $section-padding: 3rem;
 		}
 	}
 
-	button {
+	.paymentOptions {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 80px;
+		gap: 10px;
+	}
+
+	.paymentButton {
 		cursor: pointer;
 		margin-top: 10px;
 		margin-bottom: 40px;
@@ -101,14 +108,50 @@ $section-padding: 3rem;
 		&:focus {
 			box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5);
 		}
-	}
 
-	.paymentOptions {
-		margin-bottom: 80px;
-	}
-
-	.paymentButton {
 		margin: 4px 0;
+	}
+
+	.paymentButtonBlick {
+		position: relative;
+		overflow: hidden;
+		cursor: pointer;
+		padding: 20px 40px;
+		border-radius: 10px;
+		border: 1px solid #fff;
+		transition: all 0.3s ease-in-out;
+		background: $primary-color;
+		font-size: 20px;
+		text-transform: uppercase;
+		font-weight: 600;
+		color: #fff;
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -75%;
+			width: 50%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+			transform: skewX(-25deg);
+			animation: shine 3s infinite;
+		}
+
+		&:hover {
+			background: lighten($primary-color, 10%);
+			border-color: lighten($primary-color, 10%);
+		}
+	}
+
+	@keyframes shine {
+		0% {
+			transform: translateX(-100%);
+		}
+
+		100% {
+			transform: translateX(500%);
+		}
 	}
 
 	.disabled {

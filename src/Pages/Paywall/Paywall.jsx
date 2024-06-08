@@ -189,26 +189,29 @@ const Paywall = () => {
             <button
               type='submit'
               disabled={!name.trim() || !email.trim()}
-              className={cn((!name.trim() || !email.trim()) && s.disabled)}
+              className={cn(
+                (!name.trim() || !email.trim()) && s.disabled,
+                s.paymentButton
+              )}
               onClick={handleButtonClick}
             >
               Continue
             </button>
           </form>
 
-          <ValueProposition />
+          {showPaymentOptions && <ValueProposition />}
 
           {showPaymentOptions && (
             <div className={s.paymentOptions}>
               <div className={s.price}>Total price: $1.90</div>
               <button
-                className={s.paymentButton}
+                className={s.paymentButtonBlick}
                 onClick={() => handlePaymentMethodSelection('card')}
               >
                 Pay by Card
               </button>
               <button
-                className={s.paymentButton}
+                className={s.paymentButtonBlick}
                 onClick={() => handlePaymentMethodSelection('gpay_applepay')}
               >
                 Pay by GPay or Apple Pay
@@ -227,36 +230,40 @@ const Paywall = () => {
             </div>
           )}
 
-          <h2 className={s.mainHeading} data-aos='fade-left'>
-            Information on Test Results
-          </h2>
-          <ul className={s.list} data-aos='fade-left'>
-            <li className={s.list_item}>
-              After entering your details, you'll receive a personalized and
-              signed certificate displaying your test results. <br /> (The photo
-              is a rough sample with fictitious data)
-            </li>
-            <li>
-              <img
-                src={certificate}
-                alt='certificate'
-                className={s.heroImage}
-              />
-            </li>
-            <li className={s.list_item}>
-              This certificate is unique and will be created specifically for
-              you, reflecting your IQ score and ranking amongst over 5 million
-              people worldwide.
-            </li>
-            <li className={s.list_item}>
-              Understand your job relevance with detailed insights from IQMaze,
-              including your percentile and IQ score.
-            </li>
-            <li className={s.list_item}>
-              Don't miss out on this opportunity to validate and celebrate your
-              intellectual achievements!
-            </li>
-          </ul>
+          {!showPaymentOptions && (
+            <>
+              <h2 className={s.mainHeading} data-aos='fade-left'>
+                Information on Test Results
+              </h2>
+              <ul className={s.list} data-aos='fade-left'>
+                <li className={s.list_item}>
+                  After entering your details, you'll receive a personalized and
+                  signed certificate displaying your test results. <br /> (The
+                  photo is a rough sample with fictitious data)
+                </li>
+                <li>
+                  <img
+                    src={certificate}
+                    alt='certificate'
+                    className={s.heroImage}
+                  />
+                </li>
+                <li className={s.list_item}>
+                  This certificate is unique and will be created specifically
+                  for you, reflecting your IQ score and ranking amongst over 5
+                  million people worldwide.
+                </li>
+                <li className={s.list_item}>
+                  Understand your job relevance with detailed insights from
+                  IQMaze, including your percentile and IQ score.
+                </li>
+                <li className={s.list_item}>
+                  Don't miss out on this opportunity to validate and celebrate
+                  your intellectual achievements!
+                </li>
+              </ul>
+            </>
+          )}
         </section>
       </div>
     </Elements>

@@ -109,7 +109,6 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
 
   return (
     <>
-      <h2 className={s.formTitle}>Almost Done!</h2>
       <div className={s.paymentFormWrapper}>
         <form onSubmit={handleSubmit} className={s.paymentForm}>
           {paymentRequest && (
