@@ -52,6 +52,14 @@ const Paywall = () => {
     };
 
     fetchApiKey();
+
+    const storedName = JSON.parse(localStorage.getItem('userName'));
+    const storedEmail = JSON.parse(localStorage.getItem('userEmail'));
+    if (storedName && storedEmail) {
+      setName(storedName);
+      setEmail(storedEmail);
+      setShowPaymentOptions(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -125,6 +133,7 @@ const Paywall = () => {
         },
         body: JSON.stringify({
           amount: 190, // 1.90 USD in cents
+          email: email, // Передаем email
         }),
       });
 
