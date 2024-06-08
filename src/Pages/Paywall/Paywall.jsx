@@ -15,6 +15,7 @@ import { getUserId } from '../../helpers/userId';
 
 import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
+import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 
 const currentUrl = window.location.href;
 const stripePromise = loadStripe(
@@ -227,6 +228,12 @@ const Paywall = () => {
                 amount={190}
                 apiKey={apiKey}
               />
+            </div>
+          )}
+
+          {showPaymentOptions && (
+            <div className={s.slider_wrapper}>
+              <TestimonialsSlider />
             </div>
           )}
 

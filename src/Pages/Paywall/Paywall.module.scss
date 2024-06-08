@@ -75,7 +75,7 @@ $section-padding: 3rem;
 	.paymentOptions {
 		display: flex;
 		flex-direction: column;
-		margin-bottom: 80px;
+		margin-bottom: 60px;
 		gap: 10px;
 	}
 
@@ -206,6 +206,11 @@ $section-padding: 3rem;
 			opacity: 1;
 		}
 	}
+}
+
+.slider_wrapper {
+	margin: 0 auto;
+	overflow: hidden;
 }
 
 .heroSection {

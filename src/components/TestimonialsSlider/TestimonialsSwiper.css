@@ -1,0 +1,30 @@
+.testimonials-container {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 130px;
+}
+
+.testimonials-swiper {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 325px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.swiper-slide-content {
+  padding: 8px 12px;
+  text-align: left;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.swiper-container {
+  overflow: visible !important;
+}
