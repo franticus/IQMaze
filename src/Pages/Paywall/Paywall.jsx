@@ -27,6 +27,8 @@ const Paywall = () => {
   const [iqValue, setIqValue] = useState(0);
   const [apiKey, setApiKey] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
   const userId = getUserId();
@@ -100,7 +102,7 @@ const Paywall = () => {
     localStorage.setItem('userName', JSON.stringify(name));
     localStorage.setItem('userEmail', JSON.stringify(email));
     localStorage.setItem('iqScore', JSON.stringify(iqValue));
-    setShowPaymentForm(true);
+    setShowPaymentOptions(true);
   };
 
   const handleButtonClick = () => {
@@ -110,6 +112,32 @@ const Paywall = () => {
       timestamp: new Date().toISOString(),
       userId: userId,
     });
+  };
+
+  const handlePaymentMethodSelection = async method => {
+    if (method === 'card') {
+      setShowPaymentForm(true);
+    } else {
+      const response = await fetch(`${apiUrl}/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: 190, // 1.90 USD in cents
+        }),
+      });
+
+      const session = await response.json();
+      const stripe = await stripePromise;
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        console.error(result.error.message);
+      }
+    }
   };
 
   return (
@@ -157,6 +185,23 @@ const Paywall = () => {
               Continue
             </button>
           </form>
+
+          {showPaymentOptions && (
+            <div className={s.paymentOptions}>
+              <button
+                className={s.paymentButton}
+                onClick={() => handlePaymentMethodSelection('card')}
+              >
+                Оплатить картой
+              </button>
+              <button
+                className={s.paymentButton}
+                onClick={() => handlePaymentMethodSelection('gpay_applepay')}
+              >
+                Оплатить через GPay или Apple Pay
+              </button>
+            </div>
+          )}
 
           {showPaymentForm && apiKey && (
             <div className={s.paymentFormWrapper}>
