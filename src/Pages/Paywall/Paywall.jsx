@@ -264,10 +264,8 @@ const Paywall = () => {
 
           {!showPaymentOptions && (
             <>
-              <h2 className={s.mainHeading} data-aos='fade-left'>
-                Information on Test Results
-              </h2>
-              <ul className={s.list} data-aos='fade-left'>
+              <h2 className={s.mainHeading}>Information on Test Results</h2>
+              <ul className={s.list}>
                 <li className={s.list_item}>
                   After entering your details, you'll receive a personalized and
                   signed certificate displaying your test results. <br /> (The
