@@ -179,6 +179,7 @@ const Paywall = () => {
           </p>
 
           <form
+            ref={paymentOptionsRef}
             className={s.userForm}
             onSubmit={handleSubmit}
             data-aos='fade-right'
