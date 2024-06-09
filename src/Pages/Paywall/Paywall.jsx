@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Paywall.module.scss';
@@ -30,6 +30,7 @@ const Paywall = () => {
   const [apiKey, setApiKey] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const paymentOptionsRef = useRef(null);
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
@@ -113,6 +114,10 @@ const Paywall = () => {
     localStorage.setItem('userEmail', JSON.stringify(email));
     localStorage.setItem('iqScore', JSON.stringify(iqValue));
     setShowPaymentOptions(true);
+
+    setTimeout(() => {
+      paymentOptionsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
   };
 
   const handleButtonClick = () => {
@@ -133,11 +138,11 @@ const Paywall = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`, // Добавляем заголовок Authorization
+            Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            amount: 190, // 1.90 USD in cents
-            email: email, // Передаем email
+            amount: 190,
+            email: email,
           }),
         });
 
@@ -209,17 +214,27 @@ const Paywall = () => {
             </button>
           </form>
 
+          {showPaymentOptions && (
+            <div ref={paymentOptionsRef}>
+              <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
+                <button
+                  className={cn(
+                    s.paymentButtonBlick,
+                    s.paymentButtonBlick_card
+                  )}
+                  onClick={() => handlePaymentMethodSelection('gpay_applepay')}
+                >
+                  Get your test result for $1.90
+                </button>
+              </div>
+            </div>
+          )}
+
           {showPaymentOptions && <ValueProposition />}
 
           {showPaymentOptions && (
             <div className={s.paymentOptions}>
               <div className={s.price}>Total price: $1.90</div>
-              {/* <button
-                className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
-                onClick={() => handlePaymentMethodSelection('card')}
-              >
-                Pay by Card
-              </button> */}
               <button
                 className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
                 onClick={() => handlePaymentMethodSelection('gpay_applepay')}
