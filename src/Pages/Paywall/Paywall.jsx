@@ -115,9 +115,11 @@ const Paywall = () => {
     localStorage.setItem('iqScore', JSON.stringify(iqValue));
     setShowPaymentOptions(true);
 
-    setTimeout(() => {
-      paymentOptionsRef.current.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    if (paymentOptionsRef.current) {
+      setTimeout(() => {
+        paymentOptionsRef.current.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
   };
 
   const handleButtonClick = () => {
@@ -179,13 +181,13 @@ const Paywall = () => {
           </p>
 
           <form
-            ref={paymentOptionsRef}
             className={s.userForm}
             onSubmit={handleSubmit}
             data-aos='fade-right'
           >
             <label htmlFor='nameInput'>Your first and last name:</label>
             <input
+              ref={paymentOptionsRef}
               id='nameInput'
               placeholder='Your first and last name'
               type='text'
@@ -216,7 +218,7 @@ const Paywall = () => {
           </form>
 
           {showPaymentOptions && (
-            <div ref={paymentOptionsRef}>
+            <div>
               <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
                 <button
                   className={cn(

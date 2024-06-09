@@ -14,11 +14,9 @@ const ValueProposition = () => {
 
   return (
     <div className={s.valueProposition}>
-      <h2 className={s.heading} data-aos='fade-up'>
-        What We Offer:
-      </h2>
+      <h2 className={s.heading}>What We Offer:</h2>
 
-      <div className={s.section} data-aos='fade-right'>
+      <div className={s.section}>
         <img src={certificateImage} alt='IQ Certificate' className={s.image} />
         <div className={s.text}>
           <h3 className={s.subHeading}>Personalized IQ Certificate</h3>
