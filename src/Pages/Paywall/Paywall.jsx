@@ -145,7 +145,6 @@ const Paywall = () => {
             Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            amount: 190, // amount for the initial charge (1.90 USD in cents)
             email: email,
             userId: userId,
           }),
