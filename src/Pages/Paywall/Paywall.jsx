@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import AOS from 'aos';
@@ -12,7 +11,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
 import { getUserId } from '../../helpers/userId';
-
 import { publicKey, publicKeyDEV, url, urlDEV, urlLOCAL } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
@@ -147,9 +145,9 @@ const Paywall = () => {
             Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            amount: 190,
+            amount: 190, // amount for the initial charge (1.90 USD in cents)
             email: email,
-            userId: userId, // Добавляем userId
+            userId: userId,
           }),
         });
 
