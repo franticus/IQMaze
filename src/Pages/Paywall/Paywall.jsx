@@ -13,7 +13,7 @@ import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
 import { getUserId } from '../../helpers/userId';
 
-import { publicKey, publicKeyDEV, url, urlDEV } from '../../key.js';
+import { publicKey, publicKeyDEV, url, urlDEV, urlLOCAL } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 
@@ -21,7 +21,11 @@ const currentUrl = window.location.href;
 const stripePromise = loadStripe(
   currentUrl.includes('iq-check140') ? publicKey : publicKeyDEV
 );
-const apiUrl = currentUrl.includes('iq-check140') ? url : urlDEV;
+const apiUrl = currentUrl.includes('iq-check140')
+  ? url
+  : currentUrl.includes('localhost')
+  ? urlLOCAL
+  : urlDEV;
 
 const Paywall = () => {
   const [name, setName] = useState('');
@@ -145,6 +149,7 @@ const Paywall = () => {
           body: JSON.stringify({
             amount: 190,
             email: email,
+            userId: userId, // Добавляем userId
           }),
         });
 

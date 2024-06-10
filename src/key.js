@@ -4,3 +4,4 @@ export const publicKeyDEV =
   'pk_test_51PNcn6RrQfUQC5MYaOchK1YrrDtBrxRDbyzQ2rfUIw7QhiIPmOU0vLYBq17pyMSQKAw99bqVnmeYGELIq2KOncST00ysRkRCO0';
 export const url = 'https://iqmazestripe-myfirst27.amvera.io';
 export const urlDEV = 'https://stripeiq-frantunn.amvera.io';
+export const urlLOCAL = 'http://localhost:4242';
