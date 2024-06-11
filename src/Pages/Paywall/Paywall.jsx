@@ -25,9 +25,6 @@ const apiUrl = currentUrl.includes('iq-check140')
   ? urlLOCAL
   : urlDEV;
 
-// Определите константу для ID цены
-const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh';
-
 const Paywall = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -36,6 +33,7 @@ const Paywall = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const paymentOptionsRef = useRef(null);
+  const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh'; // ID цены из Stripe
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
@@ -150,7 +148,7 @@ const Paywall = () => {
           body: JSON.stringify({
             email: email,
             userId: userId,
-            priceId: priceId, // Передаем priceId
+            priceId: priceId,
           }),
         });
 
