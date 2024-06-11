@@ -25,6 +25,9 @@ const apiUrl = currentUrl.includes('iq-check140')
   ? urlLOCAL
   : urlDEV;
 
+// Определите константу для ID цены
+const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh';
+
 const Paywall = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -147,6 +150,7 @@ const Paywall = () => {
           body: JSON.stringify({
             email: email,
             userId: userId,
+            priceId: priceId, // Передаем priceId
           }),
         });
 
