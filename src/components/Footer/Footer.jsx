@@ -22,6 +22,9 @@ const Footer = () => {
           <span className={s.link} onClick={() => navigate('/terms')}>
             Terms of Use
           </span>
+          <a href='mailto:admin@iq-check140.com' className={s.link}>
+            Contact Us
+          </a>
         </div>
         <div className={s.copyright}>
           Copyright © |{' '}

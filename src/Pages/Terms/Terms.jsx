@@ -847,7 +847,9 @@ const Terms = () => {
           the responsible person with your email address so that the person may
           respond to your allegations.
         </p>
-        <p>contact@iq-check140.com</p>
+        <p>
+          <a href='mailto:admin@iq-check140.com'>admin@iq-check140.com</a>
+        </p>
 
         <p>
           <strong>Dispute Resolution. </strong>
@@ -944,8 +946,8 @@ const Terms = () => {
         </p>
         <p>
           If you have any comments or questions regarding these Terms or wish to
-          report any violation of these Terms, you may contact us at
-          contact@iq-check140.com
+          report any violation of these Terms, you may contact us at{' '}
+          <a href='mailto:admin@iq-check140.com'>admin@iq-check140.com</a>
         </p>
       </div>
     </div>

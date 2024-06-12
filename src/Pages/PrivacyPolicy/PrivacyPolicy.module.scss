@@ -5,9 +5,12 @@ $section-padding: 3rem;
 .PrivacyPolicy {
 	width: calc(100vw - 40px);
 	max-width: 900px;
-	font-family: Arial, sans-serif;
 
 	p {
 		margin: 20px 0;
+	}
+
+	a {
+		font-weight: bold;
 	}
 }

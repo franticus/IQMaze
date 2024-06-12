@@ -752,7 +752,10 @@ const PrivacyPolicy = () => {
           wish to report any violation of this Privacy Policy, you may contact
           us at the address below.
         </p>
-        <p>Email: contact@iq-check140.com</p>
+        <p>
+          Email:{' '}
+          <a href='mailto:admin@iq-check140.com'>admin@iq-check140.com</a>
+        </p>
       </div>
     </div>
   );
