@@ -120,6 +120,24 @@ const Paywall = () => {
     const date = new Date().toISOString();
 
     try {
+      const checkSubscriptionResponse = await fetch(
+        `${apiUrl}/check-subscription`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const { hasSubscription } = await checkSubscriptionResponse.json();
+
+      if (hasSubscription) {
+        navigate('/thanks');
+        return;
+      }
+
       await fetch(`${apiUrl}/before-checkout`, {
         method: 'POST',
         headers: {
