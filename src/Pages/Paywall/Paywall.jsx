@@ -116,12 +116,27 @@ const Paywall = () => {
     localStorage.setItem('userName', JSON.stringify(name));
     localStorage.setItem('userEmail', JSON.stringify(email));
     localStorage.setItem('iqScore', JSON.stringify(iqValue));
-    setShowPaymentOptions(true);
 
-    if (paymentOptionsRef.current) {
-      setTimeout(() => {
-        paymentOptionsRef.current.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
+    const date = new Date().toISOString();
+
+    try {
+      await fetch(`${apiUrl}/before-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, userName: name, email, date, iqValue }),
+      });
+
+      setShowPaymentOptions(true);
+
+      if (paymentOptionsRef.current) {
+        setTimeout(() => {
+          paymentOptionsRef.current.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    } catch (error) {
+      console.error('Error saving user data before checkout:', error);
     }
   };
 
@@ -149,6 +164,8 @@ const Paywall = () => {
             email: email,
             userId: userId,
             priceId: priceId,
+            iqValue: iqValue,
+            userName: name,
           }),
         });
 
