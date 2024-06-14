@@ -206,6 +206,8 @@ const Paywall = () => {
     }
   };
 
+  //перенести
+
   return (
     <Elements stripe={stripePromise}>
       <div className={s.paywall}>
