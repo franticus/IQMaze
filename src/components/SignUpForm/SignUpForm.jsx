@@ -28,7 +28,7 @@ const SignUpForm = ({ switchToLogin }) => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      alert('User signed up with Google');
+      console.log('User signed up with Google');
     } catch (error) {
       setError(error.message);
     }

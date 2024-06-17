@@ -34,6 +34,7 @@ const Paywall = ({ user }) => {
   const [apiKey, setApiKey] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  console.log('showPaymentOptions:', showPaymentOptions);
   const [isLogin, setIsLogin] = useState(false);
   const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh'; // ID цены из Stripe
 
@@ -152,19 +153,23 @@ const Paywall = ({ user }) => {
       <div className={s.paywall}>
         <section className={s.heroSection} data-aos='fade-up'>
           <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
-          <p className={s.introText}>
-            Please sign up with your email <br />
-            to create a new account and access our comprehensive IQ test. <br />
-            Discover your intellectual capabilities, <br />
-            understand your strengths and areas for improvement, <br />
-            and embark on a journey of cognitive growth.
-          </p>
-
-          {isLogin ? (
-            <LoginForm switchToSignUp={switchToSignUp} />
-          ) : (
-            <SignUpForm switchToLogin={switchToLogin} />
+          {!showPaymentOptions && (
+            <p className={s.introText}>
+              Please sign up with your email <br />
+              to create a new account and access our comprehensive IQ test.{' '}
+              <br />
+              Discover your intellectual capabilities, <br />
+              understand your strengths and areas for improvement, <br />
+              and embark on a journey of cognitive growth.
+            </p>
           )}
+
+          {!showPaymentOptions &&
+            (isLogin ? (
+              <LoginForm switchToSignUp={switchToSignUp} />
+            ) : (
+              <SignUpForm switchToLogin={switchToLogin} />
+            ))}
 
           {showPaymentOptions && (
             <div>
