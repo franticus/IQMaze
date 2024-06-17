@@ -8,7 +8,7 @@ import {
 import s from './LoginForm.module.scss';
 import googleLogo from '../../img/logo_google.svg';
 
-const LoginForm = ({ switchToLogin }) => {
+const LoginForm = ({ switchToSignUp }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -67,7 +67,7 @@ const LoginForm = ({ switchToLogin }) => {
       </button>
       <p>
         Don't have an account?{' '}
-        <span className={s.switchLink} onClick={switchToLogin}>
+        <span className={s.switchLink} onClick={switchToSignUp}>
           Sign Up
         </span>
       </p>
