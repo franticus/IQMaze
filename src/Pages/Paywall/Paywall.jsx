@@ -78,6 +78,31 @@ const Paywall = ({ user, userId }) => {
     if (!seriesScoresLocal) navigate('/');
   }, [navigate, seriesScoresLocal]);
 
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (user && email) {
+        try {
+          const response = await fetch(`${apiUrl}/check-subscription`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+          });
+
+          const { hasSubscription } = await response.json();
+          if (hasSubscription) {
+            navigate('/thanks');
+          }
+        } catch (error) {
+          console.error('Error checking subscription status:', error);
+        }
+      }
+    };
+
+    checkSubscription();
+  }, [user, email]);
+
   const calculateIQ = () => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');

@@ -3,7 +3,7 @@ import s from './Analyzing.module.scss';
 import CheckList from '../../components/CheckList/CheckList';
 import { useNavigate } from 'react-router-dom';
 
-const Analyzing = () => {
+const Analyzing = ({ user }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
