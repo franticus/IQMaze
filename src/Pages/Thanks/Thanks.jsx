@@ -11,7 +11,7 @@ import graph from '../../img/graph.jpg';
 const Thanks = ({ user }) => {
   const navigate = useNavigate();
   console.log('user:', user);
-  const userName = user.displayName
+  const userName = user?.displayName
     ? user.displayName
     : JSON.parse(localStorage.getItem('userName'));
   console.log('userName:', userName);

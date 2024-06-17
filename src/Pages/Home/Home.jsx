@@ -10,20 +10,10 @@ import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
-import { url, urlDEV, urlLOCAL } from '../../key.js';
-
-const currentUrl = window.location.href;
-const apiUrl = currentUrl.includes('iq-check140')
-  ? url
-  : currentUrl.includes('localhost')
-  ? urlLOCAL
-  : urlDEV;
 
 const Home = () => {
   const navigate = useNavigate();
   const [showLastResults, setShowLastResults] = useState(false);
-  const [completePayment, setCompletePayment] = useState(false);
-  const [apiKey, setApiKey] = useState('');
 
   useEffect(() => {
     AOS.init({
@@ -32,22 +22,7 @@ const Home = () => {
 
     const completePaymentStatus =
       localStorage.getItem('completePayment') === 'true';
-    setCompletePayment(completePaymentStatus);
     setShowLastResults(completePaymentStatus);
-
-    const fetchApiKey = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/get-api-key`, {
-          method: 'GET',
-        });
-        const { apiKey } = await response.json();
-        setApiKey(apiKey);
-      } catch (error) {
-        console.error('Failed to fetch API key:', error);
-      }
-    };
-
-    fetchApiKey();
   }, []);
 
   const handleStartTest = () => {
@@ -56,37 +31,6 @@ const Home = () => {
 
   const handleShowLastResults = () => {
     navigate('/thanks');
-  };
-
-  const handleBillingPortal = async () => {
-    try {
-      const email = localStorage.getItem('userEmail');
-      if (!email) {
-        console.error('Email not found in localStorage');
-        return;
-      }
-      if (!apiKey) {
-        console.error('API key not found');
-        return;
-      }
-      const response = await fetch(`${apiUrl}/create-billing-portal-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({ email: email.replace(/['"]+/g, '') }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const { url } = await response.json();
-      window.location.href = url;
-    } catch (error) {
-      console.error('Error redirecting to billing portal:', error);
-    }
   };
 
   return (
@@ -197,17 +141,6 @@ const Home = () => {
           Start IQ test
         </button>
       </section>
-
-      {completePayment && (
-        <section className={s.billingSection} data-aos='fade-up'>
-          <button
-            className={s.billingSection_button}
-            onClick={handleBillingPortal}
-          >
-            Manage Subscription
-          </button>
-        </section>
-      )}
     </div>
   );
 };

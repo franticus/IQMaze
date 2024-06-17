@@ -212,6 +212,8 @@
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin-top: 10px;
+    width: max-content;
+    padding: 10px;
     z-index: 10;
 }
 
@@ -223,6 +225,10 @@
     border: none;
     cursor: pointer;
     transition: background 0.3s;
+
+    &_red {
+        color: red;
+    }
 }
 
 .dropdownItem:hover {
