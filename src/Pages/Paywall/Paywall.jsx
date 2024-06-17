@@ -15,6 +15,7 @@ import ValueProposition from '../../components/ValueProposition/ValueProposition
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
+import { checkSubscription } from '../../helpers/stripeService';
 
 const currentUrl = window.location.href;
 const stripePromise = loadStripe(
@@ -79,28 +80,16 @@ const Paywall = ({ user, userId }) => {
   }, [navigate, seriesScoresLocal]);
 
   useEffect(() => {
-    const checkSubscription = async () => {
+    const verifySubscription = async () => {
       if (user && email) {
-        try {
-          const response = await fetch(`${apiUrl}/check-subscription`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-          });
-
-          const { hasSubscription } = await response.json();
-          if (hasSubscription) {
-            navigate('#/thanks');
-          }
-        } catch (error) {
-          console.error('Error checking subscription status:', error);
+        const { hasSubscription } = await checkSubscription(email);
+        if (hasSubscription) {
+          navigate('/thanks');
         }
       }
     };
 
-    checkSubscription();
+    verifySubscription();
   }, [user, email]);
 
   const calculateIQ = () => {
