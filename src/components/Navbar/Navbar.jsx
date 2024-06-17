@@ -4,7 +4,8 @@ import cn from 'classnames';
 import logo from '../../img/iq_logo.png';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
+  console.log('user:', user);
   const [isOpen, setIsOpen] = useState(false);
   const pageLinks = ['Home', 'IQTest'];
   const navigate = useNavigate();
@@ -42,11 +43,7 @@ const Navbar = () => {
         <div className={s.header__container}>
           <div className={s.logo}>
             <img className={s.mainLogo} src={logo} alt='' />
-            <span
-              href='index.html'
-              className={s.logo}
-              onClick={() => navigate('/home')}
-            >
+            <span className={s.logo} onClick={() => navigate('/home')}>
               IQMaze
             </span>
           </div>
@@ -75,6 +72,14 @@ const Navbar = () => {
                 ))}
               </ul>
             </nav>
+            {user && (
+              <div className={s.userStatus}>
+                <span className={s.userName}>
+                  {user.displayName || user.email}
+                </span>
+                <span className={s.onlineIndicator}></span>
+              </div>
+            )}
           </div>
         </div>
       </header>

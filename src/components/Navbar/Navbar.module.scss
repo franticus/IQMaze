@@ -48,6 +48,38 @@
     }
 }
 
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.userStatus {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.userName {
+    color: #0d766e;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 24px;
+    transition: 0.5s;
+    margin-right: 6px;
+    border-bottom: 2px solid transparent;
+}
+
+.onlineIndicator {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+}
+
 .logo {
     cursor: pointer;
     position: relative;

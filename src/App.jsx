@@ -46,7 +46,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <Navbar />
+      <Navbar user={user} />
       <div className='app'>
         <div className='wrapper'>
           <main>
