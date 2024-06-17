@@ -10,8 +10,16 @@ import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
+import { url, urlDEV, urlLOCAL } from '../../key.js';
 
-const Home = () => {
+const currentUrl = window.location.href;
+const apiUrl = currentUrl.includes('iq-check140')
+  ? url
+  : currentUrl.includes('localhost')
+  ? urlLOCAL
+  : urlDEV;
+
+const Home = ({ user }) => {
   const navigate = useNavigate();
   const [showLastResults, setShowLastResults] = useState(false);
 
@@ -20,10 +28,29 @@ const Home = () => {
       duration: 1000,
     });
 
-    const completePaymentStatus =
-      localStorage.getItem('completePayment') === 'true';
-    setShowLastResults(completePaymentStatus);
-  }, []);
+    const checkSubscription = async () => {
+      if (user) {
+        try {
+          const response = await fetch(`${apiUrl}/check-subscription`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: user.email }),
+          });
+
+          const { hasSubscription } = await response.json();
+          setShowLastResults(hasSubscription);
+        } catch (error) {
+          console.error('Error checking subscription status:', error);
+        }
+      } else {
+        setShowLastResults(false);
+      }
+    };
+
+    checkSubscription();
+  }, [user]);
 
   const handleStartTest = () => {
     navigate('/iqtest');
