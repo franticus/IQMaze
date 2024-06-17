@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Paywall.module.scss';
@@ -14,6 +14,8 @@ import { getUserId } from '../../helpers/userId';
 import { publicKey, publicKeyDEV, url, urlDEV, urlLOCAL } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
+import SignUpForm from '../../components/SignUpForm/SignUpForm';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
 const currentUrl = window.location.href;
 const stripePromise = loadStripe(
@@ -25,14 +27,14 @@ const apiUrl = currentUrl.includes('iq-check140')
   ? urlLOCAL
   : urlDEV;
 
-const Paywall = () => {
+const Paywall = ({ user }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const [apiKey, setApiKey] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  const paymentOptionsRef = useRef(null);
+  const [isLogin, setIsLogin] = useState(false);
   const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh'; // ID цены из Stripe
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
@@ -59,14 +61,20 @@ const Paywall = () => {
 
     fetchApiKey();
 
-    const storedName = JSON.parse(localStorage.getItem('userName'));
-    const storedEmail = JSON.parse(localStorage.getItem('userEmail'));
-    if (storedName && storedEmail) {
-      setName(storedName);
-      setEmail(storedEmail);
+    if (user) {
+      setName(user.displayName || '');
+      setEmail(user.email || '');
       setShowPaymentOptions(true);
+    } else {
+      const storedName = JSON.parse(localStorage.getItem('userName'));
+      const storedEmail = JSON.parse(localStorage.getItem('userEmail'));
+      if (storedName && storedEmail) {
+        setName(storedName);
+        setEmail(storedEmail);
+        setShowPaymentOptions(true);
+      }
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!seriesScoresLocal) navigate('/');
@@ -91,81 +99,6 @@ const Paywall = () => {
   useEffect(() => {
     calculateIQ();
   }, []);
-
-  const handleNameChange = event => {
-    setName(event.target.value);
-  };
-
-  const handleEmailChange = event => {
-    setEmail(event.target.value);
-  };
-
-  const validateEmail = email => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-
-    if (!validateEmail(email)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-
-    localStorage.setItem('userName', JSON.stringify(name));
-    localStorage.setItem('userEmail', JSON.stringify(email));
-    localStorage.setItem('iqScore', JSON.stringify(iqValue));
-
-    const date = new Date().toISOString();
-
-    try {
-      const checkSubscriptionResponse = await fetch(
-        `${apiUrl}/check-subscription`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
-
-      const { hasSubscription } = await checkSubscriptionResponse.json();
-
-      if (hasSubscription) {
-        navigate('/thanks');
-        return;
-      }
-
-      await fetch(`${apiUrl}/before-checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, userName: name, email, date, iqValue }),
-      });
-
-      setShowPaymentOptions(true);
-
-      if (paymentOptionsRef.current) {
-        setTimeout(() => {
-          paymentOptionsRef.current.scrollIntoView({ behavior: 'smooth' });
-        }, 300);
-      }
-    } catch (error) {
-      console.error('Error saving user data before checkout:', error);
-    }
-  };
-
-  const handleButtonClick = () => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'show_checkout',
-      timestamp: new Date().toISOString(),
-      userId: userId,
-    });
-  };
 
   const handlePaymentMethodSelection = async method => {
     if (method === 'card') {
@@ -206,7 +139,13 @@ const Paywall = () => {
     }
   };
 
-  //перенести
+  const switchToSignUp = () => {
+    setIsLogin(false);
+  };
+
+  const switchToLogin = () => {
+    setIsLogin(true);
+  };
 
   return (
     <Elements stripe={stripePromise}>
@@ -214,49 +153,18 @@ const Paywall = () => {
         <section className={s.heroSection} data-aos='fade-up'>
           <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
           <p className={s.introText}>
-            Enter your name and email <br />
-            to access our comprehensive IQ test. <br />
-            Discover your intellectual capabilities,
-            <br /> understand your strengths and areas for improvement, <br />
+            Please sign up with your email <br />
+            to create a new account and access our comprehensive IQ test. <br />
+            Discover your intellectual capabilities, <br />
+            understand your strengths and areas for improvement, <br />
             and embark on a journey of cognitive growth.
           </p>
 
-          <form
-            className={s.userForm}
-            onSubmit={handleSubmit}
-            data-aos='fade-right'
-          >
-            <label htmlFor='nameInput'>Your first and last name:</label>
-            <input
-              ref={paymentOptionsRef}
-              id='nameInput'
-              placeholder='Your first and last name'
-              type='text'
-              value={name}
-              required
-              onChange={handleNameChange}
-            />
-            <label htmlFor='emailInput'>Your email:</label>
-            <input
-              id='emailInput'
-              placeholder='Email'
-              type='email'
-              value={email}
-              required
-              onChange={handleEmailChange}
-            />
-            <button
-              type='submit'
-              disabled={!name.trim() || !email.trim()}
-              className={cn(
-                (!name.trim() || !email.trim()) && s.disabled,
-                s.paymentButton
-              )}
-              onClick={handleButtonClick}
-            >
-              Continue
-            </button>
-          </form>
+          {isLogin ? (
+            <LoginForm switchToSignUp={switchToSignUp} />
+          ) : (
+            <SignUpForm switchToLogin={switchToLogin} />
+          )}
 
           {showPaymentOptions && (
             <div>

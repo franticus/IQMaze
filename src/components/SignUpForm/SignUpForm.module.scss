@@ -1,0 +1,89 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 400px;
+	margin: 20px auto;
+}
+
+p {
+	font-size: 16px;
+}
+
+.form h2 {
+	margin-bottom: 20px;
+	font-size: 24px;
+	color: #333;
+}
+
+.SignUpInput {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 16px;
+}
+
+.SignUpButton {
+	width: 100%;
+	padding: 10px;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-bottom: 10px;
+}
+
+.SignUpButton:hover {
+	background-color: #0056b3;
+}
+
+.error {
+	color: red;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+
+.switchLink {
+	color: #007bff;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+/* Google Button Styles */
+.googleButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 4px 10px;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-bottom: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.googleButton img {
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
+}
+
+.googleButton:hover {
+	background-color: #f7f7f7;
+}

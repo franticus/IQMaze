@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.css';
 import './fonts.css';
 import PrivacyPolicy from './Pages/PrivacyPolicy/PrivacyPolicy';
@@ -13,11 +13,24 @@ import Paywall from './Pages/Paywall/Paywall';
 import Thanks from './Pages/Thanks/Thanks';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { getUserId } from './helpers/userId';
+import { auth } from './firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 function App() {
-  useEffect(() => {
-    const userId = getUserId();
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      if (user) {
+        console.log('User is signed in:', user);
+        setUser(user);
+      } else {
+        console.log('No user is signed in');
+        setUser(null);
+      }
+    });
+
+    const userId = getUserId();
     if (typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
@@ -26,6 +39,8 @@ function App() {
         userId: userId,
       });
     }
+
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -36,14 +51,14 @@ function App() {
         <div className='wrapper'>
           <main>
             <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/home' element={<Home />} />
-              <Route path='/iqtest' element={<Test />} />
+              <Route path='/' element={<Home user={user} />} />
+              <Route path='/home' element={<Home user={user} />} />
+              <Route path='/iqtest' element={<Test user={user} />} />
               <Route path='/privacy' element={<PrivacyPolicy />} />
               <Route path='/terms' element={<Terms />} />
-              <Route path='/analyzing' element={<Analyzing />} />
-              <Route path='/paywall' element={<Paywall />} />
-              <Route path='/thanks' element={<Thanks />} />
+              <Route path='/analyzing' element={<Analyzing user={user} />} />
+              <Route path='/paywall' element={<Paywall user={user} />} />
+              <Route path='/thanks' element={<Thanks user={user} />} />
             </Routes>
           </main>
         </div>
