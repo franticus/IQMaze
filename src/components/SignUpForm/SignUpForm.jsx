@@ -32,7 +32,9 @@ const SignUpForm = ({ switchToLogin }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      localStorage.setItem('userName', JSON.stringify(name));
+      console.log('user:', user);
+      const userName = user.displayName || '';
+      localStorage.setItem('userName', JSON.stringify(userName));
       localStorage.setItem('userEmail', JSON.stringify(user.email));
       console.log('User signed up with Google');
     } catch (error) {

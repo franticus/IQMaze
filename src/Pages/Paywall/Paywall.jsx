@@ -92,7 +92,7 @@ const Paywall = ({ user, userId }) => {
 
           const { hasSubscription } = await response.json();
           if (hasSubscription) {
-            navigate('/thanks');
+            navigate('#/thanks');
           }
         } catch (error) {
           console.error('Error checking subscription status:', error);

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Thanks.module.scss';
@@ -10,11 +10,34 @@ import graph from '../../img/graph.jpg';
 
 const Thanks = ({ user }) => {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState('');
+
+  // Инициализация имени пользователя из localStorage
+  useEffect(() => {
+    const storedUserName = JSON.parse(localStorage.getItem('userName'));
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []);
+
+  // Обновление имени пользователя при изменении user
+  useEffect(() => {
+    if (user?.displayName) {
+      setUserName(user.displayName);
+      localStorage.setItem('userName', JSON.stringify(user.displayName));
+    }
+  }, [user]);
+
+  // Обновление localStorage при изменении userName
+  useEffect(() => {
+    if (userName) {
+      localStorage.setItem('userName', JSON.stringify(userName));
+    }
+  }, [userName]);
+
   console.log('user:', user);
-  const userName = user?.displayName
-    ? user.displayName
-    : JSON.parse(localStorage.getItem('userName'));
   console.log('userName:', userName);
+
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
   const date = new Date().toLocaleDateString();
   const certificateRef = useRef();
