@@ -10,7 +10,7 @@ import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
-import { checkSubscription } from '../../services/stripeService';
+import { checkSubscription } from '../../helpers/stripeService';
 
 const Home = ({ user }) => {
   const navigate = useNavigate();
