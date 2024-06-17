@@ -12,36 +12,41 @@ import Analyzing from './Pages/Analyzing/Analyzing';
 import Paywall from './Pages/Paywall/Paywall';
 import Thanks from './Pages/Thanks/Thanks';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
-import { getUserId } from './helpers/userId';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
         console.log('User is signed in:', user);
         setUser(user);
+        setUserId(user.uid);
       } else {
         console.log('No user is signed in');
         setUser(null);
+        setUserId(null);
       }
     });
 
-    const userId = getUserId();
-    if (typeof window !== 'undefined') {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'appLoad',
-        timestamp: new Date().toISOString(),
-        userId: userId,
-      });
-    }
-
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      if (typeof window !== 'undefined') {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'appLoad',
+          timestamp: new Date().toISOString(),
+          userId: userId,
+        });
+      }
+    }
+  }, [userId]);
 
   return (
     <Router>
@@ -51,14 +56,29 @@ function App() {
         <div className='wrapper'>
           <main>
             <Routes>
-              <Route path='/' element={<Home user={user} />} />
-              <Route path='/home' element={<Home user={user} />} />
-              <Route path='/iqtest' element={<Test user={user} />} />
+              <Route path='/' element={<Home user={user} userId={userId} />} />
+              <Route
+                path='/home'
+                element={<Home user={user} userId={userId} />}
+              />
+              <Route
+                path='/iqtest'
+                element={<Test user={user} userId={userId} />}
+              />
               <Route path='/privacy' element={<PrivacyPolicy />} />
               <Route path='/terms' element={<Terms />} />
-              <Route path='/analyzing' element={<Analyzing user={user} />} />
-              <Route path='/paywall' element={<Paywall user={user} />} />
-              <Route path='/thanks' element={<Thanks user={user} />} />
+              <Route
+                path='/analyzing'
+                element={<Analyzing user={user} userId={userId} />}
+              />
+              <Route
+                path='/paywall'
+                element={<Paywall user={user} userId={userId} />}
+              />
+              <Route
+                path='/thanks'
+                element={<Thanks user={user} userId={userId} />}
+              />
             </Routes>
           </main>
         </div>

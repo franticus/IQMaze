@@ -10,7 +10,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
-import { getUserId } from '../../helpers/userId';
 import { publicKey, publicKeyDEV, url, urlDEV, urlLOCAL } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
@@ -27,20 +26,18 @@ const apiUrl = currentUrl.includes('iq-check140')
   ? urlLOCAL
   : urlDEV;
 
-const Paywall = ({ user }) => {
+const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const [apiKey, setApiKey] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  console.log('showPaymentOptions:', showPaymentOptions);
   const [isLogin, setIsLogin] = useState(false);
   const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh'; // ID цены из Stripe
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
-  const userId = getUserId();
 
   useEffect(() => {
     AOS.init({
