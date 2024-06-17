@@ -10,14 +10,7 @@ import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
-import { url, urlDEV, urlLOCAL } from '../../key.js';
-
-const currentUrl = window.location.href;
-const apiUrl = currentUrl.includes('iq-check140')
-  ? url
-  : currentUrl.includes('localhost')
-  ? urlLOCAL
-  : urlDEV;
+import { checkSubscription } from '../../services/stripeService';
 
 const Home = ({ user }) => {
   const navigate = useNavigate();
@@ -28,28 +21,16 @@ const Home = ({ user }) => {
       duration: 1000,
     });
 
-    const checkSubscription = async () => {
+    const verifySubscription = async () => {
       if (user) {
-        try {
-          const response = await fetch(`${apiUrl}/check-subscription`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user.email }),
-          });
-
-          const { hasSubscription } = await response.json();
-          setShowLastResults(hasSubscription);
-        } catch (error) {
-          console.error('Error checking subscription status:', error);
-        }
+        const { hasSubscription } = await checkSubscription(user.email);
+        setShowLastResults(hasSubscription);
       } else {
         setShowLastResults(false);
       }
     };
 
-    checkSubscription();
+    verifySubscription();
   }, [user]);
 
   const handleStartTest = () => {
