@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import { url, urlDEV, urlLOCAL } from '../../key.js';
+import { checkSubscription } from '../../helpers/stripeService';
 
 const currentUrl = window.location.href;
 const apiUrl = currentUrl.includes('iq-check140')
@@ -66,30 +67,16 @@ const Navbar = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    const checkSubscription = async () => {
+    const verifySubscription = async () => {
       if (user) {
-        try {
-          const response = await fetch(`${apiUrl}/check-subscription`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user.email }),
-          });
-
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const { hasSubscription } = await response.json();
-          setHasSubscription(hasSubscription);
-        } catch (error) {
-          console.error('Error checking subscription:', error);
-        }
+        const { hasSubscription } = await checkSubscription(user.email);
+        setHasSubscription(hasSubscription);
+      } else {
+        setHasSubscription(false);
       }
     };
 
-    checkSubscription();
+    verifySubscription();
   }, [user]);
 
   const handleSignOut = async () => {
