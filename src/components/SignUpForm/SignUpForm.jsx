@@ -20,6 +20,7 @@ const SignUpForm = ({ switchToLogin }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       localStorage.setItem('userName', JSON.stringify(name));
+      localStorage.setItem('userEmail', JSON.stringify(email));
       console.log('User created successfully');
     } catch (error) {
       setError(error.message);
@@ -29,8 +30,10 @@ const SignUpForm = ({ switchToLogin }) => {
   const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
       localStorage.setItem('userName', JSON.stringify(name));
+      localStorage.setItem('userEmail', JSON.stringify(user.email));
       console.log('User signed up with Google');
     } catch (error) {
       setError(error.message);
