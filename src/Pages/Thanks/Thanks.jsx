@@ -8,9 +8,13 @@ import html2canvas from 'html2canvas';
 import { getIQDescription } from './getIQDescription';
 import graph from '../../img/graph.jpg';
 
-const Thanks = () => {
+const Thanks = ({ user }) => {
   const navigate = useNavigate();
-  const userName = JSON.parse(localStorage.getItem('userName'));
+  console.log('user:', user);
+  const userName = user.displayName
+    ? user.displayName
+    : JSON.parse(localStorage.getItem('userName'));
+  console.log('userName:', userName);
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
   const date = new Date().toLocaleDateString();
   const certificateRef = useRef();

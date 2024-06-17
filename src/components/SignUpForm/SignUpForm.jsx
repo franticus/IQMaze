@@ -11,6 +11,7 @@ import googleLogo from '../../img/logo_google.svg';
 const SignUpForm = ({ switchToLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async e => {
@@ -18,6 +19,7 @@ const SignUpForm = ({ switchToLogin }) => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      localStorage.setItem('userName', JSON.stringify(name));
       console.log('User created successfully');
     } catch (error) {
       setError(error.message);
@@ -28,6 +30,7 @@ const SignUpForm = ({ switchToLogin }) => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
+      localStorage.setItem('userName', JSON.stringify(name));
       console.log('User signed up with Google');
     } catch (error) {
       setError(error.message);
@@ -38,6 +41,14 @@ const SignUpForm = ({ switchToLogin }) => {
     <form onSubmit={handleSubmit} className={s.form}>
       <h2>Sign Up</h2>
       {error && <p className={s.error}>{error}</p>}
+      <input
+        type='text'
+        placeholder='Name and Surname'
+        value={name}
+        onChange={e => setName(e.target.value)}
+        required
+        className={s.SignUpInput}
+      />
       <input
         type='email'
         placeholder='Email'

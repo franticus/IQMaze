@@ -3,10 +3,13 @@ import s from './Navbar.module.scss';
 import cn from 'classnames';
 import logo from '../../img/iq_logo.png';
 import { useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
 
 const Navbar = ({ user }) => {
   console.log('user:', user);
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pageLinks = ['Home', 'IQTest'];
   const navigate = useNavigate();
 
@@ -36,6 +39,16 @@ const Navbar = ({ user }) => {
       document.body.style.overflow = 'visible';
     };
   }, [isOpen]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log('User signed out successfully');
+      navigate('/home');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
     <div className={isOpen ? s.menu_open : ''}>
@@ -73,11 +86,21 @@ const Navbar = ({ user }) => {
               </ul>
             </nav>
             {user && (
-              <div className={s.userStatus}>
+              <div
+                className={s.userStatus}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
                 <span className={s.userName}>
                   {user.displayName || user.email}
                 </span>
                 <span className={s.onlineIndicator}></span>
+                {isDropdownOpen && (
+                  <div className={s.dropdownMenu}>
+                    <button onClick={handleSignOut} className={s.dropdownItem}>
+                      Log out
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
