@@ -18,8 +18,8 @@ const Navbar = ({ user }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [completePayment, setCompletePayment] = useState(false);
   const [apiKey, setApiKey] = useState('');
+  const [hasSubscription, setHasSubscription] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -50,10 +50,6 @@ const Navbar = ({ user }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    const completePaymentStatus =
-      localStorage.getItem('completePayment') === 'true';
-    setCompletePayment(completePaymentStatus);
-
     const fetchApiKey = async () => {
       try {
         const response = await fetch(`${apiUrl}/get-api-key`, {
@@ -68,6 +64,33 @@ const Navbar = ({ user }) => {
 
     fetchApiKey();
   }, []);
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (user) {
+        try {
+          const response = await fetch(`${apiUrl}/check-subscription`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: user.email }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const { hasSubscription } = await response.json();
+          setHasSubscription(hasSubscription);
+        } catch (error) {
+          console.error('Error checking subscription:', error);
+        }
+      }
+    };
+
+    checkSubscription();
+  }, [user]);
 
   const handleSignOut = async () => {
     try {
@@ -169,7 +192,7 @@ const Navbar = ({ user }) => {
                 <span className={s.onlineIndicator}></span>
                 {isDropdownOpen && (
                   <div className={s.dropdownMenu}>
-                    {completePayment && (
+                    {hasSubscription && (
                       <button
                         onClick={handleBillingPortal}
                         className={s.dropdownItem}
