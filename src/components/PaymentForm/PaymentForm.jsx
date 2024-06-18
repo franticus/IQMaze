@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 const currentUrl = window.location.href;
 const apiUrl = currentUrl.includes('iq-check140') ? url : urlDEV;
 
-const PaymentForm = ({ name, email, amount, apiKey }) => {
+const PaymentForm = ({ name, email, amount }) => {
   const userId = getUserId();
   const stripe = useStripe();
   const elements = useElements();
@@ -50,7 +50,6 @@ const PaymentForm = ({ name, email, amount, apiKey }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${encodeURIComponent(apiKey)}`,
         },
         body: JSON.stringify({ amount: amount, currency: 'usd' }),
       });

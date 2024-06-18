@@ -5,21 +5,15 @@ import logo from '../../img/iq_logo.png';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
-import { url, urlDEV, urlLOCAL } from '../../key.js';
-import { checkSubscription } from '../../helpers/stripeService';
-
-const currentUrl = window.location.href;
-const apiUrl = currentUrl.includes('iq-check140')
-  ? url
-  : currentUrl.includes('localhost')
-  ? urlLOCAL
-  : urlDEV;
+import {
+  checkSubscription,
+  createBillingPortalSession,
+} from '../../helpers/stripeHelpers';
 
 const Navbar = ({ user }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [apiKey, setApiKey] = useState('');
   const [hasSubscription, setHasSubscription] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -51,22 +45,6 @@ const Navbar = ({ user }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    const fetchApiKey = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/get-api-key`, {
-          method: 'GET',
-        });
-        const { apiKey } = await response.json();
-        setApiKey(apiKey);
-      } catch (error) {
-        console.error('Failed to fetch API key:', error);
-      }
-    };
-
-    fetchApiKey();
-  }, []);
-
-  useEffect(() => {
     const verifySubscription = async () => {
       if (user) {
         const { hasSubscription } = await checkSubscription(user.email);
@@ -96,25 +74,8 @@ const Navbar = ({ user }) => {
         console.error('Email not found in localStorage');
         return;
       }
-      if (!apiKey) {
-        console.error('API key not found');
-        return;
-      }
-      const response = await fetch(`${apiUrl}/create-billing-portal-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({ email: email.replace(/['"]+/g, '') }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const { url } = await response.json();
-      window.location.href = url;
+      const billingPortalUrl = await createBillingPortalSession(email);
+      window.location.href = billingPortalUrl;
     } catch (error) {
       console.error('Error redirecting to billing portal:', error);
     }

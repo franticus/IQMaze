@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { auth } from '../../firebaseConfig';
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from 'firebase/auth';
+import { registerUser, loginWithGoogle } from '../../helpers/authHelpers.js'; // Обновите пути если необходимо
 import s from './SignUpForm.module.scss';
 import googleLogo from '../../img/logo_google.svg';
 
@@ -18,9 +13,7 @@ const SignUpForm = ({ switchToLogin }) => {
     e.preventDefault();
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      localStorage.setItem('userName', JSON.stringify(name));
-      localStorage.setItem('userEmail', JSON.stringify(email));
+      await registerUser(email, password, name);
       console.log('User created successfully');
     } catch (error) {
       setError(error.message);
@@ -28,14 +21,8 @@ const SignUpForm = ({ switchToLogin }) => {
   };
 
   const handleGoogleSignUp = async () => {
-    const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log('user:', user);
-      const userName = user.displayName || '';
-      localStorage.setItem('userName', JSON.stringify(userName));
-      localStorage.setItem('userEmail', JSON.stringify(user.email));
+      await loginWithGoogle();
       console.log('User signed up with Google');
     } catch (error) {
       setError(error.message);

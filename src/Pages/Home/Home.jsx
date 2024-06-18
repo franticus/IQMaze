@@ -10,7 +10,7 @@ import about_4 from '../../img/about_4.jpg';
 import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
-import { checkSubscription } from '../../helpers/stripeService';
+import { checkSubscription } from '../../helpers/stripeHelpers';
 
 const Home = ({ user }) => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const Home = ({ user }) => {
           Test your <span className={s.title_iq}>IQ!</span>
         </div>
         <div className={s.description}>
-          The IQ Test is to assess an intellectual abilities formed by general
+          The IQ Test is to assess intellectual abilities formed by general
           experience, not affected by training or learning. You can figure out
           your intellectual level compared to the group of the same age.
         </div>

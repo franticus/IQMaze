@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { auth } from '../../firebaseConfig';
-import {
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from 'firebase/auth';
+import { loginUser, loginWithGoogle } from '../../helpers/authHelpers';
 import s from './LoginForm.module.scss';
 import googleLogo from '../../img/logo_google.svg';
 
@@ -17,7 +12,7 @@ const LoginForm = ({ switchToSignUp }) => {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await loginUser(email, password);
       console.log('User logged in successfully');
     } catch (error) {
       setError(error.message);
@@ -25,9 +20,8 @@ const LoginForm = ({ switchToSignUp }) => {
   };
 
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      await loginWithGoogle();
       console.log('User logged in with Google');
     } catch (error) {
       setError(error.message);

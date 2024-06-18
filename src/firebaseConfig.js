@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: 'AIzaSyCoqb88RnmD69ADEJSm9XnzBRP1OTyebmE',
   authDomain: 'stripeiqmaze.firebaseapp.com',
   projectId: 'stripeiqmaze',

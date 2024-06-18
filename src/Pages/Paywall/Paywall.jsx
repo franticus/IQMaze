@@ -10,28 +10,25 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
-import { publicKey, publicKeyDEV, url, urlDEV, urlLOCAL } from '../../key.js';
+import { publicKey, publicKeyDEV } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
-import { checkSubscription } from '../../helpers/stripeService';
+import {
+  checkSubscription,
+  createCheckoutSession,
+} from '../../helpers/stripeHelpers';
 
 const currentUrl = window.location.href;
 const stripePromise = loadStripe(
   currentUrl.includes('iq-check140') ? publicKey : publicKeyDEV
 );
-const apiUrl = currentUrl.includes('iq-check140')
-  ? url
-  : currentUrl.includes('localhost')
-  ? urlLOCAL
-  : urlDEV;
 
 const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
-  const [apiKey, setApiKey] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
@@ -45,20 +42,6 @@ const Paywall = ({ user, userId }) => {
       duration: 1000,
       once: true,
     });
-
-    const fetchApiKey = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/get-api-key`, {
-          method: 'GET',
-        });
-        const { apiKey } = await response.json();
-        setApiKey(apiKey);
-      } catch (error) {
-        console.error('Failed to fetch API key:', error);
-      }
-    };
-
-    fetchApiKey();
 
     if (user) {
       setName(user.displayName || '');
@@ -90,7 +73,7 @@ const Paywall = ({ user, userId }) => {
     };
 
     verifySubscription();
-  }, [user, email]);
+  }, [user, email, navigate]);
 
   const calculateIQ = () => {
     if (!seriesScoresLocal) {
@@ -110,33 +93,20 @@ const Paywall = ({ user, userId }) => {
 
   useEffect(() => {
     calculateIQ();
-  }, []);
+  }, [seriesScoresLocal]);
 
   const handlePaymentMethodSelection = async method => {
     if (method === 'card') {
       setShowPaymentForm(true);
     } else {
       try {
-        const response = await fetch(`${apiUrl}/create-checkout-session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify({
-            email: email,
-            userId: userId,
-            priceId: priceId,
-            iqValue: iqValue,
-            userName: name,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to create checkout session');
-        }
-
-        const session = await response.json();
+        const session = await createCheckoutSession(
+          email,
+          userId,
+          priceId,
+          iqValue,
+          name
+        );
         const stripe = await stripePromise;
         const result = await stripe.redirectToCheckout({
           sessionId: session.id,
@@ -212,14 +182,9 @@ const Paywall = ({ user, userId }) => {
             </div>
           )}
 
-          {showPaymentForm && apiKey && (
+          {showPaymentForm && (
             <div className={s.paymentFormWrapper}>
-              <PaymentForm
-                name={name}
-                email={email}
-                amount={190}
-                apiKey={apiKey}
-              />
+              <PaymentForm name={name} email={email} amount={190} />
             </div>
           )}
 

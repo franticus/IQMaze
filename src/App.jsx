@@ -25,11 +25,7 @@ function App() {
         console.log('User is signed in:', user);
         setUser(user);
         setUserId(user.uid);
-        // localStorage.setItem(
-        //   'userName',
-        //   JSON.stringify(user.displayName || '')
-        // );
-        localStorage.setItem('userEmail', JSON.stringify(user.email || ''));
+        // localStorage.setItem('userEmail', JSON.stringify(user.email || ''));
       } else {
         console.log('No user is signed in');
         setUser(null);
