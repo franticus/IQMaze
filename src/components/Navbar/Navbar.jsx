@@ -9,12 +9,17 @@ import {
   checkSubscription,
   createBillingPortalSession,
 } from '../../helpers/stripeHelpers';
+import Modal from '../../components/Modal/Modal';
+import SignUpForm from '../../components/SignUpForm/SignUpForm';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
 const Navbar = ({ user }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasSubscription, setHasSubscription] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -94,6 +99,14 @@ const Navbar = ({ user }) => {
     };
   }, []);
 
+  const switchToSignUp = () => {
+    setIsLogin(false);
+  };
+
+  const switchToLogin = () => {
+    setIsLogin(true);
+  };
+
   return (
     <div className={isOpen ? s.menu_open : ''}>
       <header className={s.header}>
@@ -128,7 +141,7 @@ const Navbar = ({ user }) => {
                 ))}
               </ul>
             </nav>
-            {user && (
+            {user ? (
               <div
                 className={s.userStatus}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -157,10 +170,32 @@ const Navbar = ({ user }) => {
                   </div>
                 )}
               </div>
+            ) : (
+              <button
+                className={s.loginButton}
+                onClick={() => setIsModalOpen(true)}
+              >
+                Log In
+              </button>
             )}
           </div>
         </div>
       </header>
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          {isLogin ? (
+            <LoginForm
+              switchToSignUp={switchToSignUp}
+              onSuccess={() => setIsModalOpen(false)}
+            />
+          ) : (
+            <SignUpForm
+              switchToLogin={switchToLogin}
+              onSuccess={() => setIsModalOpen(false)}
+            />
+          )}
+        </Modal>
+      )}
     </div>
   );
 };

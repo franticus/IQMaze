@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { registerUser, loginWithGoogle } from '../../helpers/authHelpers.js'; // Обновите пути если необходимо
+import { registerUser, loginWithGoogle } from '../../helpers/authHelpers.js';
 import s from './SignUpForm.module.scss';
 import googleLogo from '../../img/logo_google.svg';
 
-const SignUpForm = ({ switchToLogin }) => {
+const SignUpForm = ({ switchToLogin, onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -15,6 +15,7 @@ const SignUpForm = ({ switchToLogin }) => {
     try {
       await registerUser(email, password, name);
       console.log('User created successfully');
+      onSuccess();
     } catch (error) {
       setError(error.message);
     }
@@ -24,6 +25,7 @@ const SignUpForm = ({ switchToLogin }) => {
     try {
       await loginWithGoogle();
       console.log('User signed up with Google');
+      onSuccess();
     } catch (error) {
       setError(error.message);
     }

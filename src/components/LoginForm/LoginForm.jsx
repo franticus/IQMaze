@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { loginUser, loginWithGoogle } from '../../helpers/authHelpers';
+import { auth } from '../../firebaseConfig';
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from 'firebase/auth';
 import s from './LoginForm.module.scss';
 import googleLogo from '../../img/logo_google.svg';
 
-const LoginForm = ({ switchToSignUp }) => {
+const LoginForm = ({ switchToSignUp, onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,17 +17,20 @@ const LoginForm = ({ switchToSignUp }) => {
     e.preventDefault();
 
     try {
-      await loginUser(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
+      onSuccess();
     } catch (error) {
       setError(error.message);
     }
   };
 
   const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
     try {
-      await loginWithGoogle();
+      await signInWithPopup(auth, provider);
       console.log('User logged in with Google');
+      onSuccess();
     } catch (error) {
       setError(error.message);
     }
