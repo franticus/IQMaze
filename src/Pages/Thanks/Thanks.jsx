@@ -12,7 +12,6 @@ const Thanks = ({ user }) => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
 
-  // Инициализация имени пользователя из localStorage
   useEffect(() => {
     const storedUserName = JSON.parse(localStorage.getItem('userName'));
     if (storedUserName) {
@@ -20,7 +19,6 @@ const Thanks = ({ user }) => {
     }
   }, []);
 
-  // Обновление имени пользователя при изменении user
   useEffect(() => {
     if (user?.displayName) {
       setUserName(user.displayName);
@@ -28,15 +26,11 @@ const Thanks = ({ user }) => {
     }
   }, [user]);
 
-  // Обновление localStorage при изменении userName
   useEffect(() => {
     if (userName) {
       localStorage.setItem('userName', JSON.stringify(userName));
     }
   }, [userName]);
-
-  console.log('user:', user);
-  console.log('userName:', userName);
 
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
   const date = new Date().toLocaleDateString();

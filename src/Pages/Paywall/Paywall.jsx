@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -67,13 +66,19 @@ const Paywall = ({ user, userId }) => {
       if (user && email) {
         const { hasSubscription } = await checkSubscription(email);
         if (hasSubscription) {
+          const totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
+            (total, num) => total + num,
+            0
+          );
+          const iq = iqTable[totalCorrectAnswers] || '62';
+          localStorage.setItem('iqScore', iq);
           navigate('/thanks');
         }
       }
     };
 
     verifySubscription();
-  }, [user, email, navigate]);
+  }, [user, email, navigate, seriesScoresLocal]);
 
   const calculateIQ = () => {
     if (!seriesScoresLocal) {
@@ -87,12 +92,13 @@ const Paywall = ({ user, userId }) => {
     );
 
     const iq = iqTable[totalCorrectAnswers] || '62';
-
     setIqValue(iq);
+    localStorage.setItem('iqScore', iq); // Сохранение IQScore в Local Storage
   };
 
   useEffect(() => {
     calculateIQ();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seriesScoresLocal]);
 
   const handlePaymentMethodSelection = async method => {
@@ -169,18 +175,6 @@ const Paywall = ({ user, userId }) => {
           )}
 
           {showPaymentOptions && <ValueProposition />}
-
-          {showPaymentOptions && (
-            <div className={s.paymentOptions}>
-              <div className={s.price}>Total price: $1.90</div>
-              <button
-                className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
-                onClick={() => handlePaymentMethodSelection('gpay_applepay')}
-              >
-                Get your test result for $1.90
-              </button>
-            </div>
-          )}
 
           {showPaymentForm && (
             <div className={s.paymentFormWrapper}>
