@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Paywall.module.scss';
@@ -28,9 +28,12 @@ const Paywall = ({ user, userId }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
+  console.log('isButtonVisible:', isButtonVisible);
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
+  const paymentButtonRef = useRef(null);
 
   useEffect(() => {
     AOS.init({
@@ -89,7 +92,7 @@ const Paywall = ({ user, userId }) => {
 
     const iq = iqTable[totalCorrectAnswers] || '62';
     setIqValue(iq);
-    localStorage.setItem('iqScore', iq); // Сохранение IQScore в Local Storage
+    localStorage.setItem('iqScore', iq);
   };
 
   useEffect(() => {
@@ -131,6 +134,22 @@ const Paywall = ({ user, userId }) => {
     setIsLogin(true);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (paymentButtonRef.current) {
+        const rect = paymentButtonRef.current.getBoundingClientRect();
+        setIsButtonVisible(rect.bottom < 0 || rect.top > window.innerHeight);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Проверить видимость сразу после монтирования
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <Elements stripe={stripePromise}>
       <div className={s.paywall}>
@@ -158,6 +177,7 @@ const Paywall = ({ user, userId }) => {
             <div>
               <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
                 <button
+                  ref={paymentButtonRef}
                   className={cn(
                     s.paymentButtonBlick,
                     s.paymentButtonBlick_card
@@ -217,6 +237,19 @@ const Paywall = ({ user, userId }) => {
             </>
           )}
         </section>
+      </div>
+
+      <div
+        className={cn(s.paymentButtonFixed_container, {
+          [s.paymentButtonFixed_container_visible]: isButtonVisible,
+        })}
+      >
+        <button
+          className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
+          onClick={() => handlePaymentMethodSelection('gpay_applepay')}
+        >
+          Get your test result for $1.90
+        </button>
       </div>
     </Elements>
   );

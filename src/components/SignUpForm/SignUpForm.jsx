@@ -15,6 +15,7 @@ const SignUpForm = ({ switchToLogin, onSuccess }) => {
     try {
       await registerUser(email, password, name);
       console.log('User created successfully');
+      window.scrollTo(0, 0);
       onSuccess();
     } catch (error) {
       setError(error.message);
@@ -25,6 +26,7 @@ const SignUpForm = ({ switchToLogin, onSuccess }) => {
     try {
       await loginWithGoogle();
       console.log('User signed up with Google');
+      window.scrollTo(0, 0);
       onSuccess();
     } catch (error) {
       setError(error.message);
