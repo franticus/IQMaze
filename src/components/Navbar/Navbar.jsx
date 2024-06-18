@@ -74,9 +74,9 @@ const Navbar = ({ user }) => {
 
   const handleBillingPortal = async () => {
     try {
-      const email = localStorage.getItem('userEmail');
+      const email = user.email;
       if (!email) {
-        console.error('Email not found in localStorage');
+        console.error('Email not found');
         return;
       }
       const billingPortalUrl = await createBillingPortalSession(email);
@@ -154,12 +154,14 @@ const Navbar = ({ user }) => {
                 {isDropdownOpen && (
                   <div className={s.dropdownMenu}>
                     {hasSubscription && (
-                      <button
-                        onClick={handleBillingPortal}
-                        className={s.dropdownItem}
-                      >
-                        Manage Subscription
-                      </button>
+                      <>
+                        <button
+                          onClick={handleBillingPortal}
+                          className={s.dropdownItem}
+                        >
+                          Manage Subscription
+                        </button>
+                      </>
                     )}
                     <button
                       onClick={handleSignOut}

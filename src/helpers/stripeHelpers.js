@@ -91,4 +91,33 @@ const createBillingPortalSession = async email => {
   }
 };
 
-export { checkSubscription, createCheckoutSession, createBillingPortalSession };
+const cancelSubscription = async email => {
+  try {
+    const apiKey = await fetchApiKey();
+    const response = await fetch(`${apiUrl}/cancel-subscription`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({ email: email.replace(/['"]+/g, '') }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error cancelling subscription: ', error);
+    throw error;
+  }
+};
+
+export {
+  checkSubscription,
+  createCheckoutSession,
+  createBillingPortalSession,
+  cancelSubscription,
+};
