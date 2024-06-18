@@ -11,11 +11,8 @@ import s from './PaymentForm.module.scss';
 import cn from 'classnames';
 import { getUserId } from '../../helpers/userId';
 
-import { url, urlDEV } from '../../key.js';
+import { apiUrl } from '../../key.js';
 import { useNavigate } from 'react-router-dom';
-
-const currentUrl = window.location.href;
-const apiUrl = currentUrl.includes('iq-check140') ? url : urlDEV;
 
 const PaymentForm = ({ name, email, amount }) => {
   const userId = getUserId();

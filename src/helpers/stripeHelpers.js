@@ -1,12 +1,4 @@
-import { url, urlDEV, urlLOCAL } from '../key';
-
-const currentUrl = window.location.href;
-
-const apiUrl = currentUrl.includes('iq-check140')
-  ? url
-  : currentUrl.includes('localhost')
-  ? urlLOCAL
-  : urlDEV;
+import { apiUrl } from '../key';
 
 const fetchApiKey = async () => {
   const response = await fetch(`${apiUrl}/get-api-key`);

@@ -9,7 +9,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
-import { publicKey, publicKeyDEV } from '../../key.js';
+import { publicKey, priceId } from '../../key.js';
 import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
@@ -19,10 +19,7 @@ import {
   createCheckoutSession,
 } from '../../helpers/stripeHelpers';
 
-const currentUrl = window.location.href;
-const stripePromise = loadStripe(
-  currentUrl.includes('iq-check140') ? publicKey : publicKeyDEV
-);
+const stripePromise = loadStripe(publicKey);
 
 const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
@@ -31,7 +28,6 @@ const Paywall = ({ user, userId }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const priceId = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh'; // ID цены из Stripe
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
