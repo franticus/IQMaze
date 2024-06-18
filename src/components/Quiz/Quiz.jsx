@@ -11,7 +11,7 @@ import { getUserId } from '../../helpers/userId.js';
 
 const Quiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(50);
+  const [step, setStep] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const [seriesScores, setSeriesScores] = useState({
     A: 0,

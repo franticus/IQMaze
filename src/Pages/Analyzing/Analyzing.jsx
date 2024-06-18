@@ -2,12 +2,24 @@ import React, { useEffect, useState } from 'react';
 import s from './Analyzing.module.scss';
 import CheckList from '../../components/CheckList/CheckList';
 import { useNavigate } from 'react-router-dom';
+import { checkSubscription } from '../../helpers/stripeHelpers';
 
 const Analyzing = ({ user }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const [hasSubscription, setHasSubscription] = useState(false);
   const navigate = useNavigate();
   const totalSteps = 5;
+
+  useEffect(() => {
+    const checkUserSubscription = async () => {
+      if (user) {
+        const { hasSubscription } = await checkSubscription(user.email);
+        setHasSubscription(hasSubscription);
+      }
+    };
+    checkUserSubscription();
+  }, [user]);
 
   useEffect(() => {
     const progressInterval = setInterval(() => {
@@ -26,12 +38,6 @@ const Analyzing = ({ user }) => {
     };
   }, []);
 
-  if (progress === 100) {
-    setTimeout(() => {
-      navigate('/paywall');
-    }, 2000);
-  }
-
   useEffect(() => {
     const stepInterval = setInterval(() => {
       setCurrentStep(oldStep => {
@@ -47,6 +53,18 @@ const Analyzing = ({ user }) => {
       clearInterval(stepInterval);
     };
   }, []);
+
+  useEffect(() => {
+    if (progress === 100) {
+      setTimeout(() => {
+        if (hasSubscription) {
+          navigate('/thanks');
+        } else {
+          navigate('/paywall');
+        }
+      }, 2000);
+    }
+  }, [progress, hasSubscription, navigate]);
 
   return (
     <div className={s.analyzing}>
