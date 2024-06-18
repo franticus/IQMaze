@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from 'firebase/auth';
+import { saveUserData } from '../../helpers/firestoreHelpers';
 import s from './LoginForm.module.scss';
 import googleLogo from '../../img/logo_google.svg';
 
@@ -28,7 +29,12 @@ const LoginForm = ({ switchToSignUp, onSuccess }) => {
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Сохранение данных пользователя в Firestore
+      await saveUserData(user.uid, user.email, user.displayName);
+
       console.log('User logged in with Google');
       onSuccess();
     } catch (error) {

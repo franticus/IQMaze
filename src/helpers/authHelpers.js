@@ -1,3 +1,4 @@
+// authHelpers.js
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -6,7 +7,8 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../firebaseConfig'; // Импортируйте вашу конфигурацию Firebase
+import { firebaseConfig } from '../firebaseConfig';
+import { saveUserData } from './firestoreHelpers';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -20,6 +22,9 @@ export const registerUser = async (email, password, displayName) => {
       password
     );
     const user = userCredential.user;
+
+    // Сохранение данных пользователя в Firestore
+    await saveUserData(user.uid, user.email, displayName);
 
     // Сохранение данных пользователя в LocalStorage
     localStorage.setItem('userName', JSON.stringify(displayName));
@@ -53,6 +58,9 @@ export const loginWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+
+    // Сохранение данных пользователя в Firestore (при необходимости)
+    await saveUserData(user.uid, user.email, user.displayName);
 
     // Сохранение данных пользователя в LocalStorage
     localStorage.setItem('userName', JSON.stringify(user.displayName));
