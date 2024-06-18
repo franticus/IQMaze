@@ -13,7 +13,7 @@ const Thanks = ({ user }) => {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    const storedUserName = JSON.parse(localStorage.getItem('userName'));
+    const storedUserName = localStorage.getItem('userName');
     if (storedUserName) {
       setUserName(storedUserName);
     }

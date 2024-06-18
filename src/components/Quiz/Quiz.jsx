@@ -145,8 +145,6 @@ const Quiz = () => {
   );
 
   const skip = () => {
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
     localStorage.removeItem('completePayment');
     localStorage.setItem(
       'seriesScores',
