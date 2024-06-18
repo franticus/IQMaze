@@ -38,15 +38,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  if (typeof window !== 'undefined') {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'appLoad',
-      timestamp: new Date().toISOString(),
-      userId: userId,
-    });
-  }
-
   return (
     <Router>
       <ScrollToTop />

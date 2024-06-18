@@ -17,6 +17,23 @@ const Home = ({ user }) => {
   const [showLastResults, setShowLastResults] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+
+      const isAppLoadEventRegistered = window.dataLayer.some(
+        event => event.event === 'appLoad'
+      );
+
+      if (!isAppLoadEventRegistered) {
+        window.dataLayer.push({
+          event: 'appLoad',
+          timestamp: new Date().toISOString(),
+        });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     AOS.init({
       duration: 1000,
     });

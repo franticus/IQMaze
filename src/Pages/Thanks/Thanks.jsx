@@ -13,6 +13,17 @@ const Thanks = ({ user }) => {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
+    if (userName && typeof window !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'thanksPage',
+        timestamp: new Date().toISOString(),
+        userName: userName,
+      });
+    }
+  }, [userName]);
+
+  useEffect(() => {
     const storedUserName = localStorage.getItem('userName');
     if (storedUserName) {
       setUserName(storedUserName);
