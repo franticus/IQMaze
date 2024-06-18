@@ -23,7 +23,7 @@ const checkSubscription = async email => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email: email.replace(/['"]+/g, '') }),
     });
 
     if (!response.ok) {
@@ -48,7 +48,7 @@ const createCheckoutSession = async (email, userId, priceId, iqValue, name) => {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        email,
+        email: email.replace(/['"]+/g, ''),
         userId,
         priceId,
         iqValue,
@@ -76,7 +76,7 @@ const createBillingPortalSession = async email => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email: email.replace(/['"]+/g, '') }),
     });
 
     if (!response.ok) {
