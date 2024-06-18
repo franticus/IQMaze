@@ -38,18 +38,14 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (userId) {
-      if (typeof window !== 'undefined') {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: 'appLoad',
-          timestamp: new Date().toISOString(),
-          userId: userId,
-        });
-      }
-    }
-  }, [userId]);
+  if (typeof window !== 'undefined') {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'appLoad',
+      timestamp: new Date().toISOString(),
+      userId: userId,
+    });
+  }
 
   return (
     <Router>
