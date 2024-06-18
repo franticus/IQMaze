@@ -2,12 +2,15 @@ import React from 'react';
 import s from './Footer.module.scss';
 import logo from '../../img/iq_logo.png';
 import { useNavigate } from 'react-router-dom';
+import cn from 'classnames';
 
 const Footer = () => {
   const navigate = useNavigate();
+  const currentUrl = window.location.href;
+  const isPaywall = currentUrl.includes('paywall');
 
   return (
-    <footer className={s.footer}>
+    <footer className={cn(s.footer, isPaywall && s.footer_pb)}>
       <div className={s.footer__container}>
         <div className={s.logo}>
           <img className={s.mainLogo} src={logo} alt='IQMaze Logo' />

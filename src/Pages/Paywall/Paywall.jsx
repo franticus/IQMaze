@@ -29,7 +29,6 @@ const Paywall = ({ user, userId }) => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
-  console.log('isButtonVisible:', isButtonVisible);
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
