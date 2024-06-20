@@ -8,40 +8,25 @@ import html2canvas from 'html2canvas';
 import { getIQDescription } from './getIQDescription';
 import graph from '../../img/graph.jpg';
 
-const Thanks = ({ user }) => {
+const Thanks = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
+  const storedUserName = localStorage.getItem('userName');
 
   useEffect(() => {
     if (userName && typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: 'thanksPage',
-        timestamp: new Date().toISOString(),
-        userName: userName,
       });
     }
   }, [userName]);
 
   useEffect(() => {
-    const storedUserName = localStorage.getItem('userName');
     if (storedUserName) {
-      setUserName(storedUserName);
+      setUserName(storedUserName.replace(/['"]+/g, ''));
     }
-  }, []);
-
-  useEffect(() => {
-    if (user?.displayName) {
-      setUserName(user.displayName);
-      localStorage.setItem('userName', JSON.stringify(user.displayName));
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (userName) {
-      localStorage.setItem('userName', JSON.stringify(userName));
-    }
-  }, [userName]);
+  }, [storedUserName]);
 
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
   const date = new Date().toLocaleDateString();

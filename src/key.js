@@ -6,7 +6,7 @@ const url = 'https://iqmazestripe-myfirst27.amvera.io';
 const urlDev = 'https://stripeiq-frantunn.amvera.io';
 const urlLocal = 'http://localhost:4242';
 
-const priceIdProd = 'price_1PQ8NfBbDeRYiB9tRjkx9Mcf';
+const priceIdProd = 'price_1PTfQzBbDeRYiB9tFL1UaUyp';
 const priceIdDev = 'price_1PQBhPRrQfUQC5MYqbQ7MyWh';
 
 const currentUrl = window.location.href;
