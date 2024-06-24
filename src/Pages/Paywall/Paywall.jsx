@@ -25,10 +25,13 @@ const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
+  console.log('iqValue:', iqValue);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const hashParams = new URLSearchParams(window.location.hash.split('?')[1]);
+  const isV30q = hashParams.get('V30q') === 'true';
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const navigate = useNavigate();
@@ -78,7 +81,7 @@ const Paywall = ({ user, userId }) => {
     verifySubscription();
   }, [user, email, navigate, seriesScoresLocal]);
 
-  const calculateIQ = () => {
+  const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
       return;
@@ -89,13 +92,18 @@ const Paywall = ({ user, userId }) => {
       0
     );
 
-    const iq = iqTable[totalCorrectAnswers] || '62';
+    let iq;
+    if (isV30q) {
+      totalCorrectAnswers *= 2;
+    }
+
+    iq = iqTable[totalCorrectAnswers] || '62';
     setIqValue(iq);
     localStorage.setItem('iqScore', iq);
   };
 
   useEffect(() => {
-    calculateIQ();
+    calculateAndSetIQ();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seriesScoresLocal]);
 

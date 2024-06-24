@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { quizData } from './quizData/quizData.js';
+import { quizDataV30q } from './quizData/quizDataV30q.js';
 import ProgressBar from '../ProgressBar/ProgressBar.jsx';
 import { useNavigate } from 'react-router-dom';
 import s from './Quiz.module.scss';
@@ -15,6 +16,10 @@ const Quiz = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const currentUrl = window.location.href;
   const isProd = currentUrl.includes('iq-check140');
+  const hashParams = new URLSearchParams(window.location.hash.split('?')[1]);
+  const isV30q = hashParams.get('V30q') === 'true';
+  const quizDataVariant = isV30q ? quizDataV30q : quizData;
+  const whenEightVariants = isV30q ? 12 : 24;
   const [seriesScores, setSeriesScores] = useState({
     A: 0,
     B: 0,
@@ -23,11 +28,11 @@ const Quiz = () => {
     E: 0,
   });
   const [pointerEvents, setPointerEvents] = useState(true);
-  const question = quizData[step];
+  const question = quizDataVariant[step];
   const style = {
     backgroundImage: `url(${require(`../../img/quiz/${question.question}.png`)})`,
   };
-  const isLastQuestion = step === quizData.length - 1;
+  const isLastQuestion = step === quizDataVariant.length - 1;
 
   useEffect(() => {
     AOS.init({
@@ -111,7 +116,7 @@ const Quiz = () => {
     }
   }, [step]);
 
-  const percentage = Math.round(((step + 1) / quizData.length) * 100);
+  const percentage = Math.round(((step + 1) / quizDataVariant.length) * 100);
 
   const defaultVariant = useCallback(
     () => (
@@ -119,7 +124,7 @@ const Quiz = () => {
         className={cn(
           s.fade,
           showQuiz ? s.show : '',
-          step >= 24 ? s.eight : ''
+          step >= whenEightVariants ? s.eight : ''
         )}
       >
         {question.variants &&
@@ -135,7 +140,8 @@ const Quiz = () => {
               <div
                 className={cn(s.quest_icon, {
                   [s[`quest_icon_${index + 1}`]]: true,
-                  [s[`quest_icon_square_${index + 1}`]]: step >= 24,
+                  [s[`quest_icon_square_${index + 1}`]]:
+                    step >= whenEightVariants,
                 })}
                 style={style}
               ></div>
@@ -174,13 +180,13 @@ const Quiz = () => {
         <ProgressBar percentage={percentage} stepBack={stepBack} />
       </div>
       <div className={s.questions_title} data-aos='fade-down'>
-        (Level {question.level}) Question {step + 1}/{quizData.length}: Choose
-        the correct form for the blanks.
+        (Level {question.level}) Question {step + 1}/{quizDataVariant.length}:
+        Choose the correct form for the blanks.
       </div>
       <div className={s.questions}>
         <div
           className={cn(s.quest_image, {
-            [s[`quest_image_square`]]: step >= 24,
+            [s[`quest_image_square`]]: step >= whenEightVariants,
           })}
           style={style}
         ></div>

@@ -5,7 +5,6 @@ export function getCookie(name) {
   return null;
 }
 
-// Функция для установки cookie
 export function setCookie(name, value, days) {
   let expires = '';
   if (days) {
@@ -16,7 +15,6 @@ export function setCookie(name, value, days) {
   document.cookie = name + '=' + (value || '') + expires + '; path=/';
 }
 
-// Простая функция для генерации уникального идентификатора
 export function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
@@ -25,12 +23,11 @@ export function generateUUID() {
   });
 }
 
-// Функция для получения или создания userId
 export function getUserId() {
   let userId = getCookie('userId');
   if (!userId) {
     userId = generateUUID();
-    setCookie('userId', userId, 365); // Сохраняем идентификатор на 1 год
+    setCookie('userId', userId, 365);
   }
   return userId;
 }
