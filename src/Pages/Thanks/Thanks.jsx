@@ -20,6 +20,8 @@ const Thanks = () => {
   const [userName, setUserName] = useState('');
   const storedUserName = localStorage.getItem('userName');
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+  const [showIncorrectAnswers, setShowIncorrectAnswers] = useState(false);
+  const incorrectAnswersRef = useRef(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -99,6 +101,13 @@ const Thanks = () => {
     });
   };
 
+  const handleShowIncorrectAnswers = () => {
+    setShowIncorrectAnswers(true);
+    setTimeout(() => {
+      incorrectAnswersRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
   const defaultVariantIncorrectAnswers = useCallback(
     () => (
       <ul>
@@ -128,8 +137,8 @@ const Thanks = () => {
                       [s[`quest_icon_${variantIndex + 1}`]]: true,
                       [s[`quest_icon_square_${variantIndex + 1}`]]:
                         answer.variants.length > 6,
-                      [s.quest_icon_wrong]: variantIndex + 1 === answer.true,
-                      [s.quest_icon_correct]:
+                      [s.quest_icon_correct]: variantIndex + 1 === answer.true,
+                      [s.quest_icon_wrong]:
                         variantIndex + 1 !== answer.true &&
                         variantIndex + 1 === answer.userAnswer,
                     })}
@@ -184,6 +193,10 @@ const Thanks = () => {
           Download Certificate
         </button>
 
+        <button onClick={handleShowIncorrectAnswers} data-aos='fade-up'>
+          Show my incorrect answers
+        </button>
+
         <div className={s.iqDescription} data-aos='fade-right'>
           <h2>Result description</h2>
           <div
@@ -224,10 +237,17 @@ const Thanks = () => {
           <img src={graph} alt='IQ Distribution' className={s.iqImage} />
         </div>
 
-        <div className={s.incorrectAnswers}>
-          <h1 className={s.mainHeading}>Incorrect Answers</h1>
-          {defaultVariantIncorrectAnswers()}
-        </div>
+        {showIncorrectAnswers && (
+          <div
+            className={cn(s.incorrectAnswers, {
+              [s.hidden]: !showIncorrectAnswers,
+            })}
+            ref={incorrectAnswersRef}
+          >
+            <h2 className={s.mainHeading}>Incorrect Answers</h2>
+            {defaultVariantIncorrectAnswers()}
+          </div>
+        )}
 
         <button onClick={() => customNavigate('/home')} data-aos='fade-up'>
           Go to IQMaze
