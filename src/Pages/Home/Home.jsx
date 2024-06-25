@@ -15,6 +15,7 @@ import { checkSubscription } from '../../helpers/stripeHelpers';
 const Home = ({ user }) => {
   const customNavigate = useCustomNavigate();
   const [showLastResults, setShowLastResults] = useState(false);
+  const [hasStartedTest, setHasStartedTest] = useState(false);
 
   useEffect(() => {
     const currentUrlParams = window.location.search;
@@ -59,6 +60,19 @@ const Home = ({ user }) => {
     };
 
     verifySubscription();
+
+    const currentStep = localStorage.getItem('currentStep');
+    if (currentStep && parseInt(currentStep, 10) > 0) {
+      setHasStartedTest(true);
+    }
+
+    const seriesScores = localStorage.getItem('seriesScores');
+    if (seriesScores) {
+      localStorage.setItem(
+        'seriesScores',
+        JSON.stringify({ A: 0, B: 0, C: 0, D: 0, E: 0 })
+      );
+    }
   }, [user]);
 
   const handleStartTest = () => {
@@ -86,7 +100,7 @@ const Home = ({ user }) => {
           conduct the test in a quiet and comfortable place.
         </div>
         <button className={s.button} onClick={handleStartTest}>
-          Start IQ test
+          {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
         </button>
         {showLastResults && (
           <button
@@ -174,7 +188,7 @@ const Home = ({ user }) => {
           professional growth.
         </p>
         <button className={s.button} onClick={handleStartTest}>
-          Start IQ test
+          {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
         </button>
       </section>
     </div>

@@ -13,30 +13,55 @@ import { getUserId } from '../../helpers/userId.js';
 
 const Quiz = () => {
   const customNavigate = useCustomNavigate();
-  const [step, setStep] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const currentUrl = window.location.href;
   const isProd = currentUrl.includes('iq-check140');
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
+  const [answers, setAnswers] = useState(() => {
+    const savedAnswers = localStorage.getItem('answers');
+    return savedAnswers ? JSON.parse(savedAnswers) : [];
+  });
+  console.log('answers:', answers);
   const quizDataVariant = isV30q
     ? quizDataV30q
     : isV20q
     ? quizDataV20q
     : quizData;
   const whenEightVariants = isV30q ? 12 : isV20q ? 8 : 24;
-  const [seriesScores, setSeriesScores] = useState({
-    A: 0,
-    B: 0,
-    C: 0,
-    D: 0,
-    E: 0,
+
+  const [step, setStep] = useState(() => {
+    let savedStep = localStorage.getItem('currentStep');
+    if (savedStep === null || savedStep === '' || isNaN(savedStep)) {
+      savedStep = 0;
+      localStorage.setItem('currentStep', 0);
+    } else {
+      savedStep = parseInt(savedStep, 10);
+    }
+    return savedStep;
   });
+
+  const [seriesScores, setSeriesScores] = useState(() => {
+    const savedScores = localStorage.getItem('seriesScores');
+    return savedScores
+      ? JSON.parse(savedScores)
+      : {
+          A: 0,
+          B: 0,
+          C: 0,
+          D: 0,
+          E: 0,
+        };
+  });
+
+  const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
   const question = quizDataVariant[step];
-  const style = {
-    backgroundImage: `url(${require(`../../img/quiz/${question.question}.png`)})`,
-  };
+  const style = question
+    ? {
+        backgroundImage: `url(${require(`../../img/quiz/${question.question}.png`)})`,
+      }
+    : {};
+
   const isLastQuestion = step === quizDataVariant.length - 1;
 
   useEffect(() => {
@@ -55,18 +80,66 @@ const Quiz = () => {
   }, [step]);
 
   useEffect(() => {
+    localStorage.setItem('currentStep', step);
+  }, [step]);
+
+  useEffect(() => {
     localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
   }, [seriesScores]);
 
+  useEffect(() => {
+    localStorage.setItem('answers', JSON.stringify(answers));
+  }, [answers]);
+
   const recordAnswer = useCallback(
     index => {
-      const isTrueAnswer = question.true === index;
+      if (!question) return;
 
-      if (isTrueAnswer) {
-        setSeriesScores(prevScores => ({
-          ...prevScores,
-          [question.level]: prevScores[question.level] + 1,
-        }));
+      const isTrueAnswer = question.true === index;
+      const previousAnswer = answers.find(
+        ans => ans.id === question.id && ans.level === question.level
+      );
+
+      if (previousAnswer) {
+        if (previousAnswer.isUserTrue && !isTrueAnswer) {
+          setSeriesScores(prevScores => ({
+            ...prevScores,
+            [question.level]: prevScores[question.level] - 1,
+          }));
+        } else if (!previousAnswer.isUserTrue && isTrueAnswer) {
+          setSeriesScores(prevScores => ({
+            ...prevScores,
+            [question.level]: prevScores[question.level] + 1,
+          }));
+        }
+
+        setAnswers(prevAnswers =>
+          prevAnswers.map(ans =>
+            ans.id === question.id && ans.level === question.level
+              ? { ...ans, userAnswer: index, isUserTrue: isTrueAnswer }
+              : ans
+          )
+        );
+      } else {
+        setAnswers(prevAnswers => [
+          ...prevAnswers,
+          {
+            id: question.id,
+            level: question.level,
+            question: question.question,
+            variants: question.variants,
+            true: question.true,
+            userAnswer: index,
+            isUserTrue: isTrueAnswer,
+          },
+        ]);
+
+        if (isTrueAnswer) {
+          setSeriesScores(prevScores => ({
+            ...prevScores,
+            [question.level]: prevScores[question.level] + 1,
+          }));
+        }
       }
 
       const userId = getUserId();
@@ -96,24 +169,43 @@ const Quiz = () => {
         });
       }
     },
-    [question.true, question.level, step]
+    [question, step, answers]
   );
 
-  const onClickVariant = useCallback(() => {
-    setPointerEvents(true);
-    setShowQuiz(false);
+  const onClickVariant = useCallback(
+    index => {
+      recordAnswer(index + 1);
+      setPointerEvents(true);
+      setShowQuiz(false);
 
-    if (!isLastQuestion) {
-      setTimeout(() => {
-        setStep(prev => prev + 1);
-      }, 500);
-    } else {
-      setTimeout(() => {
-        localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
-        customNavigate('/analyzing');
-      }, 1000);
-    }
-  }, [isLastQuestion, customNavigate]);
+      if (!isLastQuestion) {
+        setTimeout(() => {
+          setStep(prev => prev + 1);
+        }, 500);
+      } else {
+        const updatedAnswers = [
+          ...answers,
+          {
+            id: question.id,
+            level: question.level,
+            question: question.question,
+            variants: question.variants,
+            true: question.true,
+            userAnswer: index + 1,
+            isUserTrue: question.true === index + 1,
+          },
+        ];
+        setAnswers(updatedAnswers);
+        setTimeout(() => {
+          localStorage.setItem('lastAnswers', JSON.stringify(updatedAnswers));
+          localStorage.removeItem('answers');
+          localStorage.removeItem('currentStep');
+          customNavigate('/analyzing');
+        }, 1000);
+      }
+    },
+    [isLastQuestion, customNavigate, answers, recordAnswer, question]
+  );
 
   const stepBack = useCallback(() => {
     if (step > 0) {
@@ -132,15 +224,10 @@ const Quiz = () => {
           step >= whenEightVariants ? s.eight : ''
         )}
       >
-        {question.variants &&
+        {question &&
+          question.variants &&
           question.variants.map((quest, index) => (
-            <li
-              key={`${quest}-${step}`}
-              onClick={() => {
-                recordAnswer(index + 1);
-                onClickVariant();
-              }}
-            >
+            <li key={`${quest}-${step}`} onClick={() => onClickVariant(index)}>
               <span>{index + 1}</span>
               <div
                 className={cn(s.quest_icon, {
@@ -154,7 +241,7 @@ const Quiz = () => {
           ))}
       </ul>
     ),
-    [question.variants, recordAnswer, onClickVariant, showQuiz, step, style]
+    [question, onClickVariant, showQuiz, step, style]
   );
 
   const skip = () => {
@@ -185,19 +272,26 @@ const Quiz = () => {
         <ProgressBar percentage={percentage} stepBack={stepBack} />
       </div>
       <div className={s.questions_title} data-aos='fade-down'>
-        (Level {question.level}) Question {step + 1}/{quizDataVariant.length}:
-        Choose the correct form for the blanks.
+        {question
+          ? `(Level ${question.level}) Question ${step + 1}/${
+              quizDataVariant.length
+            }: Choose the correct form for the blanks.`
+          : 'Loading...'}
       </div>
       <div className={s.questions}>
-        <div
-          className={cn(s.quest_image, {
-            [s[`quest_image_square`]]: step >= whenEightVariants,
-          })}
-          style={style}
-        ></div>
-        <div className={s.quiz_container} data-aos='fade-left'>
-          <div className={s.quiz}>{defaultVariant()}</div>
-        </div>
+        {question && (
+          <>
+            <div
+              className={cn(s.quest_image, {
+                [s[`quest_image_square`]]: step >= whenEightVariants,
+              })}
+              style={style}
+            ></div>
+            <div className={s.quiz_container} data-aos='fade-left'>
+              <div className={s.quiz}>{defaultVariant()}</div>
+            </div>
+          </>
+        )}
       </div>
       {!isProd && <button onClick={() => skip()}>Skip</button>}
     </div>
