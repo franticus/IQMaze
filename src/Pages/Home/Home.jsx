@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Home.module.scss';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import about_1 from '../../img/about_1.jpg';
 import about_2 from '../../img/about_2.jpg';
 import about_3 from '../../img/about_3.jpg';
@@ -13,8 +13,19 @@ import cn from 'classnames';
 import { checkSubscription } from '../../helpers/stripeHelpers';
 
 const Home = ({ user }) => {
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const [showLastResults, setShowLastResults] = useState(false);
+
+  useEffect(() => {
+    const currentUrlParams = window.location.search;
+    const savedParams = localStorage.getItem('savedParams');
+
+    if (savedParams) {
+      localStorage.setItem('savedParams', savedParams);
+    } else {
+      localStorage.setItem('savedParams', currentUrlParams);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -51,11 +62,11 @@ const Home = ({ user }) => {
   }, [user]);
 
   const handleStartTest = () => {
-    navigate('/iqtest');
+    customNavigate('/iqtest');
   };
 
   const handleShowLastResults = () => {
-    navigate('/thanks');
+    customNavigate('/thanks');
   };
 
   return (

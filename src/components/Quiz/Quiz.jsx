@@ -4,22 +4,27 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { quizData } from './quizData/quizData.js';
 import { quizDataV30q } from './quizData/quizDataV30q.js';
+import { quizDataV20q } from './quizData/quizDataV20q.js';
 import ProgressBar from '../ProgressBar/ProgressBar.jsx';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import s from './Quiz.module.scss';
 import cn from 'classnames';
 import { getUserId } from '../../helpers/userId.js';
 
 const Quiz = () => {
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const [step, setStep] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const currentUrl = window.location.href;
   const isProd = currentUrl.includes('iq-check140');
-  const hashParams = new URLSearchParams(window.location.hash.split('?')[1]);
-  const isV30q = hashParams.get('V30q') === 'true';
-  const quizDataVariant = isV30q ? quizDataV30q : quizData;
-  const whenEightVariants = isV30q ? 12 : 24;
+  const isV30q = currentUrl.includes('V30q');
+  const isV20q = currentUrl.includes('V20q');
+  const quizDataVariant = isV30q
+    ? quizDataV30q
+    : isV20q
+    ? quizDataV20q
+    : quizData;
+  const whenEightVariants = isV30q ? 12 : isV20q ? 8 : 24;
   const [seriesScores, setSeriesScores] = useState({
     A: 0,
     B: 0,
@@ -105,10 +110,10 @@ const Quiz = () => {
     } else {
       setTimeout(() => {
         localStorage.setItem('seriesScores', JSON.stringify(seriesScores));
-        navigate('/analyzing');
+        customNavigate('/analyzing');
       }, 1000);
     }
-  }, [isLastQuestion, navigate]);
+  }, [isLastQuestion, customNavigate]);
 
   const stepBack = useCallback(() => {
     if (step > 0) {
@@ -165,7 +170,7 @@ const Quiz = () => {
       })
     );
 
-    navigate('/paywall');
+    customNavigate('/paywall');
   };
 
   return (

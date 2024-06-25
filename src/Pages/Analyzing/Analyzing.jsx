@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import s from './Analyzing.module.scss';
 import CheckList from '../../components/CheckList/CheckList';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { checkSubscription } from '../../helpers/stripeHelpers';
 
 const Analyzing = ({ user }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [hasSubscription, setHasSubscription] = useState(false);
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const totalSteps = 5;
 
   useEffect(() => {
@@ -58,13 +58,13 @@ const Analyzing = ({ user }) => {
     if (progress === 100) {
       setTimeout(() => {
         if (hasSubscription) {
-          navigate('/thanks');
+          customNavigate('/thanks');
         } else {
-          navigate('/paywall');
+          customNavigate('/paywall');
         }
       }, 2000);
     }
-  }, [progress, hasSubscription, navigate]);
+  }, [progress, hasSubscription, customNavigate]);
 
   return (
     <div className={s.analyzing}>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import s from './Navbar.module.scss';
 import cn from 'classnames';
 import logo from '../../img/iq_logo.png';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import {
@@ -14,7 +14,7 @@ import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
 
 const Navbar = ({ user }) => {
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasSubscription, setHasSubscription] = useState(false);
@@ -66,7 +66,7 @@ const Navbar = ({ user }) => {
     try {
       await signOut(auth);
       console.log('User signed out successfully');
-      navigate('/home');
+      customNavigate('/home');
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -113,7 +113,7 @@ const Navbar = ({ user }) => {
         <div className={s.header__container}>
           <div className={s.logo}>
             <img className={s.mainLogo} src={logo} alt='' />
-            <span className={s.logo} onClick={() => navigate('/home')}>
+            <span className={s.logo} onClick={() => customNavigate('/home')}>
               IQMaze
             </span>
           </div>
@@ -131,7 +131,7 @@ const Navbar = ({ user }) => {
                   <li
                     onClick={() => {
                       setIsOpen(false);
-                      navigate(`/${link.toLowerCase()}`);
+                      customNavigate(`/${link.toLowerCase()}`);
                     }}
                     className={cn(s.menu__item, s.menu__link)}
                     key={link}

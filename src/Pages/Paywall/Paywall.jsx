@@ -4,7 +4,7 @@ import 'aos/dist/aos.css';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
 import { iqTable } from './iqTable.js';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
@@ -30,11 +30,12 @@ const Paywall = ({ user, userId }) => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const hashParams = new URLSearchParams(window.location.hash.split('?')[1]);
-  const isV30q = hashParams.get('V30q') === 'true';
+  const currentUrl = window.location.href;
+  const isV30q = currentUrl.includes('V30q');
+  const isV20q = currentUrl.includes('V20q');
 
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const paymentButtonRef = useRef(null);
 
   useEffect(() => {
@@ -42,6 +43,12 @@ const Paywall = ({ user, userId }) => {
       duration: 1000,
       once: true,
     });
+
+    const savedParams = localStorage.getItem('savedParams');
+    if (savedParams) {
+      const newUrl = `${window.location.pathname}${savedParams}`;
+      window.history.replaceState(null, '', newUrl);
+    }
 
     if (user) {
       setName(user.displayName || '');
@@ -59,8 +66,8 @@ const Paywall = ({ user, userId }) => {
   }, [user]);
 
   useEffect(() => {
-    if (!seriesScoresLocal) navigate('/');
-  }, [navigate, seriesScoresLocal]);
+    if (!seriesScoresLocal) customNavigate('/');
+  }, [customNavigate, seriesScoresLocal]);
 
   useEffect(() => {
     const verifySubscription = async () => {
@@ -73,13 +80,13 @@ const Paywall = ({ user, userId }) => {
           );
           const iq = iqTable[totalCorrectAnswers] || '62';
           localStorage.setItem('iqScore', iq);
-          navigate('/thanks');
+          customNavigate('/thanks');
         }
       }
     };
 
     verifySubscription();
-  }, [user, email, navigate, seriesScoresLocal]);
+  }, [user, email, customNavigate, seriesScoresLocal]);
 
   const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
@@ -95,6 +102,10 @@ const Paywall = ({ user, userId }) => {
     let iq;
     if (isV30q) {
       totalCorrectAnswers *= 2;
+    }
+
+    if (isV20q) {
+      totalCorrectAnswers *= 3;
     }
 
     iq = iqTable[totalCorrectAnswers] || '62';

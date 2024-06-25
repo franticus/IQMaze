@@ -6,7 +6,7 @@ import Terms from './Pages/Terms/Terms';
 import Home from './Pages/Home/Home';
 import Test from './Pages/Test/Test';
 import Navbar from './components/Navbar/Navbar';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Analyzing from './Pages/Analyzing/Analyzing';
 import Paywall from './Pages/Paywall/Paywall';
@@ -25,7 +25,6 @@ function App() {
         console.log('User is signed in:', user);
         setUser(user);
         setUserId(user.uid);
-        // localStorage.setItem('userEmail', JSON.stringify(user.email || ''));
       } else {
         console.log('No user is signed in');
         setUser(null);
@@ -39,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <>
       <ScrollToTop />
       <Navbar user={user} />
       <div className='app'>
@@ -74,7 +73,7 @@ function App() {
         </div>
       </div>
       <Footer />
-    </Router>
+    </>
   );
 }
 

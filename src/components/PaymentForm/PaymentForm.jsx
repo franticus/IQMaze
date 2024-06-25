@@ -12,13 +12,13 @@ import cn from 'classnames';
 import { getUserId } from '../../helpers/userId';
 
 import { apiUrl } from '../../key.js';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 
 const PaymentForm = ({ name, email, amount }) => {
   const userId = getUserId();
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [emailInput, setEmailInput] = useState(email);
   const [error, setError] = useState(null);
@@ -73,7 +73,7 @@ const PaymentForm = ({ name, email, amount }) => {
         setIsProcessing(false);
       } else {
         if (result.paymentIntent.status === 'succeeded') {
-          navigate('/thanks');
+          customNavigate('/thanks');
         }
         setIsProcessing(false);
       }

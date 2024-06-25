@@ -2,14 +2,14 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import s from './Thanks.module.scss';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import certificate from '../../img/certificate_empty.png';
 import html2canvas from 'html2canvas';
 import { getIQDescription } from './getIQDescription';
 import graph from '../../img/graph.jpg';
 
 const Thanks = () => {
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const [userName, setUserName] = useState('');
   const storedUserName = localStorage.getItem('userName');
 
@@ -19,6 +19,12 @@ const Thanks = () => {
       window.dataLayer.push({
         event: 'thanksPage',
       });
+    }
+
+    const savedParams = localStorage.getItem('savedParams');
+    if (savedParams) {
+      const newUrl = `${window.location.pathname}${savedParams}`;
+      window.history.replaceState(null, '', newUrl);
     }
   }, []);
 
@@ -163,7 +169,7 @@ const Thanks = () => {
             <img src={graph} alt='IQ Distribution' className={s.iqImage} />
           </div>
 
-          <button onClick={() => navigate('/home')} data-aos='fade-up'>
+          <button onClick={() => customNavigate('/home')} data-aos='fade-up'>
             Go to IQMaze
           </button>
         </section>

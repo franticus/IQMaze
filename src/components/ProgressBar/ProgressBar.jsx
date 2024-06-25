@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import style from './ProgressBar.module.scss';
 import mainLogo from '../../img/iq_logo.png';
-import { useNavigate } from 'react-router-dom';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 
 const ProgressBar = ({ percentage, stepBack }) => {
   const [timer, setTimer] = useState(40 * 60);
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -14,7 +14,7 @@ const ProgressBar = ({ percentage, stepBack }) => {
         if (prevTimer <= 1) {
           clearInterval(interval);
           console.log('DONE');
-          navigate('/paywall');
+          customNavigate('/paywall');
           return 0;
         }
         return prevTimer - 1;
