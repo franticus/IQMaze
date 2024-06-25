@@ -52,6 +52,143 @@ $border-radius: 8px;
 	}
 }
 
+.incorrectAnswers {
+	margin-top: 80px;
+}
+
+.questVariants {
+	margin: 0 0 40px 0;
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 300px;
+}
+
+.quest_image {
+	width: 340px;
+	height: 220px;
+	background: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+	&_square {
+		width: 300px;
+		height: 250px;
+	}
+}
+
+.quest_icon {
+	height: 50px;
+	width: 80px;
+	background-size: 310%;
+	background-repeat: no-repeat;
+	transition: all 0.2s ease-in-out;
+	border-radius: 10px;
+	position: relative;
+	opacity: 0.3;
+
+	&_correct {
+		opacity: 1;
+
+		&::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 1px;
+			width: 6px;
+			border-radius: 100px;
+			height: 90%;
+			background: red;
+			opacity: 0.9;
+		}
+	}
+
+	&_wrong {
+		opacity: 1;
+
+		&::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 1px;
+			width: 6px;
+			border-radius: 100px;
+			height: 90%;
+			background: green;
+			opacity: 0.9;
+		}
+	}
+
+	&_1 {
+		background-position: 5px -141px;
+	}
+
+	&_2 {
+		background-position: -82px -141px;
+	}
+
+	&_3 {
+		background-position: -170px -141px;
+	}
+
+	&_4 {
+		background-position: 5px -207px;
+	}
+
+	&_5 {
+		background-position: -82px -207px;
+	}
+
+	&_6 {
+		background-position: -170px -207px;
+	}
+
+	&_square {
+		&:hover {
+			cursor: pointer;
+			transform: scale(1.1);
+		}
+
+		&_1 {
+			background-position: 5px -168px;
+			background-size: 370%;
+		}
+
+		&_2 {
+			background-position: -70px -168px;
+			background-size: 370%;
+		}
+
+		&_3 {
+			background-position: -146px -168px;
+			background-size: 370%;
+		}
+
+		&_4 {
+			background-position: -223px -168px;
+			background-size: 370%;
+		}
+
+		&_5 {
+			background-position: 5px -230px;
+			background-size: 370%;
+		}
+
+		&_6 {
+			background-position: -70px -230px;
+			background-size: 370%;
+		}
+
+		&_7 {
+			background-position: -146px -230px;
+			background-size: 370%;
+		}
+
+		&_8 {
+			background-position: -222px -230px;
+			background-size: 370%;
+		}
+	}
+}
+
 .heroSection {
 	width: calc(100vw - 40px);
 	max-width: 900px;
