@@ -21,7 +21,6 @@ const Quiz = () => {
     const savedAnswers = localStorage.getItem('answers');
     return savedAnswers ? JSON.parse(savedAnswers) : [];
   });
-  console.log('answers:', answers);
   const quizDataVariant = isV30q
     ? quizDataV30q
     : isV20q

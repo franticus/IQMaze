@@ -26,6 +26,9 @@ const Home = ({ user }) => {
     } else {
       localStorage.setItem('savedParams', currentUrlParams);
     }
+
+    const newUrl = `${window.location.pathname}${savedParams}`;
+    window.history.replaceState(null, '', newUrl);
   }, []);
 
   useEffect(() => {
@@ -65,17 +68,21 @@ const Home = ({ user }) => {
     if (currentStep && parseInt(currentStep, 10) > 0) {
       setHasStartedTest(true);
     }
-
-    const seriesScores = localStorage.getItem('seriesScores');
-    if (seriesScores) {
-      localStorage.setItem(
-        'seriesScores',
-        JSON.stringify({ A: 0, B: 0, C: 0, D: 0, E: 0 })
-      );
-    }
   }, [user]);
 
   const handleStartTest = () => {
+    !hasStartedTest &&
+      localStorage.setItem(
+        'seriesScores',
+        JSON.stringify({
+          A: 0,
+          B: 0,
+          C: 0,
+          D: 0,
+          E: 0,
+        })
+      );
+    !hasStartedTest && localStorage.setItem('answers', JSON.stringify([]));
     customNavigate('/iqtest');
   };
 
