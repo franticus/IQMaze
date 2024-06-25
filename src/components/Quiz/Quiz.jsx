@@ -7,6 +7,8 @@ import { quizDataV30q } from './quizData/quizDataV30q.js';
 import { quizDataV20q } from './quizData/quizDataV20q.js';
 import ProgressBar from '../ProgressBar/ProgressBar.jsx';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import s from './Quiz.module.scss';
 import cn from 'classnames';
 import { getUserId } from '../../helpers/userId.js';
@@ -54,6 +56,7 @@ const Quiz = () => {
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
+  const [loading, setLoading] = useState(true);
   const question = quizDataVariant[step];
   const style = question
     ? {
@@ -89,6 +92,13 @@ const Quiz = () => {
   useEffect(() => {
     localStorage.setItem('answers', JSON.stringify(answers));
   }, [answers]);
+
+  useEffect(() => {
+    setLoading(true);
+    const img = new Image();
+    img.src = require(`../../img/quiz/${question.question}.png`);
+    img.onload = () => setLoading(false);
+  }, [question]);
 
   const recordAnswer = useCallback(
     index => {
@@ -280,14 +290,24 @@ const Quiz = () => {
       <div className={s.questions}>
         {question && (
           <>
-            <div
-              className={cn(s.quest_image, {
-                [s[`quest_image_square`]]: step >= whenEightVariants,
-              })}
-              style={style}
-            ></div>
+            {loading ? (
+              <Skeleton height={220} width={340} className={s.quest_image} />
+            ) : (
+              <div
+                className={cn(s.quest_image, {
+                  [s[`quest_image_square`]]: step >= whenEightVariants,
+                })}
+                style={style}
+              ></div>
+            )}
             <div className={s.quiz_container} data-aos='fade-left'>
-              <div className={s.quiz}>{defaultVariant()}</div>
+              <div className={s.quiz}>
+                {loading ? (
+                  <Skeleton count={4} height={50} className={s.questVariants} />
+                ) : (
+                  defaultVariant()
+                )}
+              </div>
             </div>
           </>
         )}

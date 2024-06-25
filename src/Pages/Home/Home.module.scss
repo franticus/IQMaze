@@ -47,6 +47,10 @@ section {
 	padding: 40px 20px;
 	animation: fadeIn 1s ease-in-out forwards;
 
+	.buttonSkeleton {
+		margin-top: 20px;
+	}
+
 	@keyframes fadeIn {
 		0% {
 			opacity: 0;

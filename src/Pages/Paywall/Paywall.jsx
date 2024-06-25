@@ -18,6 +18,8 @@ import {
   checkSubscription,
   createCheckoutSession,
 } from '../../helpers/stripeHelpers';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const stripePromise = loadStripe(publicKey);
 
@@ -25,11 +27,11 @@ const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
-  console.log('iqValue:', iqValue);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
   const currentUrl = window.location.href;
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
@@ -63,6 +65,8 @@ const Paywall = ({ user, userId }) => {
         setShowPaymentOptions(true);
       }
     }
+
+    setLoading(false); // Симуляция завершения загрузки данных
   }, [user]);
 
   useEffect(() => {
@@ -232,11 +236,15 @@ const Paywall = ({ user, userId }) => {
                   photo is a rough sample with fictitious data)
                 </li>
                 <li>
-                  <img
-                    src={certificate}
-                    alt='certificate'
-                    className={s.heroImage}
-                  />
+                  {loading ? (
+                    <Skeleton height={300} width={600} />
+                  ) : (
+                    <img
+                      src={certificate}
+                      alt='certificate'
+                      className={s.heroImage}
+                    />
+                  )}
                 </li>
                 <li className={s.list_item}>
                   This certificate is unique and will be created specifically

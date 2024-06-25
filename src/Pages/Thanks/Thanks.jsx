@@ -14,6 +14,8 @@ import html2canvas from 'html2canvas';
 import { getIQDescription } from './getIQDescription';
 import graph from '../../img/graph.jpg';
 import cn from 'classnames';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Thanks = () => {
   const customNavigate = useCustomNavigate();
@@ -21,6 +23,7 @@ const Thanks = () => {
   const storedUserName = localStorage.getItem('userName');
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [showIncorrectAnswers, setShowIncorrectAnswers] = useState(false);
+  const [loading, setLoading] = useState(true);
   const incorrectAnswersRef = useRef(null);
 
   useEffect(() => {
@@ -46,6 +49,8 @@ const Thanks = () => {
     if (storedUserName) {
       setUserName(storedUserName.replace(/['"]+/g, ''));
     }
+
+    setLoading(false); // Симуляция завершения загрузки данных
   }, [storedUserName]);
 
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
@@ -164,30 +169,42 @@ const Thanks = () => {
           You have finished the IQ test.
           <br /> Here is your certificate.
         </p>
-        <div className={s.certificate} ref={certificateRef} data-aos='fade-up'>
-          <img src={certificate} alt='certificate' className={s.heroImage} />
+        {loading ? (
+          <Skeleton
+            height={300}
+            width={600}
+            className={s.certificateSkeleton}
+          />
+        ) : (
           <div
-            className={s.certificate_name}
-            style={{ fontSize: fontSize.name }}
+            className={s.certificate}
+            ref={certificateRef}
+            data-aos='fade-up'
           >
-            {userName}
+            <img src={certificate} alt='certificate' className={s.heroImage} />
+            <div
+              className={s.certificate_name}
+              style={{ fontSize: fontSize.name }}
+            >
+              {userName}
+            </div>
+            <div className={s.certificate_iq} style={{ fontSize: fontSize.iq }}>
+              {iqValue}
+            </div>
+            <div
+              className={s.certificate_iqText}
+              style={{ fontSize: fontSize.iqText }}
+            >
+              IQ
+            </div>
+            <div
+              className={s.certificate_date}
+              style={{ fontSize: fontSize.date }}
+            >
+              {date}
+            </div>
           </div>
-          <div className={s.certificate_iq} style={{ fontSize: fontSize.iq }}>
-            {iqValue}
-          </div>
-          <div
-            className={s.certificate_iqText}
-            style={{ fontSize: fontSize.iqText }}
-          >
-            IQ
-          </div>
-          <div
-            className={s.certificate_date}
-            style={{ fontSize: fontSize.date }}
-          >
-            {date}
-          </div>
-        </div>
+        )}
 
         <button onClick={downloadCertificate} data-aos='fade-up'>
           Download Certificate
@@ -197,45 +214,53 @@ const Thanks = () => {
           Show my incorrect answers
         </button>
 
-        <div className={s.iqDescription} data-aos='fade-right'>
-          <h2>Result description</h2>
-          <div
-            dangerouslySetInnerHTML={{ __html: getIQDescription(iqValue) }}
-          />
-        </div>
+        {loading ? (
+          <Skeleton count={5} />
+        ) : (
+          <div className={s.iqDescription} data-aos='fade-right'>
+            <h2>Result description</h2>
+            <div
+              dangerouslySetInnerHTML={{ __html: getIQDescription(iqValue) }}
+            />
+          </div>
+        )}
 
-        <div className={s.iqDistribution} data-aos='fade-left'>
-          <div className={s.iqTitle}>IQ Score Distribution Graph</div>
-          <div className={s.iqLabels_container}>
-            <div className={s.iqLabels}>
-              <div className={s.iqLabels_item}>
-                <div>Above 145</div>
-                <div>Genius or near genius</div>
-              </div>
-              <div className={s.iqLabels_item}>
-                <div>130 ~ 145</div>
-                <div>Very superior</div>
-              </div>
-              <div className={s.iqLabels_item}>
-                <div>115 ~ 130</div>
-                <div>Superior</div>
-              </div>
-              <div className={s.iqLabels_item}>
-                <div>85 ~ 115</div>
-                <div>Normal</div>
-              </div>
-              <div className={s.iqLabels_item}>
-                <div>70 ~ 85</div>
-                <div>Dullness</div>
-              </div>
-              <div className={s.iqLabels_item}>
-                <div>Below 70</div>
-                <div>Borderline Deficiency</div>
+        {loading ? (
+          <Skeleton height={300} width={600} />
+        ) : (
+          <div className={s.iqDistribution} data-aos='fade-left'>
+            <div className={s.iqTitle}>IQ Score Distribution Graph</div>
+            <div className={s.iqLabels_container}>
+              <div className={s.iqLabels}>
+                <div className={s.iqLabels_item}>
+                  <div>Above 145</div>
+                  <div>Genius or near genius</div>
+                </div>
+                <div className={s.iqLabels_item}>
+                  <div>130 ~ 145</div>
+                  <div>Very superior</div>
+                </div>
+                <div className={s.iqLabels_item}>
+                  <div>115 ~ 130</div>
+                  <div>Superior</div>
+                </div>
+                <div className={s.iqLabels_item}>
+                  <div>85 ~ 115</div>
+                  <div>Normal</div>
+                </div>
+                <div className={s.iqLabels_item}>
+                  <div>70 ~ 85</div>
+                  <div>Dullness</div>
+                </div>
+                <div className={s.iqLabels_item}>
+                  <div>Below 70</div>
+                  <div>Borderline Deficiency</div>
+                </div>
               </div>
             </div>
+            <img src={graph} alt='IQ Distribution' className={s.iqImage} />
           </div>
-          <img src={graph} alt='IQ Distribution' className={s.iqImage} />
-        </div>
+        )}
 
         {showIncorrectAnswers && (
           <div

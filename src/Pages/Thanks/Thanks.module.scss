@@ -12,6 +12,10 @@ $border-radius: 8px;
 	animation: fadeIn 1s ease-in-out forwards;
 	margin: 0 auto;
 
+	.certificateSkeleton {
+		margin: 20px auto;
+	}
+
 	@keyframes fadeIn {
 		0% {
 			opacity: 0;

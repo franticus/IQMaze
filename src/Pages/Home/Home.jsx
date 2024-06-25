@@ -11,11 +11,14 @@ import about_5 from '../../img/about_5.jpg';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
 import { checkSubscription } from '../../helpers/stripeHelpers';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Home = ({ user }) => {
   const customNavigate = useCustomNavigate();
   const [showLastResults, setShowLastResults] = useState(false);
   const [hasStartedTest, setHasStartedTest] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const currentUrlParams = window.location.search;
@@ -68,6 +71,10 @@ const Home = ({ user }) => {
     if (currentStep && parseInt(currentStep, 10) > 0) {
       setHasStartedTest(true);
     }
+
+    // Симуляция загрузки
+    const timeoutId = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timeoutId);
   }, [user]);
 
   const handleStartTest = () => {
@@ -93,29 +100,42 @@ const Home = ({ user }) => {
   return (
     <div className={s.home}>
       <div className={s.hero} data-aos='fade-up'>
-        <div className={s.did}>12,502 people did this test last week.</div>
+        {loading ? (
+          <Skeleton height={20} width={200} />
+        ) : (
+          <div className={s.did}>12,502 people did this test last week.</div>
+        )}
         <div className={s.title}>
           Test your <span className={s.title_iq}>IQ!</span>
         </div>
-        <div className={s.description}>
-          The IQ Test is to assess intellectual abilities formed by general
-          experience, not affected by training or learning. You can figure out
-          your intellectual level compared to the group of the same age.
-        </div>
-        <div className={s.description}>
-          As it requires concentration for a given amount of time, please
-          conduct the test in a quiet and comfortable place.
-        </div>
-        <button className={s.button} onClick={handleStartTest}>
-          {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
-        </button>
-        {showLastResults && (
-          <button
-            className={cn(s.button, s.button_last)}
-            onClick={handleShowLastResults}
-          >
-            Show Last Results
-          </button>
+        {loading ? (
+          <>
+            <Skeleton count={2} />
+            <Skeleton height={40} width={200} className={s.buttonSkeleton} />
+          </>
+        ) : (
+          <>
+            <div className={s.description}>
+              The IQ Test is to assess intellectual abilities formed by general
+              experience, not affected by training or learning. You can figure
+              out your intellectual level compared to the group of the same age.
+            </div>
+            <div className={s.description}>
+              As it requires concentration for a given amount of time, please
+              conduct the test in a quiet and comfortable place.
+            </div>
+            <button className={s.button} onClick={handleStartTest}>
+              {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
+            </button>
+            {showLastResults && (
+              <button
+                className={cn(s.button, s.button_last)}
+                onClick={handleShowLastResults}
+              >
+                Show Last Results
+              </button>
+            )}
+          </>
         )}
       </div>
 
@@ -130,11 +150,15 @@ const Home = ({ user }) => {
             that unveil the intricacies of your mind, helping you discover your
             unique intellectual strengths.
           </p>
-          <img
-            src={about_1}
-            alt='Brain maze representing the complexity of human intelligence'
-            className={s.heroImage}
-          />
+          {loading ? (
+            <Skeleton height={300} width={300} />
+          ) : (
+            <img
+              src={about_1}
+              alt='Brain maze representing the complexity of human intelligence'
+              className={s.heroImage}
+            />
+          )}
         </div>
       </section>
 
@@ -142,7 +166,11 @@ const Home = ({ user }) => {
         <h2 className={s.sectionHeading}>Why Choose IQMaze?</h2>
         <div className={s.features}>
           <div className={s.featureItem}>
-            <img src={about_2} alt='Feature 1' className={s.featureImage} />
+            {loading ? (
+              <Skeleton height={150} width={150} />
+            ) : (
+              <img src={about_2} alt='Feature 1' className={s.featureImage} />
+            )}
             <h3 className={s.featureTitle}>Comprehensive Analysis</h3>
             <p className={s.featureText}>
               Our tests provide a thorough analysis of your cognitive abilities,
@@ -150,7 +178,11 @@ const Home = ({ user }) => {
             </p>
           </div>
           <div className={s.featureItem}>
-            <img src={about_3} alt='Feature 2' className={s.featureImage} />
+            {loading ? (
+              <Skeleton height={150} width={150} />
+            ) : (
+              <img src={about_3} alt='Feature 2' className={s.featureImage} />
+            )}
             <h3 className={s.featureTitle}>Scientifically Validated</h3>
             <p className={s.featureText}>
               Developed by experts, our tests are backed by rigorous research
@@ -158,7 +190,11 @@ const Home = ({ user }) => {
             </p>
           </div>
           <div className={s.featureItem}>
-            <img src={about_4} alt='Feature 3' className={s.featureImage} />
+            {loading ? (
+              <Skeleton height={150} width={150} />
+            ) : (
+              <img src={about_4} alt='Feature 3' className={s.featureImage} />
+            )}
             <h3 className={s.featureTitle}>Personal Growth</h3>
             <p className={s.featureText}>
               Use your results to foster personal and professional growth,
@@ -180,11 +216,15 @@ const Home = ({ user }) => {
           health. Our community is here to support your journey toward unlocking
           your full cognitive potential.
         </p>
-        <img
-          src={about_5}
-          alt='A diverse group of people from the IQMaze community'
-          className={s.communityImage}
-        />
+        {loading ? (
+          <Skeleton height={300} width={300} />
+        ) : (
+          <img
+            src={about_5}
+            alt='A diverse group of people from the IQMaze community'
+            className={s.communityImage}
+          />
+        )}
       </section>
 
       <section className={s.ctaSection} data-aos='fade-up'>
