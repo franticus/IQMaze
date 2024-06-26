@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React from 'react';
 import s from './ValueProposition.module.scss';
 import certificateImage from '../../img/certificate.png';
 import girl from '../../img/girl.jpg';
@@ -8,10 +6,6 @@ import man from '../../img/man.jpg';
 import chart from '../../img/chart.jpg';
 
 const ValueProposition = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
-
   return (
     <div className={s.valueProposition}>
       <h2 className={s.heading}>What We Offer:</h2>
@@ -29,7 +23,7 @@ const ValueProposition = () => {
         </div>
       </div>
 
-      <div className={s.section} data-aos='fade-left'>
+      <div className={s.section}>
         <div className={s.text}>
           <h3 className={s.subHeading}>Detailed Analysis of Results</h3>
           <p>
@@ -42,7 +36,7 @@ const ValueProposition = () => {
         <img src={girl} alt='IQ Distribution Chart' className={s.image} />
       </div>
 
-      <div className={s.section} data-aos='fade-right'>
+      <div className={s.section}>
         <img src={man} alt='Job Relevance' className={s.image} />
         <div className={s.text}>
           <h3 className={s.subHeading}>
@@ -57,7 +51,7 @@ const ValueProposition = () => {
         </div>
       </div>
 
-      <div className={s.section} data-aos='fade-left'>
+      <div className={s.section}>
         <div className={s.text}>
           <h3 className={s.subHeading}>Global Ranking</h3>
           <p>
@@ -70,7 +64,7 @@ const ValueProposition = () => {
         <img src={chart} alt='Global Ranking' className={s.image} />
       </div>
 
-      <div className={s.section} data-aos='fade-up'>
+      <div className={s.section}>
         <div className={s.text}>
           <h3 className={s.subHeading}>Support the Development of IQMaze</h3>
           <p>

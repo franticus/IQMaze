@@ -5,8 +5,6 @@ import React, {
   useState,
   useCallback,
 } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import s from './Thanks.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import certificate from '../../img/certificate_empty.png';
@@ -75,11 +73,6 @@ const Thanks = () => {
 
   useLayoutEffect(() => {
     localStorage.setItem('completePayment', true);
-    AOS.init({
-      duration: 2000,
-      once: true,
-    });
-
     updateFontSize();
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
@@ -163,7 +156,7 @@ const Thanks = () => {
 
   return (
     <div className={s.thanks}>
-      <section className={s.heroSection} data-aos='fade-up'>
+      <section className={s.heroSection}>
         <h1 className={s.mainHeading}>Thank you!</h1>
         <p className={s.introText}>
           You have finished the IQ test.
@@ -176,11 +169,7 @@ const Thanks = () => {
             className={s.certificateSkeleton}
           />
         ) : (
-          <div
-            className={s.certificate}
-            ref={certificateRef}
-            data-aos='fade-up'
-          >
+          <div className={s.certificate} ref={certificateRef}>
             <img src={certificate} alt='certificate' className={s.heroImage} />
             <div
               className={s.certificate_name}
@@ -206,18 +195,16 @@ const Thanks = () => {
           </div>
         )}
 
-        <button onClick={downloadCertificate} data-aos='fade-up'>
-          Download Certificate
-        </button>
+        <button onClick={downloadCertificate}>Download Certificate</button>
 
-        <button onClick={handleShowIncorrectAnswers} data-aos='fade-up'>
+        <button onClick={handleShowIncorrectAnswers}>
           Show my incorrect answers
         </button>
 
         {loading ? (
           <Skeleton count={5} />
         ) : (
-          <div className={s.iqDescription} data-aos='fade-right'>
+          <div className={s.iqDescription}>
             <h2>Result description</h2>
             <div
               dangerouslySetInnerHTML={{ __html: getIQDescription(iqValue) }}
@@ -228,7 +215,7 @@ const Thanks = () => {
         {loading ? (
           <Skeleton height={300} width={600} />
         ) : (
-          <div className={s.iqDistribution} data-aos='fade-left'>
+          <div className={s.iqDistribution}>
             <div className={s.iqTitle}>IQ Score Distribution Graph</div>
             <div className={s.iqLabels_container}>
               <div className={s.iqLabels}>
@@ -274,9 +261,7 @@ const Thanks = () => {
           </div>
         )}
 
-        <button onClick={() => customNavigate('/home')} data-aos='fade-up'>
-          Go to IQMaze
-        </button>
+        <button onClick={() => customNavigate('/home')}>Go to IQMaze</button>
       </section>
     </div>
   );

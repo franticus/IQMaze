@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
 import { iqTable } from './iqTable.js';
@@ -41,11 +39,6 @@ const Paywall = ({ user, userId }) => {
   const paymentButtonRef = useRef(null);
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-
     const savedParams = localStorage.getItem('savedParams');
     if (savedParams) {
       const newUrl = `${window.location.pathname}${savedParams}`;
@@ -175,7 +168,7 @@ const Paywall = ({ user, userId }) => {
   return (
     <Elements stripe={stripePromise}>
       <div className={s.paywall}>
-        <section className={s.heroSection} data-aos='fade-up'>
+        <section className={s.heroSection}>
           <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
           {!showPaymentOptions && (
             <p className={s.introText}>

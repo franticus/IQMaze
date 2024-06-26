@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import { quizData } from './quizData/quizData.js';
 import { quizDataV30q } from './quizData/quizDataV30q.js';
 import { quizDataV20q } from './quizData/quizDataV20q.js';
@@ -67,16 +65,10 @@ const Quiz = () => {
   const isLastQuestion = step === quizDataVariant.length - 1;
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-    });
-  }, []);
-
-  useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowQuiz(true);
       setPointerEvents(false);
-    }, 100);
+    }, 50);
 
     return () => clearTimeout(timeoutId);
   }, [step]);
@@ -277,10 +269,10 @@ const Quiz = () => {
         pointerEvents && s.preventClick
       )}
     >
-      <div data-aos='fade-down'>
+      <div>
         <ProgressBar percentage={percentage} stepBack={stepBack} />
       </div>
-      <div className={s.questions_title} data-aos='fade-down'>
+      <div className={s.questions_title}>
         {question
           ? `(Level ${question.level}) Question ${step + 1}/${
               quizDataVariant.length
@@ -300,7 +292,7 @@ const Quiz = () => {
                 style={style}
               ></div>
             )}
-            <div className={s.quiz_container} data-aos='fade-left'>
+            <div className={s.quiz_container}>
               <div className={s.quiz}>
                 {loading ? (
                   <Skeleton count={4} height={50} className={s.questVariants} />
