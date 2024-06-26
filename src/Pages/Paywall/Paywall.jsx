@@ -1,23 +1,28 @@
-import React, { useEffect, useState, useRef } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import s from './Paywall.module.scss';
 import certificate from '../../img/certificate.png';
 import { iqTable } from './iqTable.js';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import PaymentForm from '../../components/PaymentForm/PaymentForm';
 import cn from 'classnames';
 import { publicKey, priceId } from '../../key.js';
-import ValueProposition from '../../components/ValueProposition/ValueProposition.jsx';
-import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
-import SignUpForm from '../../components/SignUpForm/SignUpForm';
-import LoginForm from '../../components/LoginForm/LoginForm';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import {
   checkSubscription,
   createCheckoutSession,
 } from '../../helpers/stripeHelpers';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+
+const ValueProposition = lazy(() =>
+  import('../../components/ValueProposition/ValueProposition.jsx')
+);
+const TestimonialsSlider = lazy(() =>
+  import('../../components/TestimonialsSlider/TestimonialsSlider.jsx')
+);
+const SignUpForm = lazy(() => import('../../components/SignUpForm/SignUpForm'));
+const LoginForm = lazy(() => import('../../components/LoginForm/LoginForm'));
 
 const stripePromise = loadStripe(publicKey);
 
@@ -25,11 +30,9 @@ const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
   const currentUrl = window.location.href;
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
@@ -58,12 +61,10 @@ const Paywall = ({ user, userId }) => {
         setShowPaymentOptions(true);
       }
     }
-
-    setLoading(false); // Симуляция завершения загрузки данных
   }, [user]);
 
   useEffect(() => {
-    if (!seriesScoresLocal) customNavigate('/');
+    if (!seriesScoresLocal) customNavigate('/home');
   }, [customNavigate, seriesScoresLocal]);
 
   useEffect(() => {
@@ -83,7 +84,7 @@ const Paywall = ({ user, userId }) => {
     };
 
     verifySubscription();
-  }, [user, email, customNavigate, seriesScoresLocal]);
+  }, []);
 
   const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
@@ -116,28 +117,24 @@ const Paywall = ({ user, userId }) => {
   }, [seriesScoresLocal]);
 
   const handlePaymentMethodSelection = async method => {
-    if (method === 'card') {
-      setShowPaymentForm(true);
-    } else {
-      try {
-        const session = await createCheckoutSession(
-          email,
-          userId,
-          priceId,
-          iqValue,
-          name
-        );
-        const stripe = await stripePromise;
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id,
-        });
+    try {
+      const session = await createCheckoutSession(
+        email,
+        userId,
+        priceId,
+        iqValue,
+        name
+      );
+      const stripe = await stripePromise;
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
 
-        if (result.error) {
-          console.error(result.error.message);
-        }
-      } catch (error) {
-        console.error('Error creating checkout session:', error);
+      if (result.error) {
+        console.error(result.error.message);
       }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
     }
   };
 
@@ -158,7 +155,7 @@ const Paywall = ({ user, userId }) => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Проверить видимость сразу после монтирования
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -183,9 +180,13 @@ const Paywall = ({ user, userId }) => {
 
           {!showPaymentOptions &&
             (isLogin ? (
-              <LoginForm switchToSignUp={switchToSignUp} />
+              <Suspense fallback={<Skeleton height={200} width={600} />}>
+                <LoginForm switchToSignUp={switchToSignUp} />
+              </Suspense>
             ) : (
-              <SignUpForm switchToLogin={switchToLogin} />
+              <Suspense fallback={<Skeleton height={200} width={600} />}>
+                <SignUpForm switchToLogin={switchToLogin} />
+              </Suspense>
             ))}
 
           {showPaymentOptions && (
@@ -205,17 +206,17 @@ const Paywall = ({ user, userId }) => {
             </div>
           )}
 
-          {showPaymentOptions && <ValueProposition />}
-
-          {showPaymentForm && (
-            <div className={s.paymentFormWrapper}>
-              <PaymentForm name={name} email={email} amount={190} />
-            </div>
+          {showPaymentOptions && (
+            <Suspense fallback={<Skeleton height={200} width={600} />}>
+              <ValueProposition />
+            </Suspense>
           )}
 
           {showPaymentOptions && (
             <div className={s.slider_wrapper}>
-              <TestimonialsSlider />
+              <Suspense fallback={<Skeleton height={200} width={600} />}>
+                <TestimonialsSlider />
+              </Suspense>
             </div>
           )}
 
@@ -229,15 +230,12 @@ const Paywall = ({ user, userId }) => {
                   photo is a rough sample with fictitious data)
                 </li>
                 <li>
-                  {loading ? (
-                    <Skeleton height={300} width={600} />
-                  ) : (
-                    <img
-                      src={certificate}
-                      alt='certificate'
-                      className={s.heroImage}
-                    />
-                  )}
+                  <img
+                    src={certificate}
+                    alt='certificate'
+                    className={s.heroImage}
+                    loading='lazy'
+                  />
                 </li>
                 <li className={s.list_item}>
                   This certificate is unique and will be created specifically

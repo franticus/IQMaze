@@ -9,10 +9,10 @@ import {
 } from '@stripe/react-stripe-js';
 import s from './PaymentForm.module.scss';
 import cn from 'classnames';
-import { getUserId } from '../../helpers/userId';
+import { getUserId } from '../../helpers/userId.js';
 
 import { apiUrl } from '../../key.js';
-import useCustomNavigate from '../../hooks/useCustomNavigate';
+import useCustomNavigate from '../../hooks/useCustomNavigate.js';
 
 const PaymentForm = ({ name, email, amount }) => {
   const userId = getUserId();
