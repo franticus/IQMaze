@@ -19,24 +19,25 @@ const Thanks = lazy(() => import('./Pages/Thanks/Thanks'));
 function App() {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
-  console.log('Current environment:', process.env.NODE_ENV);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      if (user) {
-        console.log('User is signed in:', user);
-        setUser(user);
-        setUserId(user.uid);
-      } else {
-        console.log('No user is signed in');
-        setUser(null);
-        setUserId(null);
-        localStorage.removeItem('userName');
-        localStorage.removeItem('userEmail');
-      }
-    });
+    window.addEventListener('load', () => {
+      const unsubscribe = onAuthStateChanged(auth, user => {
+        if (user) {
+          console.log('User is signed in:', user);
+          setUser(user);
+          setUserId(user.uid);
+        } else {
+          console.log('No user is signed in');
+          setUser(null);
+          setUserId(null);
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+        }
+      });
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    });
   }, []);
 
   return (
