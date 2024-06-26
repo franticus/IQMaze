@@ -131,7 +131,7 @@ const Home = ({ user }) => {
         )}
       </div>
 
-      <section className={s.heroSection} data-aos='fade-down'>
+      {/* <section className={s.heroSection} data-aos='fade-down'>
         <div className={s.heroContent}>
           <h1 className={s.mainHeading}>
             Unlock Your Cognitive Potential with IQMaze
@@ -246,7 +246,7 @@ const Home = ({ user }) => {
         <button className={s.button} onClick={handleStartTest}>
           {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };
