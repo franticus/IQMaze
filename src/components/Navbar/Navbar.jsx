@@ -131,7 +131,7 @@ const Navbar = ({ user }) => {
               className={cn(s.menu__icon, s.icon_menu)}
               onClick={() => setIsOpen(!isOpen)}
             >
-              <span className='sr-only'>Toggle menu</span>
+              <span className={s.srOnly}>Toggle menu</span>
             </button>
             <nav className={s.menu__body}>
               <ul className={s.menu__list}>
