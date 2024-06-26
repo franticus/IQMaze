@@ -112,7 +112,7 @@ const Navbar = ({ user }) => {
       <header className={s.header}>
         <div className={s.header__container}>
           <div className={s.logo}>
-            <img className={s.mainLogo} src={logo} alt='' />
+            <img className={s.mainLogo} src={logo} alt='' width={'32px'} />
             <span className={s.logo} onClick={() => customNavigate('/home')}>
               IQMaze
             </span>
