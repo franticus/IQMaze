@@ -19,6 +19,7 @@ const Thanks = lazy(() => import('./Pages/Thanks/Thanks'));
 function App() {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
+  console.log('Current environment:', process.env.NODE_ENV);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
