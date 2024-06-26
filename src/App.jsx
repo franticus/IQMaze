@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import './index.css';
 import './fonts.css';
-import PrivacyPolicy from './Pages/PrivacyPolicy/PrivacyPolicy';
-import Terms from './Pages/Terms/Terms';
-import Home from './Pages/Home/Home';
-import Test from './Pages/Test/Test';
 import Navbar from './components/Navbar/Navbar';
 import { Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
-import Analyzing from './Pages/Analyzing/Analyzing';
-import Paywall from './Pages/Paywall/Paywall';
-import Thanks from './Pages/Thanks/Thanks';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
+
+const PrivacyPolicy = lazy(() => import('./Pages/PrivacyPolicy/PrivacyPolicy'));
+const Terms = lazy(() => import('./Pages/Terms/Terms'));
+const Home = lazy(() => import('./Pages/Home/Home'));
+const Test = lazy(() => import('./Pages/Test/Test'));
+const Analyzing = lazy(() => import('./Pages/Analyzing/Analyzing'));
+const Paywall = lazy(() => import('./Pages/Paywall/Paywall'));
+const Thanks = lazy(() => import('./Pages/Thanks/Thanks'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,31 +45,36 @@ function App() {
       <div className='app'>
         <div className='wrapper'>
           <main>
-            <Routes>
-              <Route path='/' element={<Home user={user} userId={userId} />} />
-              <Route
-                path='/home'
-                element={<Home user={user} userId={userId} />}
-              />
-              <Route
-                path='/iqtest'
-                element={<Test user={user} userId={userId} />}
-              />
-              <Route path='/privacy' element={<PrivacyPolicy />} />
-              <Route path='/terms' element={<Terms />} />
-              <Route
-                path='/analyzing'
-                element={<Analyzing user={user} userId={userId} />}
-              />
-              <Route
-                path='/paywall'
-                element={<Paywall user={user} userId={userId} />}
-              />
-              <Route
-                path='/thanks'
-                element={<Thanks user={user} userId={userId} />}
-              />
-            </Routes>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route
+                  path='/'
+                  element={<Home user={user} userId={userId} />}
+                />
+                <Route
+                  path='/home'
+                  element={<Home user={user} userId={userId} />}
+                />
+                <Route
+                  path='/iqtest'
+                  element={<Test user={user} userId={userId} />}
+                />
+                <Route path='/privacy' element={<PrivacyPolicy />} />
+                <Route path='/terms' element={<Terms />} />
+                <Route
+                  path='/analyzing'
+                  element={<Analyzing user={user} userId={userId} />}
+                />
+                <Route
+                  path='/paywall'
+                  element={<Paywall user={user} userId={userId} />}
+                />
+                <Route
+                  path='/thanks'
+                  element={<Thanks user={user} userId={userId} />}
+                />
+              </Routes>
+            </Suspense>
           </main>
         </div>
       </div>
