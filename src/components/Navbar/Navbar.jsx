@@ -112,7 +112,13 @@ const Navbar = ({ user }) => {
       <header className={s.header}>
         <div className={s.header__container}>
           <div className={s.logo}>
-            <img className={s.mainLogo} src={logo} alt='' width={'32px'} />
+            <img
+              className={s.mainLogo}
+              src={logo}
+              alt=''
+              width='32px'
+              height='32px'
+            />
             <span className={s.logo} onClick={() => customNavigate('/home')}>
               IQMaze
             </span>
@@ -125,7 +131,7 @@ const Navbar = ({ user }) => {
               className={cn(s.menu__icon, s.icon_menu)}
               onClick={() => setIsOpen(!isOpen)}
             >
-              <span></span>
+              <span className='sr-only'>Toggle menu</span>
             </button>
             <nav className={s.menu__body}>
               <ul className={s.menu__list}>
