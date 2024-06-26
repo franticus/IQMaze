@@ -120,6 +120,7 @@ const Navbar = ({ user }) => {
           <div className={cn(s.header__menu, s.menu)}>
             <button
               name='menu'
+              aria-label='Toggle menu'
               type='button'
               className={cn(s.menu__icon, s.icon_menu)}
               onClick={() => setIsOpen(!isOpen)}
