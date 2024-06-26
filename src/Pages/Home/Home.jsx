@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import s from './Home.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
-// import Testimonials from '../../components/Testimonials/Testimonials';
+import Testimonials from '../../components/Testimonials/Testimonials';
 import cn from 'classnames';
 import { checkSubscription } from '../../helpers/stripeHelpers';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-// import about_1 from '../../img/about_1.jpg';
-// import about_2 from '../../img/about_2.jpg';
-// import about_3 from '../../img/about_3.jpg';
-// import about_4 from '../../img/about_4.jpg';
-// import about_5 from '../../img/about_5.jpg';
+import about_1 from '../../img/about_1.jpg';
+import about_2 from '../../img/about_2.jpg';
+import about_3 from '../../img/about_3.jpg';
+import about_4 from '../../img/about_4.jpg';
+import about_5 from '../../img/about_5.jpg';
 
 const Home = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -131,7 +131,7 @@ const Home = ({ user }) => {
         )}
       </div>
 
-      {/* <section className={s.heroSection} data-aos='fade-down'>
+      <section className={s.heroSection} data-aos='fade-down'>
         <div className={s.heroContent}>
           <h1 className={s.mainHeading}>
             Unlock Your Cognitive Potential with IQMaze
@@ -246,7 +246,7 @@ const Home = ({ user }) => {
         <button className={s.button} onClick={handleStartTest}>
           {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
         </button>
-      </section> */}
+      </section>
     </div>
   );
 };
