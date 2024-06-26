@@ -65,12 +65,8 @@ const Quiz = () => {
   const isLastQuestion = step === quizDataVariant.length - 1;
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setShowQuiz(true);
-      setPointerEvents(false);
-    }, 50);
-
-    return () => clearTimeout(timeoutId);
+    setShowQuiz(true);
+    setPointerEvents(false);
   }, [step]);
 
   useEffect(() => {
@@ -182,7 +178,7 @@ const Quiz = () => {
       if (!isLastQuestion) {
         setTimeout(() => {
           setStep(prev => prev + 1);
-        }, 500);
+        }, 100);
       } else {
         const updatedAnswers = [
           ...answers,
