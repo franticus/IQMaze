@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './Testimonials.module.scss'; // ваш файл стилей
+import s from './Testimonials.module.scss';
 
 const Testimonials = () => {
   return (

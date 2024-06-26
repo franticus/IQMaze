@@ -91,7 +91,7 @@ const Home = ({ user }) => {
 
   return (
     <div className={s.home}>
-      <div className={s.hero} data-aos='fade-up'>
+      <div className={s.hero}>
         {loading ? (
           <Skeleton height={20} width={200} />
         ) : (
@@ -131,7 +131,7 @@ const Home = ({ user }) => {
         )}
       </div>
 
-      <section className={s.heroSection} data-aos='fade-down'>
+      <section className={s.heroSection}>
         <div className={s.heroContent}>
           <h1 className={s.mainHeading}>
             Unlock Your Cognitive Potential with IQMaze
@@ -155,7 +155,7 @@ const Home = ({ user }) => {
         </div>
       </section>
 
-      <section className={s.featuresSection} data-aos='fade-right'>
+      <section className={s.featuresSection}>
         <h2 className={s.sectionHeading}>Why Choose IQMaze?</h2>
         <div className={s.features}>
           <div className={s.featureItem}>
@@ -212,11 +212,9 @@ const Home = ({ user }) => {
         </div>
       </section>
 
-      <div data-aos='fade-left'>
-        <Testimonials />
-      </div>
+      <Testimonials />
 
-      <section className={s.communitySection} data-aos='fade-up'>
+      <section className={s.communitySection}>
         <h2 className={s.sectionHeading}>Join the IQMaze Community</h2>
         <p className={s.sectionText}>
           Connect with like-minded individuals, share your results, and
@@ -236,7 +234,7 @@ const Home = ({ user }) => {
         )}
       </section>
 
-      <section className={s.ctaSection} data-aos='fade-up'>
+      <section className={s.ctaSection}>
         <h2 className={s.sectionHeading}>Get Started with IQMaze</h2>
         <p className={s.sectionText}>
           Ready to discover your cognitive strengths? Take our scientifically
