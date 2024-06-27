@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { quizData } from './quizData/quizData.js';
 import { quizDataV30q } from './quizData/quizDataV30q.js';
 import { quizDataV20q } from './quizData/quizDataV20q.js';
@@ -17,16 +17,19 @@ const Quiz = () => {
   const isProd = currentUrl.includes('iq-check140');
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
+
+  const quizDataVariant = useMemo(() => {
+    return isV30q ? quizDataV30q : isV20q ? quizDataV20q : quizData;
+  }, [isV30q, isV20q]);
+
+  const whenEightVariants = useMemo(() => {
+    return isV30q ? 12 : isV20q ? 8 : 24;
+  }, [isV30q, isV20q]);
+
   const [answers, setAnswers] = useState(() => {
     const savedAnswers = localStorage.getItem('answers');
     return savedAnswers ? JSON.parse(savedAnswers) : [];
   });
-  const quizDataVariant = isV30q
-    ? quizDataV30q
-    : isV20q
-    ? quizDataV20q
-    : quizData;
-  const whenEightVariants = isV30q ? 12 : isV20q ? 8 : 24;
 
   const [step, setStep] = useState(() => {
     let savedStep = localStorage.getItem('currentStep');
@@ -55,6 +58,7 @@ const Quiz = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
   const [loading, setLoading] = useState(true);
+  console.log('loading:', loading);
   const question = quizDataVariant[step];
   const style = question
     ? {
@@ -210,7 +214,9 @@ const Quiz = () => {
     }
   }, [step]);
 
-  const percentage = Math.round(((step + 1) / quizDataVariant.length) * 100);
+  const percentage = useMemo(() => {
+    return Math.round(((step + 1) / quizDataVariant.length) * 100);
+  }, [step, quizDataVariant.length]);
 
   const defaultVariant = useCallback(
     () => (
