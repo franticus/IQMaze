@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import s from './Thanks.module.scss';
 import IQDistribution from '../../components/IQDistribution/IQDistribution';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { getIQDescription } from './getIQDescription';
 import cn from 'classnames';
-import CertificateResult from '../../components/СertificateResult/СertificateResult';
+import CertificateResult from '../../components/CertificateResult/CertificateResult';
+import IncorrectAnswers from '../../components/IncorrectAnswers/IncorrectAnswers';
 
 const Thanks = () => {
   const customNavigate = useCustomNavigate();
@@ -37,6 +38,8 @@ const Thanks = () => {
   useEffect(() => {
     if (storedUserName) {
       setUserName(storedUserName.replace(/['"]+/g, ''));
+    } else {
+      setUserName('Your Name');
     }
   }, [storedUserName]);
 
@@ -49,54 +52,6 @@ const Thanks = () => {
       incorrectAnswersRef.current.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
-
-  const defaultVariantIncorrectAnswers = useCallback(
-    () => (
-      <ul>
-        {incorrectAnswers.map((answer, index) => (
-          <li key={index} className={s.question_item}>
-            <div
-              className={cn(s.quest_image, {
-                [s[`quest_image_square`]]: answer.variants.length > 6,
-              })}
-              style={{
-                backgroundImage: `url(${require(`../../img/quiz/${answer.question}.png`)})`,
-              }}
-            ></div>
-            <div>
-              <strong>Your Answer:</strong>{' '}
-              {answer.variants[answer.userAnswer - 1]}
-            </div>
-            <div>
-              <strong>Correct Answer:</strong>{' '}
-              {answer.variants[answer.true - 1]}
-            </div>
-            <ul className={s.questVariants}>
-              {answer.variants.map((variant, variantIndex) => (
-                <li key={`${variant}-${variantIndex}`}>
-                  <div
-                    className={cn(s.quest_icon, {
-                      [s[`quest_icon_${variantIndex + 1}`]]: true,
-                      [s[`quest_icon_square_${variantIndex + 1}`]]:
-                        answer.variants.length > 6,
-                      [s.quest_icon_correct]: variantIndex + 1 === answer.true,
-                      [s.quest_icon_wrong]:
-                        variantIndex + 1 !== answer.true &&
-                        variantIndex + 1 === answer.userAnswer,
-                    })}
-                    style={{
-                      backgroundImage: `url(${require(`../../img/quiz/${answer.question}.png`)})`,
-                    }}
-                  ></div>
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    ),
-    [incorrectAnswers]
-  );
 
   return (
     <div className={s.thanks}>
@@ -124,13 +79,12 @@ const Thanks = () => {
 
         {showIncorrectAnswers && (
           <div
-            className={cn(s.incorrectAnswers, {
+            className={cn(s.incorrectAnswersContainer, {
               [s.hidden]: !showIncorrectAnswers,
             })}
             ref={incorrectAnswersRef}
           >
-            <h2 className={s.mainHeading}>Incorrect Answers</h2>
-            {defaultVariantIncorrectAnswers()}
+            <IncorrectAnswers incorrectAnswers={incorrectAnswers} />
           </div>
         )}
 
