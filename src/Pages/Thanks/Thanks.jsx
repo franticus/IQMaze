@@ -1,17 +1,10 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import s from './Thanks.module.scss';
 import IQDistribution from '../../components/IQDistribution/IQDistribution';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
-import certificate from '../../img/certificate_empty.png';
-import html2canvas from 'html2canvas';
 import { getIQDescription } from './getIQDescription';
 import cn from 'classnames';
+import CertificateResult from '../../components/СertificateResult/СertificateResult';
 
 const Thanks = () => {
   const customNavigate = useCustomNavigate();
@@ -49,51 +42,6 @@ const Thanks = () => {
 
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
   const date = new Date().toLocaleDateString();
-  const certificateRef = useRef();
-  const [fontSize, setFontSize] = useState({
-    name: '1rem',
-    iq: '2rem',
-    iqText: '2rem',
-    date: '1rem',
-  });
-
-  const updateFontSize = () => {
-    const certificateWidth = certificateRef?.current?.offsetWidth;
-    setFontSize({
-      name: `${certificateWidth / 20}px`,
-      iq: `${certificateWidth / 14}px`,
-      iqText: `${certificateWidth / 30}px`,
-      date: `${certificateWidth / 40}px`,
-    });
-  };
-
-  useLayoutEffect(() => {
-    localStorage.setItem('completePayment', true);
-    updateFontSize();
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 100);
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 1000);
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 3000);
-    window.addEventListener('resize', updateFontSize);
-
-    return () => {
-      window.removeEventListener('resize', updateFontSize);
-    };
-  }, []);
-
-  const downloadCertificate = () => {
-    html2canvas(certificateRef.current).then(canvas => {
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = 'certificate.png';
-      link.click();
-    });
-  };
 
   const handleShowIncorrectAnswers = () => {
     setShowIncorrectAnswers(true);
@@ -158,37 +106,14 @@ const Thanks = () => {
           You have finished the IQ test.
           <br /> Here is your certificate.
         </p>
-        <div className={s.certificate} ref={certificateRef}>
-          <img src={certificate} alt='certificate' className={s.heroImage} />
-          <div
-            className={s.certificate_name}
-            style={{ fontSize: fontSize.name }}
-          >
-            {userName}
-          </div>
-          <div className={s.certificate_iq} style={{ fontSize: fontSize.iq }}>
-            {iqValue}
-          </div>
-          <div
-            className={s.certificate_iqText}
-            style={{ fontSize: fontSize.iqText }}
-          >
-            IQ
-          </div>
-          <div
-            className={s.certificate_date}
-            style={{ fontSize: fontSize.date }}
-          >
-            {date}
-          </div>
-        </div>
 
-        <button onClick={downloadCertificate}>Download Certificate</button>
+        <CertificateResult userName={userName} iqValue={iqValue} date={date} />
+
         <button onClick={handleShowIncorrectAnswers}>
           Show my incorrect answers
         </button>
 
-        <div className={s.iqDescription}>
+        <div className={s.resultDescription}>
           <h2>Result description</h2>
           <div
             dangerouslySetInnerHTML={{ __html: getIQDescription(iqValue) }}

@@ -1,0 +1,49 @@
+.certificate {
+	position: relative;
+	color: #4921af;
+
+	&_name {
+		position: absolute;
+		top: 34%;
+		left: 50%;
+		transform: translate(-50%, 0%);
+		font-size: 24px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+		text-transform: capitalize;
+	}
+
+	&_iq {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, 0%);
+		font-size: 42px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+	}
+
+	&_iqText {
+		position: absolute;
+		top: 70%;
+		left: 50%;
+		transform: translate(-50%, 0%);
+		font-size: 42px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+	}
+
+	&_date {
+		position: absolute;
+		top: 76%;
+		left: 20%;
+		transform: translate(-50%, 0%);
+		font-size: 14px;
+		font-family: 'Times New Roman', Times, serif;
+		font-style: italic;
+		font-weight: 400;
+	}
+}
