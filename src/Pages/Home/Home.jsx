@@ -52,7 +52,7 @@ const Home = ({ user }) => {
   }, [user]);
 
   const handleStartTest = useCallback(() => {
-    if (!hasStartedTest) {
+    if (hasStartedTest) {
       localStorage.setItem(
         'seriesScores',
         JSON.stringify({
@@ -69,6 +69,12 @@ const Home = ({ user }) => {
     customNavigate('/iqtest');
   }, [hasStartedTest, customNavigate]);
 
+  const handleContinueTest = useCallback(() => {
+    if (hasStartedTest) {
+      customNavigate('/iqtest');
+    }
+  }, [hasStartedTest, customNavigate]);
+
   const handleShowLastResults = useCallback(() => {
     customNavigate('/thanks');
   }, [customNavigate]);
@@ -83,6 +89,7 @@ const Home = ({ user }) => {
             showLastResults={showLastResults}
             handleStartTest={handleStartTest}
             handleShowLastResults={handleShowLastResults}
+            handleContinueTest={handleContinueTest}
           />
         ),
         [
@@ -91,6 +98,7 @@ const Home = ({ user }) => {
           showLastResults,
           handleStartTest,
           handleShowLastResults,
+          handleContinueTest,
         ]
       )}
 

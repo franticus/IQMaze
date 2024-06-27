@@ -13,6 +13,7 @@ const HeroSection = ({
   showLastResults,
   handleStartTest,
   handleShowLastResults,
+  handleContinueTest,
 }) => {
   return (
     <>
@@ -42,8 +43,13 @@ const HeroSection = ({
               conduct the test in a quiet and comfortable place.
             </div>
             <button className={s.button} onClick={handleStartTest}>
-              {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
+              Start IQ test
             </button>
+            {hasStartedTest && (
+              <button className={s.button} onClick={handleContinueTest}>
+                Continue IQ test
+              </button>
+            )}
             {showLastResults && (
               <button
                 className={cn(s.button, s.button_last)}
