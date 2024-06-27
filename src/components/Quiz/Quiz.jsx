@@ -17,6 +17,7 @@ const Quiz = () => {
   const isProd = currentUrl.includes('iq-check140');
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
+  const eventQuestionsLength = isV30q ? 6 : isV20q ? 4 : 12;
 
   const quizDataVariant = useMemo(() => {
     return isV30q ? quizDataV30q : isV20q ? quizDataV20q : quizData;
@@ -153,7 +154,7 @@ const Quiz = () => {
         });
       }
 
-      if ((step + 1) % 12 === 0) {
+      if ((step + 1) % eventQuestionsLength === 0) {
         const eventMap = {
           A: 'A_QuestionsAnswered',
           B: 'B_QuestionsAnswered',
