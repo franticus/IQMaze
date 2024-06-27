@@ -52,22 +52,20 @@ const Home = ({ user }) => {
   }, [user]);
 
   const handleStartTest = useCallback(() => {
-    if (hasStartedTest) {
-      localStorage.setItem(
-        'seriesScores',
-        JSON.stringify({
-          A: 0,
-          B: 0,
-          C: 0,
-          D: 0,
-          E: 0,
-        })
-      );
-      localStorage.setItem('answers', JSON.stringify([]));
-      localStorage.setItem('currentStep', JSON.stringify(0));
-    }
+    localStorage.setItem(
+      'seriesScores',
+      JSON.stringify({
+        A: 0,
+        B: 0,
+        C: 0,
+        D: 0,
+        E: 0,
+      })
+    );
+    localStorage.setItem('answers', JSON.stringify([]));
+    localStorage.setItem('currentStep', JSON.stringify(0));
     customNavigate('/iqtest');
-  }, [hasStartedTest, customNavigate]);
+  }, [customNavigate]);
 
   const handleContinueTest = useCallback(() => {
     if (hasStartedTest) {

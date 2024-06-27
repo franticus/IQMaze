@@ -30,8 +30,8 @@ const IncorrectAnswers = ({ incorrectAnswers }) => {
                     [s[`quest_icon_${variantIndex + 1}`]]: true,
                     [s[`quest_icon_square_${variantIndex + 1}`]]:
                       answer.variants.length > 6,
-                    [s.quest_icon_correct]: variantIndex + 1 === answer.true,
-                    [s.quest_icon_wrong]:
+                    [s.quest_icon_wrong]: variantIndex + 1 === answer.true,
+                    [s.quest_icon_correct]:
                       variantIndex + 1 !== answer.true &&
                       variantIndex + 1 === answer.userAnswer,
                   })}

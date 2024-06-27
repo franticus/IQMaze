@@ -40,6 +40,8 @@ const Paywall = ({ user, userId }) => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const [hasSubscription, setHasSubscription] = useState(false);
+  const [loadingSubscription, setLoadingSubscription] = useState(true);
   const currentUrl = window.location.href;
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
@@ -77,23 +79,16 @@ const Paywall = ({ user, userId }) => {
   const verifySubscription = useCallback(async () => {
     if (user && email) {
       const { hasSubscription } = await checkSubscription(email);
-      if (hasSubscription) {
-        const totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
-          (total, num) => total + num,
-          0
-        );
-        const iq = iqTable[totalCorrectAnswers] || '62';
-        localStorage.setItem('iqScore', iq);
-        customNavigate('/thanks');
-      }
+      setHasSubscription(hasSubscription);
+      setLoadingSubscription(false);
     }
-  }, [user, email, seriesScoresLocal, customNavigate]);
+  }, [user, email]);
 
   useEffect(() => {
     verifySubscription();
   }, [verifySubscription]);
 
-  const calculateAndSetIQ = useCallback(() => {
+  const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
       return;
@@ -104,7 +99,6 @@ const Paywall = ({ user, userId }) => {
       0
     );
 
-    let iq;
     if (isV30q) {
       totalCorrectAnswers *= 2;
     }
@@ -113,47 +107,51 @@ const Paywall = ({ user, userId }) => {
       totalCorrectAnswers *= 3;
     }
 
-    iq = iqTable[totalCorrectAnswers] || '62';
-    setIqValue(iq);
-    localStorage.setItem('iqScore', iq);
-  }, [seriesScoresLocal, isV30q, isV20q]);
+    let iq = iqTable[totalCorrectAnswers] || '62';
+    const storedIQ = localStorage.getItem('iqScore');
+    if (storedIQ !== iq.toString()) {
+      localStorage.setItem('iqScore', iq);
+      setIqValue(iq);
+    }
+  };
 
   useEffect(() => {
     calculateAndSetIQ();
-  }, [calculateAndSetIQ]);
+  }, [seriesScoresLocal, isV30q, isV20q]);
 
-  const handlePaymentMethodSelection = useCallback(
-    async method => {
-      try {
-        const session = await createCheckoutSession(
-          email,
-          userId,
-          priceId,
-          iqValue,
-          name
-        );
-        const stripe = await stripePromise;
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id,
-        });
+  const handlePaymentMethodSelection = async method => {
+    try {
+      const session = await createCheckoutSession(
+        email,
+        userId,
+        priceId,
+        iqValue,
+        name
+      );
+      const stripe = await stripePromise;
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
 
-        if (result.error) {
-          console.error(result.error.message);
-        }
-      } catch (error) {
-        console.error('Error creating checkout session:', error);
+      if (result.error) {
+        console.error(result.error.message);
       }
-    },
-    [email, userId, iqValue, name]
-  );
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+    }
+  };
 
-  const switchToSignUp = useCallback(() => {
+  const switchToSignUp = () => {
     setIsLogin(false);
-  }, []);
+  };
 
-  const switchToLogin = useCallback(() => {
+  const switchToLogin = () => {
     setIsLogin(true);
-  }, []);
+  };
+
+  const handleShowResults = () => {
+    customNavigate('/thanks');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -201,16 +199,26 @@ const Paywall = ({ user, userId }) => {
           {showPaymentOptions && (
             <div>
               <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
-                <button
-                  ref={paymentButtonRef}
-                  className={cn(
-                    s.paymentButtonBlick,
-                    s.paymentButtonBlick_card
-                  )}
-                  onClick={() => handlePaymentMethodSelection('gpay_applepay')}
-                >
-                  Get your test result for $1.90
-                </button>
+                {loadingSubscription ? (
+                  <Skeleton height={50} width={200} />
+                ) : (
+                  <button
+                    ref={paymentButtonRef}
+                    className={cn(
+                      s.paymentButtonBlick,
+                      s.paymentButtonBlick_card
+                    )}
+                    onClick={
+                      hasSubscription
+                        ? handleShowResults
+                        : () => handlePaymentMethodSelection('gpay_applepay')
+                    }
+                  >
+                    {hasSubscription
+                      ? 'Show my result'
+                      : 'Get your test result for $1.90'}
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -238,12 +246,22 @@ const Paywall = ({ user, userId }) => {
           [s.paymentButtonFixed_container_visible]: isButtonVisible,
         })}
       >
-        <button
-          className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
-          onClick={() => handlePaymentMethodSelection('gpay_applepay')}
-        >
-          Get your test result for $1.90
-        </button>
+        {loadingSubscription ? (
+          <Skeleton height={50} width={200} />
+        ) : (
+          <button
+            className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
+            onClick={
+              hasSubscription
+                ? handleShowResults
+                : () => handlePaymentMethodSelection('gpay_applepay')
+            }
+          >
+            {hasSubscription
+              ? 'Show my result'
+              : 'Get your test result for $1.90'}
+          </button>
+        )}
       </div>
     </Elements>
   );

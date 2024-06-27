@@ -73,20 +73,14 @@ const Thanks = () => {
           <br /> Here is your certificate.
         </p>
 
-        <div className={s.nameInputContainer}>
-          <input
-            type='text'
-            value={tempUserName}
-            onChange={handleUserNameChange}
-            className={s.nameInput}
-            placeholder='Name and Surname'
-          />
-          <button onClick={handleUserNameSubmit} className={s.submitButton}>
-            Update Name
-          </button>
-        </div>
-
-        <CertificateResult userName={userName} iqValue={iqValue} date={date} />
+        <CertificateResult
+          userName={userName}
+          iqValue={iqValue}
+          date={date}
+          handleUserNameChange={handleUserNameChange}
+          handleUserNameSubmit={handleUserNameSubmit}
+          tempUserName={tempUserName}
+        />
 
         {incorrectAnswers.length !== 0 && (
           <button onClick={handleShowIncorrectAnswers}>

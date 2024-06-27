@@ -3,7 +3,14 @@ import s from './CertificateResult.module.scss';
 import certificate from '../../img/certificate_empty.png';
 import html2canvas from 'html2canvas';
 
-const CertificateResult = ({ userName, iqValue, date }) => {
+const CertificateResult = ({
+  userName,
+  iqValue,
+  date,
+  handleUserNameChange,
+  handleUserNameSubmit,
+  tempUserName,
+}) => {
   const certificateRef = useRef();
   const [fontSize, setFontSize] = useState({
     name: '1rem',
@@ -68,6 +75,18 @@ const CertificateResult = ({ userName, iqValue, date }) => {
         <div className={s.certificate_date} style={{ fontSize: fontSize.date }}>
           {date}
         </div>
+      </div>
+      <div className={s.nameInputContainer}>
+        <input
+          type='text'
+          value={tempUserName}
+          onChange={handleUserNameChange}
+          className={s.nameInput}
+          placeholder='Name and Surname'
+        />
+        <button onClick={handleUserNameSubmit} className={s.submitButton}>
+          Update Name
+        </button>
       </div>
       <button onClick={downloadCertificate}>Download Certificate</button>
     </div>

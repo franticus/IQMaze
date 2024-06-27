@@ -58,7 +58,6 @@ const Quiz = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
   const [loading, setLoading] = useState(true);
-  console.log('loading:', loading);
   const question = quizDataVariant[step];
   const style = question
     ? {

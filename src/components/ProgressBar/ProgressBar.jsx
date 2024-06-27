@@ -13,7 +13,6 @@ const ProgressBar = ({ percentage, stepBack }) => {
       setTimer(prevTimer => {
         if (prevTimer <= 1) {
           clearInterval(interval);
-          console.log('DONE');
           customNavigate('/paywall');
           return 0;
         }
