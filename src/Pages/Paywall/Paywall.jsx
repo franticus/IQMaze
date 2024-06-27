@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import s from './Paywall.module.scss';
-import certificate from '../../img/certificate.png';
 import { iqTable } from './iqTable.js';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { loadStripe } from '@stripe/stripe-js';
@@ -14,6 +13,7 @@ import {
   checkSubscription,
   createCheckoutSession,
 } from '../../helpers/stripeHelpers';
+import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
 
 const ValueProposition = lazy(() =>
   import('../../components/ValueProposition/ValueProposition.jsx')
@@ -220,39 +220,7 @@ const Paywall = ({ user, userId }) => {
             </div>
           )}
 
-          {!showPaymentOptions && (
-            <>
-              <h2 className={s.mainHeading}>Information on Test Results</h2>
-              <ul className={s.list}>
-                <li className={s.list_item}>
-                  After entering your details, you'll receive a personalized and
-                  signed certificate displaying your test results. <br /> (The
-                  photo is a rough sample with fictitious data)
-                </li>
-                <li>
-                  <img
-                    src={certificate}
-                    alt='certificate'
-                    className={s.heroImage}
-                    loading='lazy'
-                  />
-                </li>
-                <li className={s.list_item}>
-                  This certificate is unique and will be created specifically
-                  for you, reflecting your IQ score and ranking amongst over 5
-                  million people worldwide.
-                </li>
-                <li className={s.list_item}>
-                  Understand your job relevance with detailed insights from
-                  IQMaze, including your percentile and IQ score.
-                </li>
-                <li className={s.list_item}>
-                  Don't miss out on this opportunity to validate and celebrate
-                  your intellectual achievements!
-                </li>
-              </ul>
-            </>
-          )}
+          {!showPaymentOptions && <TestResultsInfo />}
         </section>
       </div>
 
