@@ -44,12 +44,6 @@ const Paywall = ({ user, userId }) => {
   const paymentButtonRef = useRef(null);
 
   useEffect(() => {
-    const savedParams = localStorage.getItem('savedParams');
-    if (savedParams) {
-      const newUrl = `${window.location.pathname}${savedParams}`;
-      window.history.replaceState(null, '', newUrl);
-    }
-
     if (user) {
       setName(user.displayName || '');
       setEmail(user.email || '');

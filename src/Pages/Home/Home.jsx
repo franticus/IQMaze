@@ -46,7 +46,7 @@ const Home = ({ user }) => {
     }
 
     const currentStep = localStorage.getItem('currentStep');
-    if (currentStep && parseInt(currentStep, 10) > 0) {
+    if (currentStep > 0 && parseInt(currentStep, 10) > 0) {
       setHasStartedTest(true);
       sessionStorage.setItem('hasStartedTest', JSON.stringify(true));
     } else {

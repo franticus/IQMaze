@@ -24,12 +24,6 @@ const Thanks = () => {
       });
     }
 
-    const savedParams = localStorage.getItem('savedParams');
-    if (savedParams) {
-      const newUrl = `${window.location.pathname}${savedParams}`;
-      window.history.replaceState(null, '', newUrl);
-    }
-
     const lastAnswers = JSON.parse(localStorage.getItem('lastAnswers')) || [];
     const incorrect = lastAnswers.filter(answer => !answer.isUserTrue);
     setIncorrectAnswers(incorrect);
