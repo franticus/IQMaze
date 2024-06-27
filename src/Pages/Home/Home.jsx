@@ -20,20 +20,6 @@ const Home = ({ user }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const currentUrlParams = window.location.search;
-    const savedParams = localStorage.getItem('savedParams');
-
-    if (savedParams) {
-      localStorage.setItem('savedParams', savedParams);
-    } else {
-      localStorage.setItem('savedParams', currentUrlParams);
-    }
-
-    const newUrl = `${window.location.pathname}${savedParams}`;
-    window.history.replaceState(null, '', newUrl);
-  }, []);
-
-  useEffect(() => {
     if (typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];
 

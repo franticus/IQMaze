@@ -10,7 +10,7 @@ import IncorrectAnswers from '../../components/IncorrectAnswers/IncorrectAnswers
 const Thanks = () => {
   const customNavigate = useCustomNavigate();
   const [userName, setUserName] = useState('');
-  console.log('userName:', userName);
+  const [tempUserName, setTempUserName] = useState('');
   const storedUserName = localStorage.getItem('userName');
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [showIncorrectAnswers, setShowIncorrectAnswers] = useState(false);
@@ -38,10 +38,21 @@ const Thanks = () => {
   useEffect(() => {
     if (storedUserName) {
       setUserName(storedUserName.replace(/['"]+/g, ''));
+      setTempUserName(storedUserName.replace(/['"]+/g, ''));
     } else {
       setUserName('Your Name');
+      setTempUserName('Your Name');
     }
   }, [storedUserName]);
+
+  const handleUserNameChange = e => {
+    setTempUserName(e.target.value);
+  };
+
+  const handleUserNameSubmit = () => {
+    setUserName(tempUserName);
+    localStorage.setItem('userName', JSON.stringify(tempUserName));
+  };
 
   const iqValue = JSON.parse(localStorage.getItem('iqScore'));
   const date = new Date().toLocaleDateString();
@@ -61,6 +72,19 @@ const Thanks = () => {
           You have finished the IQ test.
           <br /> Here is your certificate.
         </p>
+
+        <div className={s.nameInputContainer}>
+          <input
+            type='text'
+            value={tempUserName}
+            onChange={handleUserNameChange}
+            className={s.nameInput}
+            placeholder='Name and Surname'
+          />
+          <button onClick={handleUserNameSubmit} className={s.submitButton}>
+            Update Name
+          </button>
+        </div>
 
         <CertificateResult userName={userName} iqValue={iqValue} date={date} />
 

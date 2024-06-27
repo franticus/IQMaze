@@ -30,7 +30,9 @@ function App() {
       localStorage.setItem('savedParams', currentUrlParams);
     }
 
-    const newUrl = `${window.location.pathname}${savedParams}`;
+    const newUrl = `${window.location.pathname}${
+      savedParams || currentUrlParams
+    }`;
     window.history.replaceState(null, '', newUrl);
   }, []);
 
