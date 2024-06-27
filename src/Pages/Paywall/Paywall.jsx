@@ -7,11 +7,13 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import cn from 'classnames';
 import { publicKey, priceId } from '../../key.js';
+import {
+  createCheckoutSession,
+  checkSubscription,
+} from '../../helpers/stripeHelpers';
+import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { createCheckoutSession } from '../../helpers/stripeHelpers';
-import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
-import { useSubscription } from '../../context/SubscriptionContext.js';
 
 const ValueProposition = lazy(() =>
   import('../../components/ValueProposition/ValueProposition.jsx')
@@ -25,7 +27,8 @@ const LoginForm = lazy(() => import('../../components/LoginForm/LoginForm'));
 const stripePromise = loadStripe(publicKey);
 
 const Paywall = ({ user, userId }) => {
-  const { hasSubscription, loadingSubscription } = useSubscription();
+  const [hasSubscription, setHasSubscription] = useState(false);
+  const [checkingSubscription, setCheckingSubscription] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
@@ -66,6 +69,25 @@ const Paywall = ({ user, userId }) => {
     if (!seriesScoresLocal) customNavigate('/home');
   }, [customNavigate, seriesScoresLocal]);
 
+  useEffect(() => {
+    const verifySubscription = async () => {
+      if (user) {
+        const { hasSubscription } = await checkSubscription(user.email);
+        setHasSubscription(hasSubscription);
+        sessionStorage.setItem(
+          'hasSubscription',
+          JSON.stringify(hasSubscription)
+        );
+      } else {
+        setHasSubscription(false);
+        sessionStorage.setItem('hasSubscription', JSON.stringify(false));
+      }
+      setCheckingSubscription(false);
+    };
+
+    verifySubscription();
+  }, [user]);
+
   const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
@@ -85,10 +107,7 @@ const Paywall = ({ user, userId }) => {
       totalCorrectAnswers *= 3;
     }
 
-    console.log('totalCorrectAnswers:', totalCorrectAnswers);
-
     let iq = iqTable[totalCorrectAnswers] || '62';
-    console.log('Setting IQ in local storage (calculated):', iq);
     const storedIQ = localStorage.getItem('iqScore');
     if (storedIQ !== iq.toString()) {
       localStorage.setItem('iqScore', iq);
@@ -169,38 +188,42 @@ const Paywall = ({ user, userId }) => {
           {!showPaymentOptions &&
             (isLogin ? (
               <Suspense fallback={<Skeleton height={200} width={600} />}>
-                <LoginForm switchToSignUp={switchToSignUp} />
+                <LoginForm
+                  switchToSignUp={switchToSignUp}
+                  onSuccess={() => setShowPaymentOptions(true)}
+                />
               </Suspense>
             ) : (
               <Suspense fallback={<Skeleton height={200} width={600} />}>
-                <SignUpForm switchToLogin={switchToLogin} />
+                <SignUpForm
+                  switchToLogin={switchToLogin}
+                  onSuccess={() => setShowPaymentOptions(true)}
+                />
               </Suspense>
             ))}
 
           {showPaymentOptions && (
-            <div>
-              <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
-                {loadingSubscription ? (
-                  <Skeleton height={50} width={200} />
-                ) : (
-                  <button
-                    ref={paymentButtonRef}
-                    className={cn(
-                      s.paymentButtonBlick,
-                      s.paymentButtonBlick_card
-                    )}
-                    onClick={
-                      hasSubscription
-                        ? handleShowResults
-                        : () => handlePaymentMethodSelection('gpay_applepay')
-                    }
-                  >
-                    {hasSubscription
-                      ? 'Show my result'
-                      : 'Get your test result for $1.90'}
-                  </button>
-                )}
-              </div>
+            <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
+              {checkingSubscription ? (
+                <Skeleton height={58} width={158} />
+              ) : (
+                <button
+                  ref={paymentButtonRef}
+                  className={cn(
+                    s.paymentButtonBlick,
+                    s.paymentButtonBlick_card
+                  )}
+                  onClick={
+                    hasSubscription
+                      ? handleShowResults
+                      : () => handlePaymentMethodSelection('gpay_applepay')
+                  }
+                >
+                  {hasSubscription
+                    ? 'Show my result'
+                    : 'Get your test result for $1.90'}
+                </button>
+              )}
             </div>
           )}
 
@@ -227,22 +250,18 @@ const Paywall = ({ user, userId }) => {
           [s.paymentButtonFixed_container_visible]: isButtonVisible,
         })}
       >
-        {loadingSubscription ? (
-          <Skeleton height={50} width={200} />
-        ) : (
-          <button
-            className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
-            onClick={
-              hasSubscription
-                ? handleShowResults
-                : () => handlePaymentMethodSelection('gpay_applepay')
-            }
-          >
-            {hasSubscription
-              ? 'Show my result'
-              : 'Get your test result for $1.90'}
-          </button>
-        )}
+        <button
+          className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
+          onClick={
+            hasSubscription
+              ? handleShowResults
+              : () => handlePaymentMethodSelection('gpay_applepay')
+          }
+        >
+          {hasSubscription
+            ? 'Show my result'
+            : 'Get your test result for $1.90'}
+        </button>
       </div>
     </Elements>
   );
