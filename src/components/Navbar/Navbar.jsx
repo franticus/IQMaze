@@ -5,22 +5,20 @@ import logo from '../../img/iq_logo.png';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
-import {
-  checkSubscription,
-  createBillingPortalSession,
-} from '../../helpers/stripeHelpers';
+import { createBillingPortalSession } from '../../helpers/stripeHelpers';
 import Modal from '../../components/Modal/Modal';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
+import { useSubscription } from '../../context/SubscriptionContext';
 
 const Navbar = ({ user }) => {
   const customNavigate = useCustomNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [hasSubscription, setHasSubscription] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const dropdownRef = useRef(null);
+  const hasSubscription = useSubscription();
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,19 +46,6 @@ const Navbar = ({ user }) => {
       document.body.style.overflow = 'visible';
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    const verifySubscription = async () => {
-      if (user) {
-        const { hasSubscription } = await checkSubscription(user.email);
-        setHasSubscription(hasSubscription);
-      } else {
-        setHasSubscription(false);
-      }
-    };
-
-    verifySubscription();
-  }, [user]);
 
   const handleSignOut = async () => {
     try {

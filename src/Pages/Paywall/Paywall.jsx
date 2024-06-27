@@ -1,12 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  lazy,
-  Suspense,
-  useCallback,
-} from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import s from './Paywall.module.scss';
 import { iqTable } from './iqTable.js';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
@@ -16,11 +9,9 @@ import cn from 'classnames';
 import { publicKey, priceId } from '../../key.js';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import {
-  checkSubscription,
-  createCheckoutSession,
-} from '../../helpers/stripeHelpers';
+import { createCheckoutSession } from '../../helpers/stripeHelpers';
 import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
+import { useSubscription } from '../../context/SubscriptionContext.js';
 
 const ValueProposition = lazy(() =>
   import('../../components/ValueProposition/ValueProposition.jsx')
@@ -34,14 +25,13 @@ const LoginForm = lazy(() => import('../../components/LoginForm/LoginForm'));
 const stripePromise = loadStripe(publicKey);
 
 const Paywall = ({ user, userId }) => {
+  const { hasSubscription, loadingSubscription } = useSubscription();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const [hasSubscription, setHasSubscription] = useState(false);
-  const [loadingSubscription, setLoadingSubscription] = useState(true);
   const currentUrl = window.location.href;
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
@@ -76,18 +66,6 @@ const Paywall = ({ user, userId }) => {
     if (!seriesScoresLocal) customNavigate('/home');
   }, [customNavigate, seriesScoresLocal]);
 
-  const verifySubscription = useCallback(async () => {
-    if (user && email) {
-      const { hasSubscription } = await checkSubscription(email);
-      setHasSubscription(hasSubscription);
-      setLoadingSubscription(false);
-    }
-  }, [user, email]);
-
-  useEffect(() => {
-    verifySubscription();
-  }, [verifySubscription]);
-
   const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
@@ -107,7 +85,10 @@ const Paywall = ({ user, userId }) => {
       totalCorrectAnswers *= 3;
     }
 
+    console.log('totalCorrectAnswers:', totalCorrectAnswers);
+
     let iq = iqTable[totalCorrectAnswers] || '62';
+    console.log('Setting IQ in local storage (calculated):', iq);
     const storedIQ = localStorage.getItem('iqScore');
     if (storedIQ !== iq.toString()) {
       localStorage.setItem('iqScore', iq);

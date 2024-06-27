@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
+import { SubscriptionProvider } from './context/SubscriptionContext';
 
 const PrivacyPolicy = lazy(() => import('./Pages/PrivacyPolicy/PrivacyPolicy'));
 const Terms = lazy(() => import('./Pages/Terms/Terms'));
@@ -37,27 +38,25 @@ function App() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('load', () => {
-      const unsubscribe = onAuthStateChanged(auth, user => {
-        if (user) {
-          console.log('User is signed in:', user);
-          setUser(user);
-          setUserId(user.uid);
-        } else {
-          console.log('No user is signed in');
-          setUser(null);
-          setUserId(null);
-          localStorage.removeItem('userName');
-          localStorage.removeItem('userEmail');
-        }
-      });
-
-      return () => unsubscribe();
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      if (user) {
+        console.log('User is signed in:', user);
+        setUser(user);
+        setUserId(user.uid);
+      } else {
+        console.log('No user is signed in');
+        setUser(null);
+        setUserId(null);
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userEmail');
+      }
     });
+
+    return () => unsubscribe();
   }, []);
 
   return (
-    <>
+    <SubscriptionProvider user={user}>
       <ScrollToTop />
       <Navbar user={user} />
       <div className='app'>
@@ -97,7 +96,7 @@ function App() {
         </div>
       </div>
       <Footer />
-    </>
+    </SubscriptionProvider>
   );
 }
 

@@ -2,17 +2,20 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import s from './Home.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import Testimonials from '../../components/Testimonials/Testimonials';
-import { checkSubscription } from '../../helpers/stripeHelpers';
 import 'react-loading-skeleton/dist/skeleton.css';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import FeaturesSection from '../../components/FeaturesSection/FeaturesSection';
 import CommunitySection from '../../components/CommunitySection/CommunitySection';
 import CTASection from '../../components/CTASection/CTASection';
+import { useSubscription } from '../../context/SubscriptionContext';
 
 const Home = ({ user }) => {
   const customNavigate = useCustomNavigate();
-  const [showLastResults, setShowLastResults] = useState(false);
-  const [hasStartedTest, setHasStartedTest] = useState(false);
+  const hasSubscription = useSubscription();
+  const [hasStartedTest, setHasStartedTest] = useState(() => {
+    const savedHasStartedTest = sessionStorage.getItem('hasStartedTest');
+    return savedHasStartedTest ? JSON.parse(savedHasStartedTest) : false;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,23 +36,25 @@ const Home = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    const verifySubscription = async () => {
-      if (user) {
-        const { hasSubscription } = await checkSubscription(user.email);
-        setShowLastResults(hasSubscription);
-      } else {
-        setShowLastResults(false);
-      }
-      setLoading(false);
-    };
-
-    verifySubscription();
+    if (user) {
+      sessionStorage.setItem(
+        'showLastResults',
+        JSON.stringify(hasSubscription)
+      );
+    } else {
+      sessionStorage.setItem('showLastResults', JSON.stringify(false));
+    }
 
     const currentStep = localStorage.getItem('currentStep');
     if (currentStep && parseInt(currentStep, 10) > 0) {
       setHasStartedTest(true);
+      sessionStorage.setItem('hasStartedTest', JSON.stringify(true));
+    } else {
+      sessionStorage.setItem('hasStartedTest', JSON.stringify(false));
     }
-  }, [user]);
+
+    setLoading(false);
+  }, [user, hasSubscription]);
 
   const handleStartTest = useCallback(() => {
     localStorage.setItem(
@@ -84,7 +89,7 @@ const Home = ({ user }) => {
           <HeroSection
             loading={loading}
             hasStartedTest={hasStartedTest}
-            showLastResults={showLastResults}
+            showLastResults={hasSubscription}
             handleStartTest={handleStartTest}
             handleShowLastResults={handleShowLastResults}
             handleContinueTest={handleContinueTest}
@@ -93,7 +98,7 @@ const Home = ({ user }) => {
         [
           loading,
           hasStartedTest,
-          showLastResults,
+          hasSubscription,
           handleStartTest,
           handleShowLastResults,
           handleContinueTest,
