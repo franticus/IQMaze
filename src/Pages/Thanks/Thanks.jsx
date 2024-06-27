@@ -88,9 +88,11 @@ const Thanks = () => {
 
         <CertificateResult userName={userName} iqValue={iqValue} date={date} />
 
-        <button onClick={handleShowIncorrectAnswers}>
-          Show my incorrect answers
-        </button>
+        {incorrectAnswers.length !== 0 && (
+          <button onClick={handleShowIncorrectAnswers}>
+            Show my incorrect answers
+          </button>
+        )}
 
         <div className={s.resultDescription}>
           <h2>Result description</h2>
