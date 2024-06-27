@@ -52,6 +52,20 @@ const Quiz = () => {
         };
   });
 
+  useEffect(() => {
+    const currentUrlParams = window.location.search;
+    const savedParams = localStorage.getItem('savedParams');
+
+    if (savedParams) {
+      localStorage.setItem('savedParams', savedParams);
+    } else {
+      localStorage.setItem('savedParams', currentUrlParams);
+    }
+
+    const newUrl = `${window.location.pathname}${savedParams}`;
+    window.history.replaceState(null, '', newUrl);
+  }, []);
+
   const [showQuiz, setShowQuiz] = useState(false);
   const [pointerEvents, setPointerEvents] = useState(true);
   const [loading, setLoading] = useState(true);

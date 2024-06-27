@@ -300,59 +300,6 @@ $border-radius: 8px;
 	}
 }
 
-.iqDistribution {
-	width: calc(100vw - 40px);
-	max-width: 900px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 40px 20px;
-	background: #fff;
-	border-radius: $border-radius;
-	box-shadow: $box-shadow;
-	margin-top: 40px;
-
-	.iqTitle {
-		font-size: 34px;
-		color: #333;
-		margin-bottom: 16px;
-	}
-
-	.iqLabels_container {
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-	}
-
-	.iqLabels {
-		width: calc(100vw - 40px);
-		max-width: 400px;
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-		flex-direction: column;
-		font-size: 14px;
-		color: #666;
-		margin-bottom: 40px;
-
-		&_item {
-			width: 100%;
-			display: flex;
-			align-items: flex-start;
-			justify-content: space-between;
-			text-align: left;
-			padding: 10px;
-			font-weight: 600;
-			border-bottom: 1px solid #64f5df;
-		}
-	}
-
-	.iqImage {
-		width: 100%;
-		max-width: 400px;
-	}
-}
-
 .return {
 	cursor: pointer;
 	margin-top: 40px;

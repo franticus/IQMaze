@@ -21,6 +21,20 @@ function App() {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    const currentUrlParams = window.location.search;
+    const savedParams = localStorage.getItem('savedParams');
+
+    if (savedParams) {
+      localStorage.setItem('savedParams', savedParams);
+    } else {
+      localStorage.setItem('savedParams', currentUrlParams);
+    }
+
+    const newUrl = `${window.location.pathname}${savedParams}`;
+    window.history.replaceState(null, '', newUrl);
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('load', () => {
       const unsubscribe = onAuthStateChanged(auth, user => {
         if (user) {

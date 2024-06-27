@@ -82,6 +82,7 @@ const Home = ({ user }) => {
         })
       );
     !hasStartedTest && localStorage.setItem('answers', JSON.stringify([]));
+    !hasStartedTest && localStorage.setItem('currentStep', JSON.stringify(0));
     customNavigate('/iqtest');
   };
 
