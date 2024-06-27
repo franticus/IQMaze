@@ -32,7 +32,6 @@ const CommunitySection = ({ loading }) => {
 
 CommunitySection.propTypes = {
   loading: PropTypes.bool.isRequired,
-  about_5: PropTypes.string.isRequired,
 };
 
 export default CommunitySection;

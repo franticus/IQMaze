@@ -279,7 +279,11 @@ const Quiz = () => {
         {question && (
           <>
             {loading ? (
-              <Skeleton height={220} width={340} className={s.quest_image} />
+              <Skeleton
+                height={step >= whenEightVariants ? 250 : 220}
+                width={step >= whenEightVariants ? 300 : 340}
+                className={s.quest_image}
+              />
             ) : (
               <div
                 className={cn(s.quest_image, {

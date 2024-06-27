@@ -70,9 +70,6 @@ const FeaturesSection = ({ loading }) => {
 
 FeaturesSection.propTypes = {
   loading: PropTypes.bool.isRequired,
-  about_2: PropTypes.string.isRequired,
-  about_3: PropTypes.string.isRequired,
-  about_4: PropTypes.string.isRequired,
 };
 
 export default FeaturesSection;
