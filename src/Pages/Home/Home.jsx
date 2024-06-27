@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import s from './Home.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import Testimonials from '../../components/Testimonials/Testimonials';
@@ -51,8 +51,8 @@ const Home = ({ user }) => {
     }
   }, [user]);
 
-  const handleStartTest = () => {
-    !hasStartedTest &&
+  const handleStartTest = useCallback(() => {
+    if (!hasStartedTest) {
       localStorage.setItem(
         'seriesScores',
         JSON.stringify({
@@ -63,30 +63,52 @@ const Home = ({ user }) => {
           E: 0,
         })
       );
-    !hasStartedTest && localStorage.setItem('answers', JSON.stringify([]));
-    !hasStartedTest && localStorage.setItem('currentStep', JSON.stringify(0));
+      localStorage.setItem('answers', JSON.stringify([]));
+      localStorage.setItem('currentStep', JSON.stringify(0));
+    }
     customNavigate('/iqtest');
-  };
+  }, [hasStartedTest, customNavigate]);
 
-  const handleShowLastResults = () => {
+  const handleShowLastResults = useCallback(() => {
     customNavigate('/thanks');
-  };
+  }, [customNavigate]);
 
   return (
     <div className={s.home}>
-      <HeroSection
-        loading={loading}
-        hasStartedTest={hasStartedTest}
-        showLastResults={showLastResults}
-        handleStartTest={handleStartTest}
-        handleShowLastResults={handleShowLastResults}
-      />
+      {useMemo(
+        () => (
+          <HeroSection
+            loading={loading}
+            hasStartedTest={hasStartedTest}
+            showLastResults={showLastResults}
+            handleStartTest={handleStartTest}
+            handleShowLastResults={handleShowLastResults}
+          />
+        ),
+        [
+          loading,
+          hasStartedTest,
+          showLastResults,
+          handleStartTest,
+          handleShowLastResults,
+        ]
+      )}
 
-      <FeaturesSection loading={loading} />
+      {useMemo(
+        () => (
+          <FeaturesSection loading={loading} />
+        ),
+        [loading]
+      )}
 
       <Testimonials />
 
-      <CommunitySection loading={loading} />
+      {useMemo(
+        () => (
+          <CommunitySection loading={loading} />
+        ),
+        [loading]
+      )}
 
       <CTASection
         hasStartedTest={hasStartedTest}
