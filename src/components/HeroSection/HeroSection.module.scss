@@ -4,7 +4,6 @@ $box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 $border-radius: 8px;
 $section-padding: 3rem;
 
-
 @keyframes shine {
 	0% {
 		transform: translateX(-100%);
@@ -115,9 +114,7 @@ $section-padding: 3rem;
 	padding: 60px 20px;
 	border-radius: $border-radius;
 	text-align: center;
-}
 
-.heroSection {
 	.heroContent {
 		max-width: 700px;
 		margin: 0 auto;

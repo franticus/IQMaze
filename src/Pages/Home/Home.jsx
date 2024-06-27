@@ -3,12 +3,11 @@ import s from './Home.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import { checkSubscription } from '../../helpers/stripeHelpers';
-import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import HeroSection from '../../components/HeroSection/HeroSection'; // Импортируем новый компонент
-import FeaturesSection from '../../components/FeaturesSection/FeaturesSection'; // Импортируем новый компонент
-
-import about_5 from '../../img/about_5.jpg';
+import HeroSection from '../../components/HeroSection/HeroSection';
+import FeaturesSection from '../../components/FeaturesSection/FeaturesSection';
+import CommunitySection from '../../components/CommunitySection/CommunitySection';
+import CTASection from '../../components/CTASection/CTASection';
 
 const Home = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -87,37 +86,12 @@ const Home = ({ user }) => {
 
       <Testimonials />
 
-      <section className={s.communitySection}>
-        <h2 className={s.sectionHeading}>Join the IQMaze Community</h2>
-        <p className={s.sectionText}>
-          Connect with like-minded individuals, share your results, and
-          participate in engaging discussions about intelligence and cognitive
-          health. Our community is here to support your journey toward unlocking
-          your full cognitive potential.
-        </p>
-        {loading ? (
-          <Skeleton height={300} width={300} />
-        ) : (
-          <img
-            src={about_5}
-            alt='A diverse group of people from the IQMaze community'
-            className={s.communityImage}
-            loading='lazy'
-          />
-        )}
-      </section>
+      <CommunitySection loading={loading} />
 
-      <section className={s.ctaSection}>
-        <h2 className={s.sectionHeading}>Get Started with IQMaze</h2>
-        <p className={s.sectionText}>
-          Ready to discover your cognitive strengths? Take our scientifically
-          validated IQ test today and start your journey towards personal and
-          professional growth.
-        </p>
-        <button className={s.button} onClick={handleStartTest}>
-          {hasStartedTest ? 'Continue IQ test' : 'Start IQ test'}
-        </button>
-      </section>
+      <CTASection
+        hasStartedTest={hasStartedTest}
+        handleStartTest={handleStartTest}
+      />
     </div>
   );
 };
