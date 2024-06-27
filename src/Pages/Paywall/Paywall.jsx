@@ -1,5 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  lazy,
+  Suspense,
+  useCallback,
+} from 'react';
 import s from './Paywall.module.scss';
 import { iqTable } from './iqTable.js';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
@@ -67,26 +74,26 @@ const Paywall = ({ user, userId }) => {
     if (!seriesScoresLocal) customNavigate('/home');
   }, [customNavigate, seriesScoresLocal]);
 
-  useEffect(() => {
-    const verifySubscription = async () => {
-      if (user && email) {
-        const { hasSubscription } = await checkSubscription(email);
-        if (hasSubscription) {
-          const totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
-            (total, num) => total + num,
-            0
-          );
-          const iq = iqTable[totalCorrectAnswers] || '62';
-          localStorage.setItem('iqScore', iq);
-          customNavigate('/thanks');
-        }
+  const verifySubscription = useCallback(async () => {
+    if (user && email) {
+      const { hasSubscription } = await checkSubscription(email);
+      if (hasSubscription) {
+        const totalCorrectAnswers = Object.values(seriesScoresLocal).reduce(
+          (total, num) => total + num,
+          0
+        );
+        const iq = iqTable[totalCorrectAnswers] || '62';
+        localStorage.setItem('iqScore', iq);
+        customNavigate('/thanks');
       }
-    };
+    }
+  }, [user, email, seriesScoresLocal, customNavigate]);
 
+  useEffect(() => {
     verifySubscription();
-  }, []);
+  }, [verifySubscription]);
 
-  const calculateAndSetIQ = () => {
+  const calculateAndSetIQ = useCallback(() => {
     if (!seriesScoresLocal) {
       console.log('No quiz data found.');
       return;
@@ -109,42 +116,44 @@ const Paywall = ({ user, userId }) => {
     iq = iqTable[totalCorrectAnswers] || '62';
     setIqValue(iq);
     localStorage.setItem('iqScore', iq);
-  };
+  }, [seriesScoresLocal, isV30q, isV20q]);
 
   useEffect(() => {
     calculateAndSetIQ();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seriesScoresLocal]);
+  }, [calculateAndSetIQ]);
 
-  const handlePaymentMethodSelection = async method => {
-    try {
-      const session = await createCheckoutSession(
-        email,
-        userId,
-        priceId,
-        iqValue,
-        name
-      );
-      const stripe = await stripePromise;
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
+  const handlePaymentMethodSelection = useCallback(
+    async method => {
+      try {
+        const session = await createCheckoutSession(
+          email,
+          userId,
+          priceId,
+          iqValue,
+          name
+        );
+        const stripe = await stripePromise;
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
 
-      if (result.error) {
-        console.error(result.error.message);
+        if (result.error) {
+          console.error(result.error.message);
+        }
+      } catch (error) {
+        console.error('Error creating checkout session:', error);
       }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-    }
-  };
+    },
+    [email, userId, iqValue, name]
+  );
 
-  const switchToSignUp = () => {
+  const switchToSignUp = useCallback(() => {
     setIsLogin(false);
-  };
+  }, []);
 
-  const switchToLogin = () => {
+  const switchToLogin = useCallback(() => {
     setIsLogin(true);
-  };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
