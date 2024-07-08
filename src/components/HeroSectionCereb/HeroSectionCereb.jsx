@@ -22,11 +22,11 @@ const HeroSectionCereb = ({
         </div>
 
         <button className={s.button} onClick={handleStartTest}>
-          Start IQ test
+          Start Certified Test
         </button>
         {hasStartedTest && (
           <button className={s.button} onClick={handleContinueTest}>
-            Continue IQ test
+            Continue Certified Test
           </button>
         )}
         {showLastResults && (

@@ -1,0 +1,122 @@
+$text-color: #333;
+$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+$border-radius: 8px;
+$section-padding: 3rem;
+
+@keyframes shine {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	100% {
+		transform: translateX(500%);
+	}
+}
+
+.CTASectionCereb {
+	background: #fff;
+	color: $text-color;
+	padding: 60px 20px;
+	border-radius: $border-radius;
+	text-align: center;
+	display: flex;
+
+	@media (max-width: 768px) {
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.left,
+	.right {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		gap: 20px;
+	}
+
+	.sectionHeading {
+		display: flex;
+		flex-direction: column;
+		font-size: 44px;
+		font-weight: 500;
+		text-align: left;
+
+		@media (max-width: 768px) {
+			font-size: 34px;
+		}
+
+		&_iq {
+			color: hsl(212.02, 100%, 46.67%);
+		}
+	}
+
+	.sectionText {
+		font-size: 16px;
+		margin-bottom: 2rem;
+	}
+
+	.ctaButton {
+		background: #fff;
+		color: #333;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 1rem;
+		font-weight: bold;
+		text-transform: uppercase;
+		transition: background 0.3s, color 0.3s;
+		border: 2px solid transparent;
+
+		&:hover {
+			background: #fff;
+			color: #fff;
+			border: 2px solid #fff;
+		}
+	}
+
+	.certificate {
+		width: 40vw;
+		max-width: 400px;
+		min-width: 200px;
+	}
+}
+
+.button {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	padding: 20px 40px;
+	border-radius: $border-radius;
+	border: 1px solid #fff;
+	transition: all 0.3s ease-in-out;
+	background: #0d766e;
+	font-size: 20px;
+	font-weight: 500;
+	color: #fff;
+
+	&_last {
+		background: #0d766e;
+		font-size: 14px;
+		padding: 20px 40px;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -75%;
+		width: 50%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+		transform: skewX(-25deg);
+		animation: shine 3s infinite;
+	}
+
+	&:hover {
+		background: lighten(#fff, 10%);
+		border-color: lighten(#fff, 10%);
+	}
+}

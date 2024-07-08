@@ -5,6 +5,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import HeroSectionCereb from '../../components/HeroSectionCereb/HeroSectionCereb';
 import CTASection from '../../components/CTASection/CTASection';
 import { useSubscription } from '../../context/SubscriptionContext';
+import CTASectionCereb from '../../components/CTASectionCereb/CTASectionCereb';
 
 const HomeV2Cereb = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -88,6 +89,10 @@ const HomeV2Cereb = ({ user }) => {
         handleStartTest={handleStartTest}
         handleShowLastResults={handleShowLastResults}
         handleContinueTest={handleContinueTest}
+      />
+      <CTASectionCereb
+        hasStartedTest={hasStartedTest}
+        handleStartTest={handleStartTest}
       />
     </div>
   );

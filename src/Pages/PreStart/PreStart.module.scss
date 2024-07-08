@@ -61,7 +61,7 @@ section {
 		&_iq {
 			margin-left: 10px;
 			display: inline-block;
-			color: #0d766e;
+			color: hsl(212.02, 100%, 46.67%);
 		}
 	}
 
@@ -91,8 +91,7 @@ section {
 		transition: all 0.3s ease-in-out;
 		background: $primary-color;
 		font-size: 20px;
-		text-transform: uppercase;
-		font-weight: 600;
+		font-weight: 500;
 		color: #fff;
 
 		&_last {

@@ -26,7 +26,6 @@ $section-padding: 3rem;
 	margin-bottom: 40px;
 	background: #fff;
 	border-radius: $border-radius;
-	box-shadow: $box-shadow;
 
 	.did {
 		font-size: 16px;
@@ -40,6 +39,10 @@ $section-padding: 3rem;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+
+		@media (max-width: 768px) {
+			font-size: 34px;
+		}
 
 		&_iq {
 			color: hsl(212.02deg 100% 46.67%);
@@ -63,8 +66,7 @@ $section-padding: 3rem;
 		transition: all 0.3s ease-in-out;
 		background: $primary-color;
 		font-size: 20px;
-		text-transform: uppercase;
-		font-weight: 600;
+		font-weight: 500;
 		color: #fff;
 
 		&_last {

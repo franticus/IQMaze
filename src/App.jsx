@@ -54,7 +54,13 @@ function App() {
               <Routes>
                 <Route
                   path='/'
-                  element={<Home user={user} userId={userId} />}
+                  element={
+                    isHomeV2Cereb ? (
+                      <HomeV2Cereb user={user} userId={userId} />
+                    ) : (
+                      <Home user={user} userId={userId} />
+                    )
+                  }
                 />
                 <Route
                   path='/home'
