@@ -3,6 +3,10 @@ import s from './Footer.module.scss';
 import logo from '../../img/iq_logo.png';
 import cn from 'classnames';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
+import visa from '../../img/cards/visa.svg';
+import mastercard from '../../img/cards/mastercard.svg';
+import amex from '../../img/cards/amex.svg';
+import discover from '../../img/cards/discover.svg';
 
 const Footer = () => {
   const customNavigate = useCustomNavigate();
@@ -18,6 +22,12 @@ const Footer = () => {
             IQMaze
           </span>
         </div>
+        <div className={s.payImgs_container}>
+          <img className={s.payImgs} src={visa} alt='visa' />
+          <img className={s.payImgs} src={mastercard} alt='mastercard' />
+          <img className={s.payImgs} src={amex} alt='amex' />
+          <img className={s.payImgs} src={discover} alt='discover' />
+        </div>
         <div className={s.links}>
           <span className={s.link} onClick={() => customNavigate('/privacy')}>
             Privacy Policy
@@ -30,9 +40,8 @@ const Footer = () => {
           </a>
         </div>
         <div className={s.copyright}>
-          Copyright © |{' '}
-          <span onClick={() => customNavigate('/home')}>IQMaze 2024</span> | All
-          rights reserved
+          © <span onClick={() => customNavigate('/home')}>IQMaze 2024.</span>{' '}
+          All rights reserved
         </div>
       </div>
     </footer>
