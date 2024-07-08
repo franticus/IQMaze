@@ -5,6 +5,10 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import HeroSectionCereb from '../../components/HeroSectionCereb/HeroSectionCereb';
 import { useSubscription } from '../../context/SubscriptionContext';
 import CTASectionCereb from '../../components/CTASectionCereb/CTASectionCereb';
+import about_1 from '../../img/about_1.jpg';
+import check from '../../img/check.svg';
+import top from '../../img/top.svg';
+import comment from '../../img/comment.svg';
 
 const HomeV2Cereb = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -89,6 +93,38 @@ const HomeV2Cereb = ({ user }) => {
         handleShowLastResults={handleShowLastResults}
         handleContinueTest={handleContinueTest}
       />
+      <section className={s.heroSection}>
+        <div className={s.left}>
+          <div className={s.introText}>
+            Our test is based on the latest psychological studies, and gives
+            very similar results compared to standardized IQ tests.
+          </div>
+          <div className={s.introText}>
+            <img src={check} alt='check' />
+            <p>
+              <strong>3.318</strong> Tests taken today
+            </p>
+          </div>
+          <div className={s.introText}>
+            <img src={top} alt='top' />
+            <p>
+              Avg. IQ score: <strong>105</strong>
+            </p>
+          </div>
+          <div className={s.introText}>
+            <img src={comment} alt='comment' />
+            <p>Excellent client reviews ⭐⭐⭐⭐⭐</p>
+          </div>
+        </div>
+        <div className={s.right}>
+          <img
+            src={about_1}
+            alt='Unlock Your Cognitive Potential with IQMaze'
+            className={s.heroImage}
+            loading='lazy'
+          />
+        </div>
+      </section>
       <CTASectionCereb
         hasStartedTest={hasStartedTest}
         handleStartTest={handleStartTest}

@@ -34,6 +34,10 @@ $section-padding: 3rem;
 		justify-content: center;
 		align-items: flex-start;
 		gap: 20px;
+
+		@media (max-width: 768px) {
+			align-items: center;
+		}
 	}
 
 	.sectionHeading {
@@ -80,7 +84,7 @@ $section-padding: 3rem;
 	.certificate {
 		width: 40vw;
 		max-width: 400px;
-		min-width: 200px;
+		min-width: 300px;
 	}
 }
 
