@@ -123,18 +123,24 @@ const Navbar = ({ user }) => {
             </button>
             <nav className={s.menu__body}>
               <ul className={s.menu__list}>
-                {['Home', 'IQTest'].map(link => (
-                  <li
-                    onClick={() => {
-                      setIsOpen(false);
-                      customNavigate(`/${link.toLowerCase()}`);
-                    }}
-                    className={cn(s.menu__item, s.menu__link)}
-                    key={link}
-                  >
-                    {link}
-                  </li>
-                ))}
+                <li
+                  onClick={() => {
+                    setIsOpen(false);
+                    customNavigate(`/home`);
+                  }}
+                  className={cn(s.menu__item, s.menu__link)}
+                >
+                  Home
+                </li>
+                <li
+                  onClick={() => {
+                    setIsOpen(false);
+                    customNavigate(`/iqtest`);
+                  }}
+                  className={cn(s.menu__item, s.menu__link)}
+                >
+                  IQ Test
+                </li>
               </ul>
             </nav>
             {user ? (
