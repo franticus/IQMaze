@@ -3,7 +3,6 @@ import s from './HomeV2Cereb.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import 'react-loading-skeleton/dist/skeleton.css';
 import HeroSectionCereb from '../../components/HeroSectionCereb/HeroSectionCereb';
-import CTASection from '../../components/CTASection/CTASection';
 import { useSubscription } from '../../context/SubscriptionContext';
 import CTASectionCereb from '../../components/CTASectionCereb/CTASectionCereb';
 
