@@ -1,0 +1,29 @@
+section {
+	width: 100%;
+	max-width: 900px;
+}
+
+.HomeV2Cereb {
+	width: calc(100vw - 40px);
+	display: flex;
+	padding: 40px 0;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 40px 20px;
+	animation: fadeIn 1s ease-in-out forwards;
+
+	.buttonSkeleton {
+		margin-top: 20px;
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
+}

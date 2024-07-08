@@ -14,7 +14,7 @@ $section-padding: 3rem;
 	}
 }
 
-.hero {
+.HeroSectionCereb {
 	width: 100%;
 	max-width: 900px;
 	display: flex;
@@ -28,39 +28,21 @@ $section-padding: 3rem;
 	border-radius: $border-radius;
 	box-shadow: $box-shadow;
 
-
-	@keyframes bounce {
-
-		0%,
-		20%,
-		50%,
-		80%,
-		100% {
-			transform: translateY(0) rotate(5deg);
-		}
-
-		40% {
-			transform: translateY(-30px);
-		}
-
-		60% {
-			transform: translateY(-15px) scale(1.1);
-		}
-	}
-
 	.did {
 		font-size: 16px;
 		font-weight: 400;
 	}
 
 	.title {
-		font-size: 42px;
-		font-weight: 600;
+		font-size: 72px;
+		font-weight: 500;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
 
 		&_iq {
-			display: inline-block;
-			color: #0d766e;
-			animation: bounce 3s ease-in-out infinite;
+			color: hsl(212.02deg 100% 46.67%);
 		}
 	}
 

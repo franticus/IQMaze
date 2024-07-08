@@ -9,6 +9,7 @@ import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { SubscriptionProvider } from './context/SubscriptionContext';
 import PreStart from './Pages/PreStart/PreStart';
+import HomeV2Cereb from './Pages/HomeV2Cereb/HomeV2Cereb';
 
 const PrivacyPolicy = lazy(() => import('./Pages/PrivacyPolicy/PrivacyPolicy'));
 const Terms = lazy(() => import('./Pages/Terms/Terms'));
@@ -21,6 +22,8 @@ const Thanks = lazy(() => import('./Pages/Thanks/Thanks'));
 function App() {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
+  const currentUrl = window.location.href;
+  const isHomeV2Cereb = currentUrl.includes('homeV2Cereb');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -55,7 +58,13 @@ function App() {
                 />
                 <Route
                   path='/home'
-                  element={<Home user={user} userId={userId} />}
+                  element={
+                    isHomeV2Cereb ? (
+                      <HomeV2Cereb user={user} userId={userId} />
+                    ) : (
+                      <Home user={user} userId={userId} />
+                    )
+                  }
                 />
                 <Route
                   path='/prestart'
