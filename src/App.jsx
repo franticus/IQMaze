@@ -8,6 +8,7 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { SubscriptionProvider } from './context/SubscriptionContext';
+import PreStart from './Pages/PreStart/PreStart';
 
 const PrivacyPolicy = lazy(() => import('./Pages/PrivacyPolicy/PrivacyPolicy'));
 const Terms = lazy(() => import('./Pages/Terms/Terms'));
@@ -55,6 +56,10 @@ function App() {
                 <Route
                   path='/home'
                   element={<Home user={user} userId={userId} />}
+                />
+                <Route
+                  path='/prestart'
+                  element={<PreStart user={user} userId={userId} />}
                 />
                 <Route
                   path='/iqtest'

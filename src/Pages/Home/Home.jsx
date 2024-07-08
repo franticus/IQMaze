@@ -69,12 +69,12 @@ const Home = ({ user }) => {
     );
     localStorage.setItem('answers', JSON.stringify([]));
     localStorage.setItem('currentStep', JSON.stringify(0));
-    customNavigate('/iqtest');
+    customNavigate('/prestart');
   }, [customNavigate]);
 
   const handleContinueTest = useCallback(() => {
     if (hasStartedTest) {
-      customNavigate('/iqtest');
+      customNavigate('/prestart');
     }
   }, [hasStartedTest, customNavigate]);
 
