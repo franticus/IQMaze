@@ -73,7 +73,7 @@ const HomeV2Cereb = ({ user }) => {
 
   const handleContinueTest = useCallback(() => {
     if (hasStartedTest) {
-      customNavigate('/prestart');
+      customNavigate('/iqtest');
     }
   }, [hasStartedTest, customNavigate]);
 
