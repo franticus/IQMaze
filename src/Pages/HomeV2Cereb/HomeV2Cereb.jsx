@@ -6,6 +6,7 @@ import HeroSectionCereb from '../../components/HeroSectionCereb/HeroSectionCereb
 import { useSubscription } from '../../context/SubscriptionContext';
 import CTASectionCereb from '../../components/CTASectionCereb/CTASectionCereb';
 import CerebStatsHero from '../../components/CerebStatsHero/CerebStatsHero';
+import CerebWhatProcess from '../../components/CerebWhatProcess/CerebWhatProcess';
 
 const HomeV2Cereb = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -91,6 +92,7 @@ const HomeV2Cereb = ({ user }) => {
         handleContinueTest={handleContinueTest}
       />
       <CerebStatsHero />
+      <CerebWhatProcess />
       <CTASectionCereb
         hasStartedTest={hasStartedTest}
         handleStartTest={handleStartTest}

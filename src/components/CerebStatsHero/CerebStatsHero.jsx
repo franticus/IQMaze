@@ -14,19 +14,19 @@ const CerebStatsHero = () => {
           similar results compared to standardized IQ tests.
         </div>
         <div className={s.introText}>
-          <img src={check} alt='check' />
+          <img className={s.statsImg} src={check} alt='check' />
           <p>
             <strong>3.318</strong> Tests taken today
           </p>
         </div>
         <div className={s.introText}>
-          <img src={top} alt='top' />
+          <img className={s.statsImg} src={top} alt='top' />
           <p>
             Avg. IQ score: <strong>105</strong>
           </p>
         </div>
         <div className={s.introText}>
-          <img src={comment} alt='comment' />
+          <img className={s.statsImg} src={comment} alt='comment' />
           <p>Excellent client reviews ⭐⭐⭐⭐⭐</p>
         </div>
       </div>
