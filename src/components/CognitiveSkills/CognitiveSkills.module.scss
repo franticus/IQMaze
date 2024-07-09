@@ -1,0 +1,53 @@
+.cognitiveSkills {
+	text-align: center;
+	padding: 20px;
+
+	h2 {
+		font-size: 2em;
+		margin-bottom: 20px;
+	}
+
+	.highlight {
+		color: #007bff;
+	}
+}
+
+.skillsContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.skillCard {
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin: 10px;
+	padding: 20px;
+	max-width: 300px;
+	text-align: left;
+
+	.icon {
+		font-size: 2em;
+	}
+
+	h3 {
+		margin: 10px 0;
+	}
+
+	p {
+		font-size: 0.9em;
+	}
+}
+
+@media (max-width: 768px) {
+	.cognitiveSkills {
+		h2 {
+			font-size: 1.5em;
+		}
+	}
+
+	.skillCard {
+		max-width: 100%;
+	}
+}
