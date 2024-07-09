@@ -3,7 +3,6 @@ import s from './PreStart.module.scss';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSubscription } from '../../context/SubscriptionContext';
-import mark from '../../img/mark.svg';
 
 const PreStart = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -51,15 +50,15 @@ const PreStart = ({ user }) => {
       </div>
       <div className={s.description_container}>
         <div className={s.description}>
-          <img src={mark} alt='mark' />
+          ✔️
           <p>You will get 30 questions with growing difficulty</p>
         </div>
         <div className={s.description}>
-          <img src={mark} alt='mark' />
+          ✔️
           <p>Select the right answer out of the 6 options</p>
         </div>
         <div className={s.description}>
-          <img src={mark} alt='mark' />
+          ✔️
           <p>You can skip the question and return back later</p>
         </div>
       </div>
