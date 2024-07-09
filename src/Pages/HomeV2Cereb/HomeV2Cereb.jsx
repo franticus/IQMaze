@@ -8,6 +8,7 @@ import CTASectionCereb from '../../components/CTASectionCereb/CTASectionCereb';
 import CerebStatsHero from '../../components/CerebStatsHero/CerebStatsHero';
 import CerebWhatProcess from '../../components/CerebWhatProcess/CerebWhatProcess';
 import CognitiveSkills from '../../components/CognitiveSkills/CognitiveSkills';
+import AverageIQChart from '../../components/AverageIQChart/AverageIQChart';
 
 const HomeV2Cereb = ({ user }) => {
   const customNavigate = useCustomNavigate();
@@ -93,6 +94,7 @@ const HomeV2Cereb = ({ user }) => {
         handleContinueTest={handleContinueTest}
       />
       <CerebStatsHero />
+      <AverageIQChart />
       <CerebWhatProcess />
       <CognitiveSkills />
       <CTASectionCereb

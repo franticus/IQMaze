@@ -1,0 +1,76 @@
+.averageIQChart {
+	h2 {
+		font-size: 2em;
+		margin: 60px 60px 10px 60px;
+		text-align: center;
+		font-weight: 500;
+	}
+
+	.subtitle {
+		font-size: 1em;
+		text-align: center;
+	}
+
+	.country {
+		margin: 0 10px;
+	}
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 20px;
+		max-width: 900px;
+
+		@media (min-width: 768px) {
+			flex-direction: row;
+		}
+	}
+
+	.chartContainer {
+		width: 100%;
+		max-width: 400px;
+		margin-bottom: 40px;
+		height: 400px;
+
+		@media (min-width: 768px) {
+			margin-bottom: 0;
+			margin-right: 40px;
+			flex: 1;
+		}
+	}
+
+	.countryList {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 10px;
+		max-width: 500px;
+
+		@media (min-width: 768px) {
+			flex: 1;
+		}
+	}
+
+	.countryItem {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px 20px;
+		width: 100%;
+		max-width: 160px;
+		border: 1px solid #ccc;
+		background: #fff;
+		border-radius: 8px;
+		font-size: 12px;
+	}
+
+	.flagPlaceholder {
+		width: 30px;
+		height: 20px;
+		background-color: #ddd;
+		margin-right: 10px;
+		display: block;
+	}
+}
