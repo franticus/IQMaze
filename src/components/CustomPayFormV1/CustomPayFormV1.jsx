@@ -104,6 +104,7 @@ const CardForm = ({ subscriptionInfo }) => {
 
 const CustomPayFormV1 = () => {
   const [paymentRequest, setPaymentRequest] = useState(null);
+  const [canMakePayment, setCanMakePayment] = useState(false); // New state to track if payment can be made
   const [subscriptionInfo, setSubscriptionInfo] = useState({});
   const stripe = useStripe();
 
@@ -133,6 +134,9 @@ const CustomPayFormV1 = () => {
       pr.canMakePayment().then(result => {
         if (result) {
           setPaymentRequest(pr);
+          setCanMakePayment(true); // Update state to true if payment can be made
+        } else {
+          setCanMakePayment(false); // Update state to false if payment cannot be made
         }
       });
     }
@@ -179,7 +183,7 @@ const CustomPayFormV1 = () => {
       <p className={s.noCommitment}>No commitment. Cancel anytime.</p>
       <p className={s.moneyBackGuarantee}>30-Day Money-Back Guarantee.</p>
       <div className={s.paymentMethods}>
-        {paymentRequest && (
+        {canMakePayment && (
           <>
             <p>Pay with Google Pay</p>
             <PaymentRequestButtonElement
