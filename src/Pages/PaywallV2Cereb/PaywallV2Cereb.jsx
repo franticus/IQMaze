@@ -13,6 +13,7 @@ import {
 } from '../../helpers/stripeHelpers.js';
 import 'react-loading-skeleton/dist/skeleton.css';
 import CustomPayFormV1 from '../../components/CustomPayFormV1/CustomPayFormV1.jsx';
+import WhyTrustUs from '../../components/WhyTrustUs/WhyTrustUs.jsx';
 const stripePromise = loadStripe(publicKey);
 
 const PaywallV2Cereb = ({ user, userId }) => {
@@ -187,6 +188,8 @@ const PaywallV2Cereb = ({ user, userId }) => {
       </div>
 
       <CustomPayFormV1 />
+
+      <WhyTrustUs />
     </Elements>
   );
 };
