@@ -9,14 +9,18 @@ import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { SubscriptionProvider } from './context/SubscriptionContext';
 import PreStart from './Pages/PreStart/PreStart';
-import HomeV2Cereb from './Pages/HomeV2Cereb/HomeV2Cereb';
 
 const PrivacyPolicy = lazy(() => import('./Pages/PrivacyPolicy/PrivacyPolicy'));
 const Terms = lazy(() => import('./Pages/Terms/Terms'));
 const Home = lazy(() => import('./Pages/Home/Home'));
+const HomeV2Cereb = lazy(() => import('./Pages/HomeV2Cereb/HomeV2Cereb'));
 const Test = lazy(() => import('./Pages/Test/Test'));
 const Analyzing = lazy(() => import('./Pages/Analyzing/Analyzing'));
 const Paywall = lazy(() => import('./Pages/Paywall/Paywall'));
+const PaywallV2Cereb = lazy(() =>
+  import('./Pages/PaywallV2Cereb/PaywallV2Cereb')
+);
+const EnterEmail = lazy(() => import('./Pages/EnterEmail/EnterEmail'));
 const Thanks = lazy(() => import('./Pages/Thanks/Thanks'));
 
 function App() {
@@ -24,6 +28,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const currentUrl = window.location.href;
   const isHomeV2Cereb = currentUrl.includes('homeV2Cereb');
+  const isPaywallV2Cereb = currentUrl.includes('paywallV2Cereb');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -87,8 +92,18 @@ function App() {
                   element={<Analyzing user={user} userId={userId} />}
                 />
                 <Route
+                  path='/email'
+                  element={<EnterEmail user={user} userId={userId} />}
+                />
+                <Route
                   path='/paywall'
-                  element={<Paywall user={user} userId={userId} />}
+                  element={
+                    isPaywallV2Cereb ? (
+                      <PaywallV2Cereb user={user} userId={userId} />
+                    ) : (
+                      <Paywall user={user} userId={userId} />
+                    )
+                  }
                 />
                 <Route
                   path='/thanks'

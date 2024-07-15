@@ -248,18 +248,6 @@ const Quiz = () => {
     [question, onClickVariant, showQuiz, step, style]
   );
 
-  const goToNextStep = () => {
-    if (step < quizDataVariant.length - 1) {
-      setStep(prev => prev + 1);
-    }
-  };
-
-  const goToPreviousStep = () => {
-    if (step > 0) {
-      setStep(prev => prev - 1);
-    }
-  };
-
   const goToPage = page => {
     setStep(page);
   };

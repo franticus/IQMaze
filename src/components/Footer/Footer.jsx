@@ -11,14 +11,14 @@ import discover from '../../img/cards/discover.svg';
 const Footer = () => {
   const customNavigate = useCustomNavigate();
   const currentUrl = window.location.href;
+  const isHome = /^(\/|\/home)$/.test(window.location.pathname);
   const isPaywall = currentUrl.includes('paywall');
-  const isPrestart = currentUrl.includes('prestart');
-  const isIQTest = currentUrl.includes('iqtest');
-  const isHide = isPrestart || isIQTest;
+  const isThanks = currentUrl.includes('thanks');
+  const isShow = isHome || isPaywall || isThanks;
 
   return (
     <>
-      {!isHide && (
+      {isShow && (
         <footer className={cn(s.footer, isPaywall && s.footer_pb)}>
           <div className={s.footer__container}>
             <div className={s.logo}>

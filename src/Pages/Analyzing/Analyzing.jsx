@@ -58,7 +58,7 @@ const Analyzing = ({ user }) => {
   useEffect(() => {
     if (progress === 100) {
       setTimeout(() => {
-        // customNavigate('/paywall');
+        customNavigate('/paywall');
       }, 2000);
     }
   }, [progress, hasSubscription, customNavigate]);
