@@ -1,0 +1,38 @@
+.container {
+	text-align: center;
+	padding: 40px;
+	border-radius: 10px;
+}
+
+.highlight {
+	color: #007bff;
+}
+
+.benefits {
+	background-color: #ffffff;
+	padding: 40px 60px;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	text-align: left;
+	display: inline-block;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100vw;
+	max-width: 900px;
+	gap: 10px;
+}
+
+.benefits p {
+	font-size: 1em;
+	color: #555555;
+	margin: 10px 0;
+
+}
+
+.checkmark {
+	color: #007bff;
+	font-weight: bold;
+	margin-right: 10px;
+}

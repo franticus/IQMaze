@@ -208,7 +208,11 @@ $section-padding: 3rem;
 	}
 }
 
-
+.containerWidth {
+	max-width: 900px;
+	overflow: hidden;
+	margin: 0 auto;
+}
 
 .slider_wrapper {
 	margin: 0 auto;

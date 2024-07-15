@@ -13,7 +13,9 @@ import {
 } from '../../helpers/stripeHelpers.js';
 import 'react-loading-skeleton/dist/skeleton.css';
 import CustomPayFormV1 from '../../components/CustomPayFormV1/CustomPayFormV1.jsx';
+import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 import WhyTrustUs from '../../components/WhyTrustUs/WhyTrustUs.jsx';
+import HowImprovingScore from '../../components/HowImprovingScore/HowImprovingScore.jsx';
 const stripePromise = loadStripe(publicKey);
 
 const PaywallV2Cereb = ({ user, userId }) => {
@@ -190,6 +192,10 @@ const PaywallV2Cereb = ({ user, userId }) => {
       <CustomPayFormV1 />
 
       <WhyTrustUs />
+      <HowImprovingScore />
+      <div className={s.containerWidth}>
+        <TestimonialsSlider />
+      </div>
     </Elements>
   );
 };
