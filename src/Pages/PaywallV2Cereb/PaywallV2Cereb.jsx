@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import s from './PaywallV2Cereb.module.scss';
 import { iqTable } from './iqTable.js';
 import useCustomNavigate from '../../hooks/useCustomNavigate.js';
@@ -11,16 +11,8 @@ import {
   createCheckoutSession,
   checkSubscription,
 } from '../../helpers/stripeHelpers.js';
-import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
-import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-
-const ValueProposition = lazy(() =>
-  import('../../components/ValueProposition/ValueProposition.jsx')
-);
-const TestimonialsSlider = lazy(() =>
-  import('../../components/TestimonialsSlider/TestimonialsSlider.jsx')
-);
+import CustomPayFormV1 from '../../components/CustomPayFormV1/CustomPayFormV1.jsx';
 const stripePromise = loadStripe(publicKey);
 
 const PaywallV2Cereb = ({ user, userId }) => {
@@ -193,6 +185,8 @@ const PaywallV2Cereb = ({ user, userId }) => {
             : 'Get your test result for $1.90'}
         </button>
       </div>
+
+      <CustomPayFormV1 />
     </Elements>
   );
 };
