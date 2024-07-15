@@ -17,7 +17,7 @@ const TestimonialsSlider = ({ testimonials = testimonialsData }) => {
     spaceBetween: 10,
     initialSlide: 3,
     autoplay: {
-      delay: 5000,
+      delay: 4000,
       disableOnInteraction: true,
     },
   };

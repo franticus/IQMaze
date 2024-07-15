@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import s from './Analyzing.module.scss';
 import CheckList from '../../components/CheckList/CheckList';
+import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
 import { checkSubscription } from '../../helpers/stripeHelpers';
 
@@ -57,22 +58,31 @@ const Analyzing = ({ user }) => {
   useEffect(() => {
     if (progress === 100) {
       setTimeout(() => {
-        customNavigate('/paywall');
+        // customNavigate('/paywall');
       }, 2000);
     }
   }, [progress, hasSubscription, customNavigate]);
 
   return (
-    <div className={s.analyzing}>
-      <h1 className={s.mainHeading}>Analyzing Your Results</h1>
-      <p className={s.description}>
-        Please wait while we analyze your IQ test results.
-      </p>
-      <div className={s.progressContainer}>
-        <div className={s.progressBar} style={{ width: `${progress}%` }} />
+    <div className={s.analyzingContainer}>
+      <div className={s.analyzing}>
+        <h1 className={s.mainHeading}>
+          Calculating your <br />
+          <span>IQ score...</span>
+        </h1>
+        <p className={s.description}>
+          Hang tight while our Al brain analyses your answers against the 5 key
+          measures of intelligence...
+        </p>
+        <div className={s.progressContainer}>
+          <div className={s.progressBar} style={{ width: `${progress}%` }} />
+        </div>
+        <p className={s.progressText}>{Math.round(progress)}%</p>
+        <CheckList currentStep={currentStep} />
       </div>
-      <p className={s.progressText}>{Math.round(progress)}%</p>
-      <CheckList currentStep={currentStep} />
+      <div className={s.sliderContainer}>
+        <TestimonialsSlider />
+      </div>
     </div>
   );
 };

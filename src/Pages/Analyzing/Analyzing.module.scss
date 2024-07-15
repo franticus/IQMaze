@@ -1,16 +1,31 @@
+.analyzingContainer {
+	animation: fadeIn 1s ease-in-out forwards;
+
+	.sliderContainer {
+		margin: 40px auto;
+		width: 100%;
+		max-width: 400px;
+		overflow: hidden;
+	}
+}
+
 .analyzing {
 	text-align: center;
 	padding: 20px;
-	animation: fadeIn 1s ease-in-out forwards;
 
 	.mainHeading {
 		font-size: 24px;
 		margin-bottom: 20px;
+
+		span {
+			color: hsl(212.02, 100%, 46.67%);
+		}
 	}
 
 	.description {
 		font-size: 16px;
 		margin-bottom: 40px;
+		max-width: 400px;
 	}
 
 	.progressContainer {
