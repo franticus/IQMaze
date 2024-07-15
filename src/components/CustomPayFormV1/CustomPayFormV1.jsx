@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
-  CardElement,
+  PaymentRequestButtonElement,
   useStripe,
   useElements,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
 } from '@stripe/react-stripe-js';
-import GooglePayButton from '@google-pay/button-react';
 import s from './CustomPayFormV1.module.scss';
-import { publicKey } from '../../key';
+import { publicKey, apiUrl } from '../../key';
 
 const stripePromise = loadStripe(publicKey);
 
-const CardForm = () => {
+const CardForm = ({ subscriptionInfo }) => {
   const stripe = useStripe();
   const elements = useElements();
+
+  const emailRef = useRef(null);
+  const nameRef = useRef(null);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -23,14 +28,34 @@ const CardForm = () => {
       return;
     }
 
-    const card = elements.getElement(CardElement);
-    const result = await stripe.createToken(card);
+    const cardNumberElement = elements.getElement(CardNumberElement);
+
+    const result = await stripe.createToken(cardNumberElement);
 
     if (result.error) {
       console.log(result.error.message);
     } else {
       console.log(result.token);
-      // Send the token to your server for processing the payment
+
+      const response = await fetch(`${apiUrl}/create-subscription`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: result.token.id,
+          email: emailRef.current.value,
+          name: nameRef.current.value,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log('Subscription succeeded:', data);
+      }
     }
   };
 
@@ -38,34 +63,85 @@ const CardForm = () => {
     <form onSubmit={handleSubmit} className={s.form}>
       <label className={s.label}>
         Email
-        <input type='email' placeholder='Email' required className={s.input} />
+        <input
+          type='email'
+          placeholder='Email'
+          required
+          className={s.input}
+          ref={emailRef}
+        />
       </label>
       <label className={s.label}>
         Card number
-        <CardElement className={s.cardElement} />
+        <CardNumberElement className={s.cardElement} />
       </label>
       <div className={s.row}>
         <label className={s.label}>
           Expiry (MM/YY)
-          <input type='text' placeholder='MM/YY' className={s.input} />
+          <CardExpiryElement className={s.cardElement} />
         </label>
         <label className={s.label}>
           CVV
-          <input type='text' placeholder='•••' className={s.input} />
+          <CardCvcElement className={s.cardElement} />
         </label>
       </div>
       <label className={s.label}>
         Name on card
-        <input type='text' placeholder='Full name' className={s.input} />
+        <input
+          type='text'
+          placeholder='Full name'
+          required
+          className={s.input}
+          ref={nameRef}
+        />
       </label>
       <button type='submit' className={s.submitButton}>
-        Start 7-Day Trial
+        Start 1 Month Trial for ${subscriptionInfo.trialPrice / 100}
       </button>
     </form>
   );
 };
 
 const CustomPayFormV1 = () => {
+  const [paymentRequest, setPaymentRequest] = useState(null);
+  const [subscriptionInfo, setSubscriptionInfo] = useState({});
+  const stripe = useStripe();
+
+  useEffect(() => {
+    const fetchSubscriptionInfo = async () => {
+      const response = await fetch(`${apiUrl}/subscription-info`);
+      const data = await response.json();
+      setSubscriptionInfo(data);
+    };
+
+    fetchSubscriptionInfo();
+  }, []);
+
+  useEffect(() => {
+    if (stripe && subscriptionInfo.trialPrice) {
+      const pr = stripe.paymentRequest({
+        country: 'US',
+        currency: subscriptionInfo.currency,
+        total: {
+          label: 'Total',
+          amount: subscriptionInfo.trialPrice,
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+      });
+
+      pr.canMakePayment().then(result => {
+        if (result) {
+          setPaymentRequest(pr);
+        }
+      });
+    }
+  }, [stripe, subscriptionInfo]);
+
+  if (!subscriptionInfo.trialPrice) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className={s.container}>
       <div className={s.header}>
@@ -74,7 +150,7 @@ const CustomPayFormV1 = () => {
           <strong>103</strong>
         </p>
         <h2>
-          Try <span className={s.highlight}>IQMaze</span> for 7 days
+          Try <span className={s.highlight}>IQMaze</span> for 1 month
         </h2>
       </div>
       <ul className={s.benefits}>
@@ -91,60 +167,31 @@ const CustomPayFormV1 = () => {
       <div className={s.totalDue}>
         <p>Total due today:</p>
         <p className={s.price}>
-          <del>$42.99</del> $2.99{' '}
+          <del>${subscriptionInfo.regularPrice / 100}</del> $
+          {subscriptionInfo.trialPrice / 100}{' '}
           <span className={s.discount}>You save 85%</span>
         </p>
       </div>
       <p>
-        Your 7-day trial will cost only $2.99. Afterwards, it will be
-        $56.99/week.
+        Your 1 month trial will cost only ${subscriptionInfo.trialPrice / 100}.
+        Afterwards, it will be ${subscriptionInfo.regularPrice / 100}/month.
       </p>
       <p className={s.noCommitment}>No commitment. Cancel anytime.</p>
       <p className={s.moneyBackGuarantee}>30-Day Money-Back Guarantee.</p>
       <div className={s.paymentMethods}>
-        <GooglePayButton
-          environment='TEST'
-          buttonColor='black'
-          paymentRequest={{
-            apiVersion: 2,
-            apiVersionMinor: 0,
-            allowedPaymentMethods: [
-              {
-                type: 'CARD',
-                parameters: {
-                  allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-                  allowedCardNetworks: ['MASTERCARD', 'VISA'],
-                },
-                tokenizationSpecification: {
-                  type: 'PAYMENT_GATEWAY',
-                  parameters: {
-                    gateway: 'example',
-                    gatewayMerchantId: 'exampleGatewayMerchantId',
-                  },
-                },
-              },
-            ],
-            merchantInfo: {
-              merchantId: '12345678901234567890',
-              merchantName: 'Demo Merchant',
-            },
-            transactionInfo: {
-              totalPriceStatus: 'FINAL',
-              totalPriceLabel: 'Total',
-              totalPrice: '2.99',
-              currencyCode: 'USD',
-              countryCode: 'US',
-            },
-          }}
-          onLoadPaymentData={paymentRequest => {
-            console.log('load payment data', paymentRequest);
-            // Send the payment request to your server for processing the payment
-          }}
-        />
-        <p>or</p>
-        <p>Pay with your credit card </p>
+        {paymentRequest && (
+          <>
+            <p>Pay with Google Pay</p>
+            <PaymentRequestButtonElement
+              options={{ paymentRequest }}
+              className={s.googlePayButton}
+            />
+            <p>or</p>
+          </>
+        )}
+        <p>Pay with your credit card</p>
         <Elements stripe={stripePromise}>
-          <CardForm />
+          <CardForm subscriptionInfo={subscriptionInfo} />
         </Elements>
       </div>
     </div>
