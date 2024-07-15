@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import s from './Quiz.module.scss';
 import cn from 'classnames';
 import { getUserId } from '../../helpers/userId.js';
+import Pagination from '../Pagination/Pagination.jsx';
 
 const Quiz = () => {
   const customNavigate = useCustomNavigate();
@@ -247,6 +248,22 @@ const Quiz = () => {
     [question, onClickVariant, showQuiz, step, style]
   );
 
+  const goToNextStep = () => {
+    if (step < quizDataVariant.length - 1) {
+      setStep(prev => prev + 1);
+    }
+  };
+
+  const goToPreviousStep = () => {
+    if (step > 0) {
+      setStep(prev => prev - 1);
+    }
+  };
+
+  const goToPage = page => {
+    setStep(page);
+  };
+
   const skip = () => {
     localStorage.removeItem('completePayment');
     localStorage.setItem(
@@ -310,6 +327,11 @@ const Quiz = () => {
           </>
         )}
       </div>
+      <Pagination
+        currentStep={step}
+        totalSteps={quizDataVariant.length}
+        onPageChange={goToPage}
+      />
       {!isProd && <button onClick={() => skip()}>Skip</button>}
     </div>
   );
