@@ -1,0 +1,4 @@
+- проверить CustomPayFormV1
+- доделать PaywallV2Cereb
+- узнать про googlepay
+- 
