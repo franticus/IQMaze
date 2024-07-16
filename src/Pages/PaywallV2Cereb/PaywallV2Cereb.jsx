@@ -6,22 +6,19 @@ import useCustomNavigate from '../../hooks/useCustomNavigate.js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import cn from 'classnames';
-import { publicKey, priceId } from '../../key.js';
-import {
-  createCheckoutSession,
-  checkSubscription,
-} from '../../helpers/stripeHelpers.js';
+import { publicKey } from '../../key.js';
+import { checkSubscription } from '../../helpers/stripeHelpers.js';
 import 'react-loading-skeleton/dist/skeleton.css';
 import CustomPayFormV1 from '../../components/CustomPayFormV1/CustomPayFormV1.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
 import WhyTrustUs from '../../components/WhyTrustUs/WhyTrustUs.jsx';
 import HowImprovingScore from '../../components/HowImprovingScore/HowImprovingScore.jsx';
+import FAQ from '../../components/FAQ/FAQ.jsx';
+import heroImg from '../../img/about_1.jpg';
 const stripePromise = loadStripe(publicKey);
 
 const PaywallV2Cereb = ({ user, userId }) => {
   const [hasSubscription, setHasSubscription] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const currentUrl = window.location.href;
@@ -31,20 +28,7 @@ const PaywallV2Cereb = ({ user, userId }) => {
   const seriesScoresLocal = JSON.parse(localStorage.getItem('seriesScores'));
   const customNavigate = useCustomNavigate();
   const paymentButtonRef = useRef(null);
-
-  useEffect(() => {
-    if (user) {
-      setName(user.displayName || '');
-      setEmail(user.email || '');
-    } else {
-      const storedName = JSON.parse(localStorage.getItem('userName'));
-      const storedEmail = JSON.parse(localStorage.getItem('userEmail'));
-      if (storedName && storedEmail) {
-        setName(storedName);
-        setEmail(storedEmail);
-      }
-    }
-  }, [user]);
+  const payFormRef = useRef(null);
 
   useEffect(() => {
     if (!seriesScoresLocal) customNavigate('/home');
@@ -97,32 +81,17 @@ const PaywallV2Cereb = ({ user, userId }) => {
 
   useEffect(() => {
     calculateAndSetIQ();
+    console.log('iqValue:', iqValue);
   }, [seriesScoresLocal, isV30q, isV20q]);
-
-  const handlePaymentMethodSelection = async method => {
-    try {
-      const session = await createCheckoutSession(
-        email,
-        userId,
-        priceId,
-        iqValue,
-        name
-      );
-      const stripe = await stripePromise;
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-
-      if (result.error) {
-        console.error(result.error.message);
-      }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-    }
-  };
 
   const handleShowResults = () => {
     customNavigate('/thanks');
+  };
+
+  const handleScrollToPayForm = () => {
+    if (payFormRef.current) {
+      payFormRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
@@ -145,57 +114,65 @@ const PaywallV2Cereb = ({ user, userId }) => {
     <Elements stripe={stripePromise}>
       <div className={s.PaywallV2Cereb}>
         <section className={s.heroSection}>
-          <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
-          <p className={s.introText}>
-            Please sign up with your email <br />
-            to create a new account and access our comprehensive IQ test. <br />
-            Discover your intellectual capabilities, <br />
-            understand your strengths and areas for improvement, <br />
-            and embark on a journey of cognitive growth.
-          </p>
-
-          <button
-            ref={paymentButtonRef}
-            className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
-            onClick={
-              hasSubscription
-                ? handleShowResults
-                : () => handlePaymentMethodSelection('gpay_applepay')
-            }
-          >
-            {hasSubscription
-              ? 'Show my result'
-              : 'Get your test result for $1.90'}
-          </button>
+          <h1 className={s.mainHeading}>
+            Your <span className={s.mainHeading_marked}>IQ score</span> is
+            ready!
+          </h1>
+          <div className={s.hero_container}>
+            <div className={s.left}>
+              <ul className={s.heroList}>
+                <li className={s.heroList_item}>
+                  <span>✔</span> Find out how intelligent you are
+                </li>
+                <li className={s.heroList_item}>
+                  <span>✔</span> Learn where you stand compared to others
+                </li>
+                <li className={s.heroList_item}>
+                  <span>✔</span> Explore your strengths and weaknesses
+                </li>
+              </ul>
+              <button
+                ref={paymentButtonRef}
+                className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
+                onClick={
+                  hasSubscription ? handleShowResults : handleScrollToPayForm
+                }
+              >
+                {hasSubscription ? 'Show my result' : 'Get My IQ Score Now!'}
+              </button>
+            </div>
+            <div className={s.right}>
+              <img className={s.heroImage} src={heroImg} alt='preview' />
+            </div>
+          </div>
         </section>
       </div>
 
-      <div
-        className={cn(s.paymentButtonFixed_container, {
-          [s.paymentButtonFixed_container_visible]: isButtonVisible,
-        })}
-      >
-        <button
-          className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
-          onClick={
-            hasSubscription
-              ? handleShowResults
-              : () => handlePaymentMethodSelection('gpay_applepay')
-          }
+      {!hasSubscription && (
+        <div
+          className={cn(s.paymentButtonFixed_container, {
+            [s.paymentButtonFixed_container_visible]: isButtonVisible,
+          })}
         >
-          {hasSubscription
-            ? 'Show my result'
-            : 'Get your test result for $1.90'}
-        </button>
-      </div>
+          <button
+            className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
+            onClick={
+              hasSubscription ? handleShowResults : handleScrollToPayForm
+            }
+          >
+            {hasSubscription ? 'Show my result' : 'Get My IQ Score Now!'}
+          </button>
+        </div>
+      )}
 
-      <CustomPayFormV1 />
+      <div ref={payFormRef}>{!hasSubscription && <CustomPayFormV1 />}</div>
 
       <WhyTrustUs />
       <HowImprovingScore />
       <div className={s.containerWidth}>
         <TestimonialsSlider />
       </div>
+      <FAQ />
     </Elements>
   );
 };

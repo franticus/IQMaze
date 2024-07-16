@@ -213,6 +213,10 @@ $section-padding: 3rem;
 	max-width: 900px;
 	overflow: hidden;
 	margin: 0 auto;
+	background-color: #F0F4F9;
+	padding: 20px;
+	margin-bottom: 40px;
+	border-radius: 10px;
 }
 
 .slider_wrapper {
@@ -229,15 +233,51 @@ $section-padding: 3rem;
 	flex-direction: column;
 	text-align: center;
 	padding: 40px 20px;
-	margin-top: 40px;
+	margin: 40px auto 40px auto;
 	background: #fff;
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .mainHeading {
-	color: $primary-color;
+	color: $text-color;
 	margin-bottom: 1rem;
+
+	&_marked {
+		color: #007bff;
+	}
+
+}
+
+.hero_container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+	}
+}
+
+.left {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.heroList {
+	text-align: left;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	gap: 10px;
+
+	&_item {
+		font-size: 16px;
+		font-weight: 400;
+	}
 }
 
 .introText {
@@ -249,7 +289,7 @@ $section-padding: 3rem;
 
 .heroImage {
 	width: 100%;
-	max-width: 600px;
+	max-width: 400px;
 	height: auto;
 	border-radius: 8px;
 }

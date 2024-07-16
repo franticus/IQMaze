@@ -12,6 +12,9 @@ import {
 import s from './CustomPayFormV1.module.scss';
 import { publicKey, apiUrl } from '../../key';
 
+import cancelAnytime from '../../img/cancelAnytime.svg';
+import guarantee from '../../img/guarantee.svg';
+
 const stripePromise = loadStripe(publicKey);
 
 const CardForm = ({ subscriptionInfo }) => {
@@ -96,7 +99,8 @@ const CardForm = ({ subscriptionInfo }) => {
         />
       </label>
       <button type='submit' className={s.submitButton}>
-        Start 1 Month Trial for ${subscriptionInfo.trialPrice / 100}
+        Start 1 Month Trial for $
+        {(subscriptionInfo.trialPrice / 100).toFixed(2)}
       </button>
     </form>
   );
@@ -152,7 +156,7 @@ const CustomPayFormV1 = () => {
   return (
     <div className={s.container}>
       <div className={s.header}>
-        <p>
+        <p className={s.description_over}>
           Over <strong>3548</strong> tests taken today Avg. IQ score:{' '}
           <strong>103</strong>
         </p>
@@ -162,12 +166,13 @@ const CustomPayFormV1 = () => {
       </div>
       <ul className={s.benefits}>
         <li>
-          Get your precise IQ score with our scientifically-validated assessment
+          ✔ Get your precise IQ score with our scientifically-validated
+          assessment
         </li>
-        <li>Know where you stand compared to the general population</li>
-        <li>Identify your cognitive strengths and weaknesses</li>
+        <li>✔ Know where you stand compared to the general population</li>
+        <li>✔ Identify your cognitive strengths and weaknesses</li>
         <li>
-          Evidence-based personalized training to boost IQ by up to 37% in 4
+          ✔ Evidence-based personalized training to boost IQ by up to 37% in 4
           weeks
         </li>
       </ul>
@@ -175,16 +180,30 @@ const CustomPayFormV1 = () => {
         <p>Total due today:</p>
         <p className={s.price}>
           <del>${subscriptionInfo.regularPrice / 100}</del> $
-          {subscriptionInfo.trialPrice / 100}{' '}
+          {subscriptionInfo.trialPrice / 100} <br />
           <span className={s.discount}>You save 85%</span>
         </p>
       </div>
-      <p>
+      <p className={s.afterwards}>
         Your 1 month trial will cost only ${subscriptionInfo.trialPrice / 100}.
         Afterwards, it will be ${subscriptionInfo.regularPrice / 100}/month.
       </p>
-      <p className={s.noCommitment}>No commitment. Cancel anytime.</p>
-      <p className={s.moneyBackGuarantee}>30-Day Money-Back Guarantee.</p>
+      <p className={s.noCommitment}>
+        <img
+          className={s.guaranteeImg}
+          src={cancelAnytime}
+          alt='cancel anytime'
+        />
+        No commitment. Cancel anytime.
+      </p>
+      <p className={s.moneyBackGuarantee}>
+        <img
+          className={s.guaranteeImg}
+          src={guarantee}
+          alt='money back guarantee'
+        />
+        30-Day Money-Back Guarantee.
+      </p>
       <div className={s.paymentMethods}>
         {canMakeGooglePay && (
           <>
