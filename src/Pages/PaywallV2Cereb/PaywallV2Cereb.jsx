@@ -15,6 +15,7 @@ import WhyTrustUs from '../../components/WhyTrustUs/WhyTrustUs.jsx';
 import HowImprovingScore from '../../components/HowImprovingScore/HowImprovingScore.jsx';
 import FAQ from '../../components/FAQ/FAQ.jsx';
 import heroImg from '../../img/about_1.jpg';
+import LatestResults from '../../components/LatestResults/LatestResults.jsx';
 const stripePromise = loadStripe(publicKey);
 
 const PaywallV2Cereb = ({ user, userId }) => {
@@ -113,6 +114,10 @@ const PaywallV2Cereb = ({ user, userId }) => {
   return (
     <Elements stripe={stripePromise}>
       <div className={s.PaywallV2Cereb}>
+        <div class={s.discountNotification} onClick={handleScrollToPayForm}>
+          Special Welcome Offer! Get &nbsp;<strong>85%</strong>&nbsp; Discount
+          Today!
+        </div>
         <section className={s.heroSection}>
           <h1 className={s.mainHeading}>
             Your <span className={s.mainHeading_marked}>IQ score</span> is
@@ -173,6 +178,7 @@ const PaywallV2Cereb = ({ user, userId }) => {
         <TestimonialsSlider />
       </div>
       <FAQ />
+      <LatestResults />
     </Elements>
   );
 };

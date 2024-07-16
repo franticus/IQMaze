@@ -1,0 +1,76 @@
+.latestResults {
+	width: calc(100vw - 40px);
+	max-width: 900px;
+	margin: 0 auto;
+	margin-top: 20px;
+	padding: 20px;
+}
+
+.resultsList {
+	margin-top: 20px;
+	display: flex;
+	justify-content: space-between;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
+h2 {
+	text-align: center;
+}
+
+.column {
+	width: 48%;
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
+}
+
+.resultItem {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #F0F4F9;
+	padding: 20px;
+	margin-bottom: 10px;
+	border-radius: 8px;
+}
+
+.flagAndName {
+	display: flex;
+	align-items: center;
+}
+
+.flag {
+	width: 40px;
+	height: 30px;
+	margin-right: 10px;
+}
+
+.name {
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.timeAgo {
+	font-size: 12px;
+	color: #666;
+}
+
+.iqScore {
+	text-align: right;
+}
+
+.iqScore span {
+	display: block;
+	font-size: 12px;
+	color: #666;
+}
+
+.iqScore strong {
+	font-size: 18px;
+	font-weight: 400;
+}

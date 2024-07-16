@@ -10,6 +10,24 @@ $section-padding: 3rem;
 	margin: 0 auto;
 	animation: fadeIn 1s ease-in-out forwards;
 
+	.discountNotification {
+		cursor: pointer;
+		padding: 10px;
+		border-radius: 4px;
+		font-weight: 400;
+		font-size: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: #007bff;
+		color: #fff;
+		transition-duration: 0.3s;
+
+		&:hover {
+			background-color: #0069d9;
+		}
+	}
+
 	.userForm {
 		text-align: left;
 		width: 100%;
@@ -234,7 +252,7 @@ $section-padding: 3rem;
 	text-align: center;
 	padding: 40px 20px;
 	margin: 40px auto 40px auto;
-	background: #fff;
+	background: #f0f4ff;
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
