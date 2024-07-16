@@ -10,10 +10,13 @@ import discover from '../../img/cards/discover.svg';
 
 const Footer = () => {
   const customNavigate = useCustomNavigate();
-  const currentUrl = window.location.href;
-  const isHome = /^(\/|\/home)$/.test(window.location.pathname);
-  const isPaywall = currentUrl.includes('paywall');
-  const isThanks = currentUrl.includes('thanks');
+  const isSpecificRoute = routes =>
+    routes.some(route =>
+      new RegExp(`^${route}$`).test(window.location.pathname)
+    );
+  const isHome = isSpecificRoute(['/', '/home']);
+  const isPaywall = isSpecificRoute(['/paywall']);
+  const isThanks = isSpecificRoute(['/thanks']);
   const isShow = isHome || isPaywall || isThanks;
 
   return (
