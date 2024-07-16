@@ -17,26 +17,39 @@ import guarantee from '../../img/guarantee.svg';
 
 const stripePromise = loadStripe(publicKey);
 
-const CardForm = ({ subscriptionInfo }) => {
+const validateEmail = email => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
+};
+
+const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
   const stripe = useStripe();
   const elements = useElements();
-
   const emailRef = useRef(null);
   const nameRef = useRef(null);
 
   const handleSubmit = async event => {
     event.preventDefault();
 
+    const email = emailRef.current.value;
+
+    if (!validateEmail(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
     if (!stripe || !elements) {
       return;
     }
 
-    const cardNumberElement = elements.getElement(CardNumberElement);
+    setLoading(true);
 
+    const cardNumberElement = elements.getElement(CardNumberElement);
     const result = await stripe.createToken(cardNumberElement);
 
     if (result.error) {
       console.log(result.error.message);
+      setLoading(false);
     } else {
       console.log(result.token);
 
@@ -56,8 +69,10 @@ const CardForm = ({ subscriptionInfo }) => {
 
       if (data.error) {
         console.log(data.error);
+        setLoading(false);
       } else {
         console.log('Subscription succeeded:', data);
+        window.location.href = '/thanks';
       }
     }
   };
@@ -98,10 +113,12 @@ const CardForm = ({ subscriptionInfo }) => {
           ref={nameRef}
         />
       </label>
-      <button type='submit' className={s.submitButton}>
-        Start 1 Month Trial for $
-        {(subscriptionInfo.trialPrice / 100).toFixed(2)}
-      </button>
+      {!isLoading && (
+        <button type='submit' className={s.submitButton}>
+          Start 1 Month Trial for $
+          {(subscriptionInfo.trialPrice / 100).toFixed(2)}
+        </button>
+      )}
     </form>
   );
 };
@@ -111,6 +128,7 @@ const CustomPayFormV1 = () => {
   const [canMakeGooglePay, setCanMakeGooglePay] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState({});
   const [testsTaken, setTestsTaken] = useState(3548);
+  const [isLoading, setLoading] = useState(false);
   const stripe = useStripe();
 
   useEffect(() => {
@@ -153,7 +171,7 @@ const CustomPayFormV1 = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTestsTaken(prevTestsTaken => prevTestsTaken + 1);
-    }, Math.random() * 2000 + 3000); // 3-5 секунд
+    }, Math.random() * 2000 + 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -226,9 +244,14 @@ const CustomPayFormV1 = () => {
         )}
         <p>Pay with your credit card</p>
         <Elements stripe={stripePromise}>
-          <CardForm subscriptionInfo={subscriptionInfo} />
+          <CardForm
+            subscriptionInfo={subscriptionInfo}
+            isLoading={isLoading}
+            setLoading={setLoading}
+          />
         </Elements>
       </div>
+      {isLoading && <div className={s.loader}>Loading...</div>}
     </div>
   );
 };
