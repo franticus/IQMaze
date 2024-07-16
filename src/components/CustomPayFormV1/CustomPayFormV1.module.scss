@@ -146,12 +146,13 @@ del {
 
 .form label {
 	display: block;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .input {
 	width: 100%;
-	padding: 10px;
+	padding: 8px;
+	margin-top: 4px;
 	margin-bottom: 10px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
@@ -160,6 +161,7 @@ del {
 
 .cardElement {
 	padding: 10px;
+	margin-top: 4px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	margin-bottom: 10px;
