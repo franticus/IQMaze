@@ -7,13 +7,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import cn from 'classnames';
 import { publicKey, priceId } from '../../key.js';
-import {
-  createCheckoutSession,
-  checkSubscription,
-} from '../../helpers/stripeHelpers';
+import { createCheckoutSession } from '../../helpers/stripeHelpers';
 import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useSubscription } from '../../context/SubscriptionContext.js';
 
 const ValueProposition = lazy(() =>
   import('../../components/ValueProposition/ValueProposition.jsx')
@@ -27,7 +25,7 @@ const LoginForm = lazy(() => import('../../components/LoginForm/LoginForm'));
 const stripePromise = loadStripe(publicKey);
 
 const Paywall = ({ user, userId }) => {
-  const [hasSubscription, setHasSubscription] = useState(false);
+  const hasSubscription = useSubscription();
   const [checkingSubscription, setCheckingSubscription] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -64,23 +62,8 @@ const Paywall = ({ user, userId }) => {
   }, [customNavigate, seriesScoresLocal]);
 
   useEffect(() => {
-    const verifySubscription = async () => {
-      if (user) {
-        const { hasSubscription } = await checkSubscription(user.email);
-        setHasSubscription(hasSubscription);
-        sessionStorage.setItem(
-          'hasSubscription',
-          JSON.stringify(hasSubscription)
-        );
-      } else {
-        setHasSubscription(false);
-        sessionStorage.setItem('hasSubscription', JSON.stringify(false));
-      }
-      setCheckingSubscription(false);
-    };
-
-    verifySubscription();
-  }, [user]);
+    setCheckingSubscription(false);
+  }, []);
 
   const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {

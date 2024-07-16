@@ -13,17 +13,34 @@ export const SubscriptionProvider = ({ user, children }) => {
 
   useEffect(() => {
     const verifySubscription = async () => {
-      if (user) {
-        const { hasSubscription } = await checkSubscription(user.email);
-        setHasSubscription(hasSubscription);
-        sessionStorage.setItem(
-          'hasSubscription',
-          JSON.stringify(hasSubscription)
-        );
-      } else {
-        setHasSubscription(false);
-        sessionStorage.setItem('hasSubscription', JSON.stringify(false));
+      const localStorageEmail = localStorage.getItem('userEmail');
+      const emailsToCheck = new Set();
+
+      if (user && user.email) {
+        emailsToCheck.add(user.email);
       }
+
+      if (localStorageEmail) {
+        emailsToCheck.add(localStorageEmail);
+      }
+
+      let hasSubscription = false;
+
+      for (const email of emailsToCheck) {
+        const { hasSubscription: subscriptionStatus } = await checkSubscription(
+          email
+        );
+        if (subscriptionStatus) {
+          hasSubscription = true;
+          break;
+        }
+      }
+
+      setHasSubscription(hasSubscription);
+      sessionStorage.setItem(
+        'hasSubscription',
+        JSON.stringify(hasSubscription)
+      );
     };
 
     verifySubscription();

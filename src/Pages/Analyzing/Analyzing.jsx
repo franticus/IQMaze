@@ -3,26 +3,16 @@ import s from './Analyzing.module.scss';
 import CheckList from '../../components/CheckList/CheckList';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider';
 import useCustomNavigate from '../../hooks/useCustomNavigate';
-import { checkSubscription } from '../../helpers/stripeHelpers';
+import { useSubscription } from '../../context/SubscriptionContext';
 
 const Analyzing = ({ user }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
-  const [hasSubscription, setHasSubscription] = useState(false);
+  const hasSubscription = useSubscription();
   const currentUrl = window.location.href;
   const isPaywallV2Cereb = currentUrl.includes('paywallV2Cereb');
   const customNavigate = useCustomNavigate();
   const totalSteps = 5;
-
-  useEffect(() => {
-    const checkUserSubscription = async () => {
-      if (user) {
-        const { hasSubscription } = await checkSubscription(user.email);
-        setHasSubscription(hasSubscription);
-      }
-    };
-    checkUserSubscription();
-  }, [user]);
 
   useEffect(() => {
     const progressInterval = setInterval(() => {

@@ -7,7 +7,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import cn from 'classnames';
 import { publicKey } from '../../key.js';
-import { checkSubscription } from '../../helpers/stripeHelpers.js';
 import 'react-loading-skeleton/dist/skeleton.css';
 import CustomPayFormV1 from '../../components/CustomPayFormV1/CustomPayFormV1.jsx';
 import TestimonialsSlider from '../../components/TestimonialsSlider/TestimonialsSlider.jsx';
@@ -16,10 +15,12 @@ import HowImprovingScore from '../../components/HowImprovingScore/HowImprovingSc
 import FAQ from '../../components/FAQ/FAQ.jsx';
 import heroImg from '../../img/about_1.jpg';
 import LatestResults from '../../components/LatestResults/LatestResults.jsx';
+import { useSubscription } from '../../context/SubscriptionContext.js';
+
 const stripePromise = loadStripe(publicKey);
 
-const PaywallV2Cereb = ({ user, userId }) => {
-  const [hasSubscription, setHasSubscription] = useState(false);
+const PaywallV2Cereb = ({ user }) => {
+  const hasSubscription = useSubscription();
   const [iqValue, setIqValue] = useState(0);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const currentUrl = window.location.href;
@@ -32,26 +33,12 @@ const PaywallV2Cereb = ({ user, userId }) => {
   const payFormRef = useRef(null);
 
   useEffect(() => {
-    if (!seriesScoresLocal) customNavigate('/home');
-  }, [customNavigate, seriesScoresLocal]);
+    console.log('hasSubscription:', hasSubscription);
+  }, [hasSubscription]);
 
   useEffect(() => {
-    const verifySubscription = async () => {
-      if (user) {
-        const { hasSubscription } = await checkSubscription(user.email);
-        setHasSubscription(hasSubscription);
-        sessionStorage.setItem(
-          'hasSubscription',
-          JSON.stringify(hasSubscription)
-        );
-      } else {
-        setHasSubscription(false);
-        sessionStorage.setItem('hasSubscription', JSON.stringify(false));
-      }
-    };
-
-    verifySubscription();
-  }, [user]);
+    if (!seriesScoresLocal) customNavigate('/home');
+  }, [customNavigate, seriesScoresLocal]);
 
   const calculateAndSetIQ = () => {
     if (!seriesScoresLocal) {
@@ -77,12 +64,12 @@ const PaywallV2Cereb = ({ user, userId }) => {
     if (storedIQ !== iq.toString()) {
       localStorage.setItem('iqScore', iq);
       setIqValue(iq);
+      console.log('iqValue:', iqValue);
     }
   };
 
   useEffect(() => {
     calculateAndSetIQ();
-    console.log('iqValue:', iqValue);
   }, [seriesScoresLocal, isV30q, isV20q]);
 
   const handleShowResults = () => {
@@ -153,22 +140,18 @@ const PaywallV2Cereb = ({ user, userId }) => {
         </section>
       </div>
 
-      {!hasSubscription && (
-        <div
-          className={cn(s.paymentButtonFixed_container, {
-            [s.paymentButtonFixed_container_visible]: isButtonVisible,
-          })}
+      <div
+        className={cn(s.paymentButtonFixed_container, {
+          [s.paymentButtonFixed_container_visible]: isButtonVisible,
+        })}
+      >
+        <button
+          className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
+          onClick={hasSubscription ? handleShowResults : handleScrollToPayForm}
         >
-          <button
-            className={cn(s.paymentButtonBlick, s.paymentButtonFixed)}
-            onClick={
-              hasSubscription ? handleShowResults : handleScrollToPayForm
-            }
-          >
-            {hasSubscription ? 'Show my result' : 'Get My IQ Score Now!'}
-          </button>
-        </div>
-      )}
+          {hasSubscription ? 'Show my result' : 'Get My IQ Score Now!'}
+        </button>
+      </div>
 
       <div ref={payFormRef}>{!hasSubscription && <CustomPayFormV1 />}</div>
 
