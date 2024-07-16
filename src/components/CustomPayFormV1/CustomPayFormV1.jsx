@@ -110,6 +110,7 @@ const CustomPayFormV1 = () => {
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakeGooglePay, setCanMakeGooglePay] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState({});
+  const [testsTaken, setTestsTaken] = useState(3548);
   const stripe = useStripe();
 
   useEffect(() => {
@@ -149,6 +150,14 @@ const CustomPayFormV1 = () => {
     }
   }, [stripe, subscriptionInfo]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTestsTaken(prevTestsTaken => prevTestsTaken + 1);
+    }, Math.random() * 2000 + 3000); // 3-5 секунд
+
+    return () => clearInterval(interval);
+  }, []);
+
   if (!subscriptionInfo.trialPrice) {
     return <div>Loading...</div>;
   }
@@ -157,8 +166,8 @@ const CustomPayFormV1 = () => {
     <div className={s.container}>
       <div className={s.header}>
         <p className={s.description_over}>
-          Over <strong>3548</strong> tests taken today Avg. IQ score:{' '}
-          <strong>103</strong>
+          Over <strong>{testsTaken}</strong> tests taken today Avg. IQ score:
+          103
         </p>
         <h2>
           Try <span className={s.highlight}>IQMaze</span> for 1 month
