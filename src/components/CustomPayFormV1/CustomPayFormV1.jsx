@@ -28,6 +28,13 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
   const emailRef = useRef(null);
   const nameRef = useRef(null);
 
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('userEmail');
+    if (storedEmail) {
+      emailRef.current.value = JSON.parse(storedEmail);
+    }
+  }, []);
+
   const handleSubmit = async event => {
     event.preventDefault();
 

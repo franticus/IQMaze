@@ -114,7 +114,7 @@ const PaywallV2Cereb = ({ user, userId }) => {
   return (
     <Elements stripe={stripePromise}>
       <div className={s.PaywallV2Cereb}>
-        <div class={s.discountNotification} onClick={handleScrollToPayForm}>
+        <div className={s.discountNotification} onClick={handleScrollToPayForm}>
           Special Welcome Offer! Get &nbsp;<strong>85%</strong>&nbsp; Discount
           Today!
         </div>

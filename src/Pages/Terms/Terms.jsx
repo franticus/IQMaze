@@ -4,7 +4,7 @@ import s from './Terms.module.scss';
 const Terms = () => {
   return (
     <div className={s.Terms}>
-      <div href='' class='rich-text-block w-richtext'>
+      <div href='' className='rich-text-block w-richtext'>
         <p>
           <strong>Terms of service</strong>
         </p>

@@ -9,6 +9,8 @@ const Analyzing = ({ user }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [hasSubscription, setHasSubscription] = useState(false);
+  const currentUrl = window.location.href;
+  const isPaywallV2Cereb = currentUrl.includes('paywallV2Cereb');
   const customNavigate = useCustomNavigate();
   const totalSteps = 5;
 
@@ -58,10 +60,10 @@ const Analyzing = ({ user }) => {
   useEffect(() => {
     if (progress === 100) {
       setTimeout(() => {
-        customNavigate('/paywall');
+        customNavigate(isPaywallV2Cereb ? '/email' : '/paywall');
       }, 2000);
     }
-  }, [progress, hasSubscription, customNavigate]);
+  }, [progress, hasSubscription, isPaywallV2Cereb, customNavigate]);
 
   return (
     <div className={s.analyzingContainer}>
