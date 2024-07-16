@@ -19,6 +19,14 @@ const Navbar = ({ user }) => {
   const [isLogin, setIsLogin] = useState(true);
   const dropdownRef = useRef(null);
   const hasSubscription = useSubscription();
+  const isSpecificRoute = routes =>
+    routes.some(route =>
+      new RegExp(`^${route}$`).test(window.location.pathname)
+    );
+  const isHome = isSpecificRoute(['/', '/home']);
+  const isPaywall = isSpecificRoute(['/paywall']);
+  const isThanks = isSpecificRoute(['/thanks']);
+  const isShow = isHome || isPaywall || isThanks;
 
   useEffect(() => {
     const handleResize = () => {
@@ -108,81 +116,83 @@ const Navbar = ({ user }) => {
               IQMaze
             </span>
           </div>
-          <div className={cn(s.header__menu, s.menu)}>
-            <button
-              name='menu'
-              aria-label='Toggle menu'
-              type='button'
-              className={cn(s.menu__icon, s.icon_menu)}
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-              <span className={s.srOnly}>Toggle menu</span>
-            </button>
-            <nav className={s.menu__body}>
-              <ul className={s.menu__list}>
-                <li
-                  onClick={() => {
-                    setIsOpen(false);
-                    customNavigate(`/home`);
-                  }}
-                  className={cn(s.menu__item, s.menu__link)}
-                >
-                  Home
-                </li>
-                <li
-                  onClick={() => {
-                    setIsOpen(false);
-                    customNavigate(`/iqtest`);
-                  }}
-                  className={cn(s.menu__item, s.menu__link)}
-                >
-                  IQ Test
-                </li>
-              </ul>
-            </nav>
-            {user ? (
-              <div
-                className={s.userStatus}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                ref={dropdownRef}
-              >
-                <span className={s.userName}>
-                  {user.displayName || user.email}
-                </span>
-                <span className={s.onlineIndicator}></span>
-                {isDropdownOpen && (
-                  <div className={s.dropdownMenu}>
-                    {hasSubscription && (
-                      <>
-                        <button
-                          onClick={handleBillingPortal}
-                          className={s.dropdownItem}
-                        >
-                          Manage Subscription
-                        </button>
-                      </>
-                    )}
-                    <button
-                      onClick={handleSignOut}
-                      className={cn(s.dropdownItem, s.dropdownItem_red)}
-                    >
-                      Log out
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
+          {isShow && (
+            <div className={cn(s.header__menu, s.menu)}>
               <button
-                className={s.loginButton}
-                onClick={() => setIsModalOpen(true)}
+                name='menu'
+                aria-label='Toggle menu'
+                type='button'
+                className={cn(s.menu__icon, s.icon_menu)}
+                onClick={() => setIsOpen(!isOpen)}
               >
-                Log In
+                <span></span>
+                <span></span>
+                <span></span>
+                <span className={s.srOnly}>Toggle menu</span>
               </button>
-            )}
-          </div>
+              <nav className={s.menu__body}>
+                <ul className={s.menu__list}>
+                  <li
+                    onClick={() => {
+                      setIsOpen(false);
+                      customNavigate(`/home`);
+                    }}
+                    className={cn(s.menu__item, s.menu__link)}
+                  >
+                    Home
+                  </li>
+                  <li
+                    onClick={() => {
+                      setIsOpen(false);
+                      customNavigate(`/iqtest`);
+                    }}
+                    className={cn(s.menu__item, s.menu__link)}
+                  >
+                    IQ Test
+                  </li>
+                </ul>
+              </nav>
+              {user ? (
+                <div
+                  className={s.userStatus}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  ref={dropdownRef}
+                >
+                  <span className={s.userName}>
+                    {user.displayName || user.email}
+                  </span>
+                  <span className={s.onlineIndicator}></span>
+                  {isDropdownOpen && (
+                    <div className={s.dropdownMenu}>
+                      {hasSubscription && (
+                        <>
+                          <button
+                            onClick={handleBillingPortal}
+                            className={s.dropdownItem}
+                          >
+                            Manage Subscription
+                          </button>
+                        </>
+                      )}
+                      <button
+                        onClick={handleSignOut}
+                        className={cn(s.dropdownItem, s.dropdownItem_red)}
+                      >
+                        Log out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  className={s.loginButton}
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Log In
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </header>
       {isModalOpen && (
