@@ -8,24 +8,22 @@ const fetchApiKey = async () => {
 
 const checkSubscription = async email => {
   try {
-    const apiKey = await fetchApiKey();
     const response = await fetch(`${apiUrl}/check-subscription`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ email: email.replace(/['"]+/g, '') }),
+      body: JSON.stringify({ email }),
     });
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
-    const result = await response.json();
-    return result;
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error('Error checking subscription status: ', error);
+    console.error('Error checking subscription:', error);
     return { hasSubscription: false };
   }
 };

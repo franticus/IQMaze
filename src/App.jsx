@@ -40,8 +40,8 @@ function App() {
         console.log('No user is signed in');
         setUser(null);
         setUserId(null);
-        localStorage.removeItem('userName');
-        localStorage.removeItem('userEmail');
+        // localStorage.removeItem('userName');
+        // localStorage.removeItem('userEmail');
       }
     });
 

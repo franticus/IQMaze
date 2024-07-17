@@ -22,6 +22,19 @@ const validateEmail = email => {
   return re.test(String(email).toLowerCase());
 };
 
+const checkSubscription = async email => {
+  const response = await fetch(`${apiUrl}/check-subscription`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await response.json();
+  return data.hasSubscription;
+};
+
 const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -42,6 +55,12 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
 
     if (!validateEmail(email)) {
       alert('Please enter a valid email address');
+      return;
+    }
+
+    const hasSubscription = await checkSubscription(email);
+    if (hasSubscription) {
+      alert('A subscription is already active for this email address.');
       return;
     }
 
