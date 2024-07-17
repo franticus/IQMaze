@@ -8,7 +8,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import cn from 'classnames';
 import { publicKey, priceId } from '../../key.js';
 import { createCheckoutSession } from '../../helpers/stripeHelpers';
-import TestResultsInfo from '../../components/TestResultsInfo/TestResultsInfo.jsx';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSubscription } from '../../context/SubscriptionContext.js';
@@ -19,8 +18,6 @@ const ValueProposition = lazy(() =>
 const TestimonialsSlider = lazy(() =>
   import('../../components/TestimonialsSlider/TestimonialsSlider.jsx')
 );
-const SignUpForm = lazy(() => import('../../components/SignUpForm/SignUpForm'));
-const LoginForm = lazy(() => import('../../components/LoginForm/LoginForm'));
 
 const stripePromise = loadStripe(publicKey);
 
@@ -30,8 +27,6 @@ const Paywall = ({ user, userId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [iqValue, setIqValue] = useState(0);
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const currentUrl = window.location.href;
   const isV30q = currentUrl.includes('V30q');
@@ -45,14 +40,12 @@ const Paywall = ({ user, userId }) => {
     if (user) {
       setName(user.displayName || '');
       setEmail(user.email || '');
-      setShowPaymentOptions(true);
     } else {
       const storedName = JSON.parse(localStorage.getItem('userName'));
       const storedEmail = JSON.parse(localStorage.getItem('userEmail'));
       if (storedName && storedEmail) {
         setName(storedName);
         setEmail(storedEmail);
-        setShowPaymentOptions(true);
       }
     }
   }, [user]);
@@ -118,14 +111,6 @@ const Paywall = ({ user, userId }) => {
     }
   };
 
-  const switchToSignUp = () => {
-    setIsLogin(false);
-  };
-
-  const switchToLogin = () => {
-    setIsLogin(true);
-  };
-
   const handleShowResults = () => {
     customNavigate('/thanks');
   };
@@ -151,74 +136,41 @@ const Paywall = ({ user, userId }) => {
       <div className={s.paywall}>
         <section className={s.heroSection}>
           <h1 className={s.mainHeading}>Unlock Your IQ Potential!</h1>
-          {!showPaymentOptions && (
-            <p className={s.introText}>
-              Please sign up with your email <br />
-              to create a new account and access our comprehensive IQ test.{' '}
-              <br />
-              Discover your intellectual capabilities, <br />
-              understand your strengths and areas for improvement, <br />
-              and embark on a journey of cognitive growth.
-            </p>
-          )}
+          <p className={s.introText}>
+            Please sign up with your email <br />
+            to create a new account and access our comprehensive IQ test. <br />
+            Discover your intellectual capabilities, <br />
+            understand your strengths and areas for improvement, <br />
+            and embark on a journey of cognitive growth.
+          </p>
 
-          {!showPaymentOptions &&
-            (isLogin ? (
-              <Suspense fallback={<Skeleton height={200} width={600} />}>
-                <LoginForm
-                  switchToSignUp={switchToSignUp}
-                  onSuccess={() => setShowPaymentOptions(true)}
-                />
-              </Suspense>
+          <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
+            {checkingSubscription ? (
+              <Skeleton height={58} width={158} />
             ) : (
-              <Suspense fallback={<Skeleton height={200} width={600} />}>
-                <SignUpForm
-                  switchToLogin={switchToLogin}
-                  onSuccess={() => setShowPaymentOptions(true)}
-                />
-              </Suspense>
-            ))}
-
-          {showPaymentOptions && (
-            <div className={s.paymentOptions} style={{ margin: '20px 0 0' }}>
-              {checkingSubscription ? (
-                <Skeleton height={58} width={158} />
-              ) : (
-                <button
-                  ref={paymentButtonRef}
-                  className={cn(
-                    s.paymentButtonBlick,
-                    s.paymentButtonBlick_card
-                  )}
-                  onClick={
-                    hasSubscription
-                      ? handleShowResults
-                      : () => handlePaymentMethodSelection('gpay_applepay')
-                  }
-                >
-                  {hasSubscription
-                    ? 'Show my result'
-                    : 'Get your test result for $1.90'}
-                </button>
-              )}
-            </div>
-          )}
-
-          {showPaymentOptions && (
+              <button
+                ref={paymentButtonRef}
+                className={cn(s.paymentButtonBlick, s.paymentButtonBlick_card)}
+                onClick={
+                  hasSubscription
+                    ? handleShowResults
+                    : () => handlePaymentMethodSelection('gpay_applepay')
+                }
+              >
+                {hasSubscription
+                  ? 'Show my result'
+                  : 'Get your test result for $1.90'}
+              </button>
+            )}
+          </div>
+          <Suspense fallback={<Skeleton height={200} width={600} />}>
+            <ValueProposition />
+          </Suspense>
+          <div className={s.slider_wrapper}>
             <Suspense fallback={<Skeleton height={200} width={600} />}>
-              <ValueProposition />
+              <TestimonialsSlider />
             </Suspense>
-          )}
-
-          {showPaymentOptions && (
-            <div className={s.slider_wrapper}>
-              <Suspense fallback={<Skeleton height={200} width={600} />}>
-                <TestimonialsSlider />
-              </Suspense>
-            </div>
-          )}
-
-          {!showPaymentOptions && <TestResultsInfo />}
+          </div>
         </section>
       </div>
 

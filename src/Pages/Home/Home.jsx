@@ -36,14 +36,14 @@ const Home = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      sessionStorage.setItem(
-        'showLastResults',
-        JSON.stringify(hasSubscription)
-      );
-    } else {
-      sessionStorage.setItem('showLastResults', JSON.stringify(false));
-    }
+    // if (user) {
+    //   sessionStorage.setItem(
+    //     'showLastResults',
+    //     JSON.stringify(hasSubscription)
+    //   );
+    // } else {
+    //   sessionStorage.setItem('showLastResults', JSON.stringify(false));
+    // }
 
     const currentStep = localStorage.getItem('currentStep');
     if (currentStep > 0 && parseInt(currentStep, 10) > 0) {
@@ -78,9 +78,9 @@ const Home = ({ user }) => {
     }
   }, [hasStartedTest, customNavigate]);
 
-  const handleShowLastResults = useCallback(() => {
-    customNavigate('/thanks');
-  }, [customNavigate]);
+  // const handleShowLastResults = useCallback(() => {
+  //   customNavigate('/thanks');
+  // }, [customNavigate]);
 
   return (
     <div className={s.home}>
@@ -91,7 +91,7 @@ const Home = ({ user }) => {
             hasStartedTest={hasStartedTest}
             showLastResults={hasSubscription}
             handleStartTest={handleStartTest}
-            handleShowLastResults={handleShowLastResults}
+            // handleShowLastResults={handleShowLastResults}
             handleContinueTest={handleContinueTest}
           />
         ),
@@ -100,7 +100,7 @@ const Home = ({ user }) => {
           hasStartedTest,
           hasSubscription,
           handleStartTest,
-          handleShowLastResults,
+          // handleShowLastResults,
           handleContinueTest,
         ]
       )}

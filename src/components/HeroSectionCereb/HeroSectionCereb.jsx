@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import s from './HeroSectionCereb.module.scss';
-import cn from 'classnames';
+// import cn from 'classnames';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 const HeroSectionCereb = ({
   loading,
   hasStartedTest,
-  showLastResults,
+  // showLastResults,
   handleStartTest,
-  handleShowLastResults,
+  // handleShowLastResults,
   handleContinueTest,
 }) => {
   return (
@@ -29,14 +29,14 @@ const HeroSectionCereb = ({
             Continue Certified Test
           </button>
         )}
-        {showLastResults && (
+        {/* {showLastResults && (
           <button
             className={cn(s.button, s.button_last)}
             onClick={handleShowLastResults}
           >
             Show Last Results
           </button>
-        )}
+        )} */}
       </div>
     </>
   );
@@ -45,9 +45,9 @@ const HeroSectionCereb = ({
 HeroSectionCereb.propTypes = {
   loading: PropTypes.bool.isRequired,
   hasStartedTest: PropTypes.bool.isRequired,
-  showLastResults: PropTypes.bool.isRequired,
+  // showLastResults: PropTypes.bool.isRequired,
   handleStartTest: PropTypes.func.isRequired,
-  handleShowLastResults: PropTypes.func.isRequired,
+  // handleShowLastResults: PropTypes.func.isRequired,
 };
 
 export default HeroSectionCereb;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import s from './HeroSection.module.scss';
-import cn from 'classnames';
+// import cn from 'classnames';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -10,9 +10,9 @@ import about_1 from '../../img/about_1.jpg';
 const HeroSection = ({
   loading,
   hasStartedTest,
-  showLastResults,
+  // showLastResults,
   handleStartTest,
-  handleShowLastResults,
+  // handleShowLastResults,
   handleContinueTest,
 }) => {
   return (
@@ -50,14 +50,14 @@ const HeroSection = ({
                 Continue IQ test
               </button>
             )}
-            {showLastResults && (
+            {/* {showLastResults && (
               <button
                 className={cn(s.button, s.button_last)}
                 onClick={handleShowLastResults}
               >
                 Show Last Results
               </button>
-            )}
+            )} */}
           </>
         )}
       </div>
@@ -92,9 +92,9 @@ const HeroSection = ({
 HeroSection.propTypes = {
   loading: PropTypes.bool.isRequired,
   hasStartedTest: PropTypes.bool.isRequired,
-  showLastResults: PropTypes.bool.isRequired,
+  // showLastResults: PropTypes.bool.isRequired,
   handleStartTest: PropTypes.func.isRequired,
-  handleShowLastResults: PropTypes.func.isRequired,
+  // handleShowLastResults: PropTypes.func.isRequired,
 };
 
 export default HeroSection;

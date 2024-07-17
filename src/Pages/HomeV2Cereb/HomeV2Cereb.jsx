@@ -37,14 +37,14 @@ const HomeV2Cereb = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      sessionStorage.setItem(
-        'showLastResults',
-        JSON.stringify(hasSubscription)
-      );
-    } else {
-      sessionStorage.setItem('showLastResults', JSON.stringify(false));
-    }
+    // if (user) {
+    //   sessionStorage.setItem(
+    //     'showLastResults',
+    //     JSON.stringify(hasSubscription)
+    //   );
+    // } else {
+    //   sessionStorage.setItem('showLastResults', JSON.stringify(false));
+    // }
 
     const currentStep = localStorage.getItem('currentStep');
     if (currentStep > 0 && parseInt(currentStep, 10) > 0) {
@@ -79,18 +79,18 @@ const HomeV2Cereb = ({ user }) => {
     }
   }, [hasStartedTest, customNavigate]);
 
-  const handleShowLastResults = useCallback(() => {
-    customNavigate('/thanks');
-  }, [customNavigate]);
+  // const handleShowLastResults = useCallback(() => {
+  //   customNavigate('/thanks');
+  // }, [customNavigate]);
 
   return (
     <div className={s.HomeV2Cereb}>
       <HeroSectionCereb
         loading={loading}
         hasStartedTest={hasStartedTest}
-        showLastResults={hasSubscription}
+        // showLastResults={hasSubscription}
         handleStartTest={handleStartTest}
-        handleShowLastResults={handleShowLastResults}
+        // handleShowLastResults={handleShowLastResults}
         handleContinueTest={handleContinueTest}
       />
       <CerebStatsHero />

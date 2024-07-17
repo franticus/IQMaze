@@ -10,14 +10,14 @@ const CerebHero = ({ user }) => {
   const hasSubscription = useSubscription();
 
   useEffect(() => {
-    if (user) {
-      sessionStorage.setItem(
-        'showLastResults',
-        JSON.stringify(hasSubscription)
-      );
-    } else {
-      sessionStorage.setItem('showLastResults', JSON.stringify(false));
-    }
+    // if (user) {
+    //   sessionStorage.setItem(
+    //     'showLastResults',
+    //     JSON.stringify(hasSubscription)
+    //   );
+    // } else {
+    //   sessionStorage.setItem('showLastResults', JSON.stringify(false));
+    // }
 
     const currentStep = localStorage.getItem('currentStep');
     if (currentStep > 0 && parseInt(currentStep, 10) > 0) {

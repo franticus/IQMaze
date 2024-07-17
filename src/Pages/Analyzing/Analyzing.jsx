@@ -50,7 +50,7 @@ const Analyzing = ({ user }) => {
   useEffect(() => {
     if (progress === 100) {
       setTimeout(() => {
-        customNavigate(isPaywallV2Cereb ? '/email' : '/paywall');
+        customNavigate('/email');
       }, 2000);
     }
   }, [progress, hasSubscription, isPaywallV2Cereb, customNavigate]);

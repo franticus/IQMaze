@@ -11,6 +11,7 @@ import {
 } from '@stripe/react-stripe-js';
 import s from './CustomPayFormV1.module.scss';
 import { publicKey, apiUrl } from '../../key';
+import { useSubscription } from '../../context/SubscriptionContext';
 
 import cancelAnytime from '../../img/cancelAnytime.svg';
 import guarantee from '../../img/guarantee.svg';
@@ -22,31 +23,15 @@ const validateEmail = email => {
   return re.test(String(email).toLowerCase());
 };
 
-const checkSubscription = async email => {
-  const response = await fetch(`${apiUrl}/check-subscription`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email }),
-  });
-
-  const data = await response.json();
-  return data.hasSubscription;
-};
-
-const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
+const CardForm = ({ subscriptionInfo, isLoading, setLoading, user, email }) => {
   const stripe = useStripe();
   const elements = useElements();
   const emailRef = useRef(null);
   const nameRef = useRef(null);
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('userEmail');
-    if (storedEmail) {
-      emailRef.current.value = JSON.parse(storedEmail);
-    }
-  }, []);
+    emailRef.current.value = email;
+  }, [email]);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -55,12 +40,6 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
 
     if (!validateEmail(email)) {
       alert('Please enter a valid email address');
-      return;
-    }
-
-    const hasSubscription = await checkSubscription(email);
-    if (hasSubscription) {
-      alert('A subscription is already active for this email address.');
       return;
     }
 
@@ -98,6 +77,7 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
         setLoading(false);
       } else {
         console.log('Subscription succeeded:', data);
+        localStorage.setItem('userName', JSON.stringify(nameRef.current.value));
         window.location.href = '/thanks';
       }
     }
@@ -149,13 +129,14 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading }) => {
   );
 };
 
-const CustomPayFormV1 = () => {
+const CustomPayFormV1 = ({ user }) => {
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakeGooglePay, setCanMakeGooglePay] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState({});
   const [testsTaken, setTestsTaken] = useState(3548);
   const [isLoading, setLoading] = useState(false);
   const stripe = useStripe();
+  const hasSubscription = useSubscription();
 
   useEffect(() => {
     const fetchSubscriptionInfo = async () => {
@@ -202,9 +183,17 @@ const CustomPayFormV1 = () => {
     return () => clearInterval(interval);
   }, []);
 
+  if (hasSubscription) {
+    return <div>You already have an active subscription.</div>;
+  }
+
   if (!subscriptionInfo.trialPrice) {
     return <div>Loading...</div>;
   }
+
+  const emailFromStorage = localStorage.getItem('userEmail')
+    ? JSON.parse(localStorage.getItem('userEmail'))
+    : user?.email || '';
 
   return (
     <div className={s.container}>
@@ -274,6 +263,8 @@ const CustomPayFormV1 = () => {
             subscriptionInfo={subscriptionInfo}
             isLoading={isLoading}
             setLoading={setLoading}
+            user={user}
+            email={emailFromStorage}
           />
         </Elements>
       </div>

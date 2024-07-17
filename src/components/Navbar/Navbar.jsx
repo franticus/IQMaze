@@ -26,7 +26,8 @@ const Navbar = ({ user }) => {
   const isHome = isSpecificRoute(['/', '/home']);
   const isPaywall = isSpecificRoute(['/paywall']);
   const isThanks = isSpecificRoute(['/thanks']);
-  const isShow = isHome || isPaywall || isThanks;
+  const isEmail = isSpecificRoute(['/email']);
+  const isShow = isHome || isEmail || isPaywall || isThanks;
 
   useEffect(() => {
     const handleResize = () => {
