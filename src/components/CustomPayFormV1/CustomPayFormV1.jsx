@@ -159,11 +159,10 @@ const CustomPayFormV1 = ({ user }) => {
         },
         requestPayerName: true,
         requestPayerEmail: true,
-        requestPayerPhone: true, // Добавьте этот параметр, если он необходим
       });
 
       pr.canMakePayment().then(result => {
-        if (result && (result.applePay || result.googlePay)) {
+        if (result) {
           setPaymentRequest(pr);
           setCanMakePaymentRequest(true);
         } else {
