@@ -164,7 +164,7 @@ const CustomPayFormV1 = ({ user }) => {
             },
             requestPayerName: true,
             requestPayerEmail: true,
-            requestPaymentMethod: ['google_pay', 'apple_pay'],
+            supportedPaymentMethods: ['card', 'google_pay', 'apple_pay'],
           });
 
           pr.canMakePayment()
@@ -261,12 +261,12 @@ const CustomPayFormV1 = ({ user }) => {
         30-Day Money-Back Guarantee.
       </p>
       <div className={s.paymentMethods}>
-        {canMakePaymentRequest && paymentRequest && (
+        {canMakePaymentRequest && (
           <>
             <p>Pay with Apple Pay or Google Pay</p>
             <PaymentRequestButtonElement
               options={{ paymentRequest }}
-              className={s.paymentRequestButton}
+              className={s.googlePayButton}
             />
             <p>or</p>
           </>
