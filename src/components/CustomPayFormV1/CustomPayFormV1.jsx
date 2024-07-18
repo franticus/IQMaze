@@ -150,6 +150,7 @@ const CustomPayFormV1 = ({ user }) => {
 
   useEffect(() => {
     if (stripe && subscriptionInfo.trialPrice) {
+      console.log('subscriptionInfo:', subscriptionInfo.trialPrice);
       const pr = stripe.paymentRequest({
         country: 'US',
         currency: subscriptionInfo.currency,
@@ -167,6 +168,7 @@ const CustomPayFormV1 = ({ user }) => {
             setPaymentRequest(pr);
             setCanMakePaymentRequest(true);
           } else {
+            console.log('CannotMakePaymentRequest');
             setCanMakePaymentRequest(false);
           }
         })
