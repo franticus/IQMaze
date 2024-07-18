@@ -152,43 +152,41 @@ const CustomPayFormV1 = ({ user }) => {
         const data = await response.json();
         console.log('data:', data);
         setSubscriptionInfo(data);
+
+        if (stripe && data.trialPrice) {
+          console.log('subscriptionInfo:', data.trialPrice);
+          const pr = stripe.paymentRequest({
+            country: 'US',
+            currency: data.currency,
+            total: {
+              label: 'Total',
+              amount: data.trialPrice,
+            },
+            requestPayerName: true,
+            requestPayerEmail: true,
+          });
+
+          pr.canMakePayment()
+            .then(result => {
+              if (result) {
+                setPaymentRequest(pr);
+                setCanMakePaymentRequest(true);
+              } else {
+                console.log('CannotMakePaymentRequest');
+                setCanMakePaymentRequest(false);
+              }
+            })
+            .catch(error => {
+              console.error('Error checking PaymentRequest:', error);
+            });
+        }
       } catch (error) {
         console.error('Error fetching subscription info:', error);
       }
     };
 
     fetchSubscriptionInfo();
-  }, []);
-
-  useEffect(() => {
-    if (stripe && subscriptionInfo.trialPrice) {
-      console.log('subscriptionInfo:', subscriptionInfo.trialPrice);
-      const pr = stripe.paymentRequest({
-        country: 'US',
-        currency: subscriptionInfo.currency,
-        total: {
-          label: 'Total',
-          amount: subscriptionInfo.trialPrice,
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-      });
-
-      pr.canMakePayment()
-        .then(result => {
-          if (result) {
-            setPaymentRequest(pr);
-            setCanMakePaymentRequest(true);
-          } else {
-            console.log('CannotMakePaymentRequest');
-            setCanMakePaymentRequest(false);
-          }
-        })
-        .catch(error => {
-          console.error('Error checking PaymentRequest:', error);
-        });
-    }
-  }, [stripe, subscriptionInfo]);
+  }, [stripe]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -267,7 +265,7 @@ const CustomPayFormV1 = ({ user }) => {
             <p>Pay with Apple Pay or Google Pay</p>
             <PaymentRequestButtonElement
               options={{ paymentRequest }}
-              className={s.paymentRequestButton}
+              className={s.googlePayButton}
             />
             <p>or</p>
           </>
