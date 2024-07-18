@@ -164,19 +164,12 @@ const CustomPayFormV1 = ({ user }) => {
             },
             requestPayerName: true,
             requestPayerEmail: true,
+            paymentMethodTypes: ['card', 'google_pay', 'apple_pay'],
           });
 
           pr.canMakePayment()
             .then(result => {
               if (result) {
-                pr.update({
-                  paymentMethodOptions: {
-                    googlePay: {
-                      environment: 'TEST', // Use 'PRODUCTION' for live
-                    },
-                    applePay: true,
-                  },
-                });
                 setPaymentRequest(pr);
                 setCanMakePaymentRequest(true);
               } else {
