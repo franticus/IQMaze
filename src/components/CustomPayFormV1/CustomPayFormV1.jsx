@@ -161,14 +161,18 @@ const CustomPayFormV1 = ({ user }) => {
         requestPayerEmail: true,
       });
 
-      pr.canMakePayment().then(result => {
-        if (result) {
-          setPaymentRequest(pr);
-          setCanMakePaymentRequest(true);
-        } else {
-          setCanMakePaymentRequest(false);
-        }
-      });
+      pr.canMakePayment()
+        .then(result => {
+          if (result) {
+            setPaymentRequest(pr);
+            setCanMakePaymentRequest(true);
+          } else {
+            setCanMakePaymentRequest(false);
+          }
+        })
+        .catch(error => {
+          console.error('Error checking PaymentRequest:', error);
+        });
     }
   }, [stripe, subscriptionInfo]);
 
