@@ -164,7 +164,40 @@ const CustomPayFormV1 = ({ user }) => {
             },
             requestPayerName: true,
             requestPayerEmail: true,
-            supportedPaymentMethods: ['card', 'google_pay', 'apple_pay'],
+            supportedPaymentMethods: [
+              {
+                supportedMethods: 'https://google.com/pay',
+                data: {
+                  environment: 'TEST',
+                  apiVersion: 2,
+                  apiVersionMinor: 0,
+                  allowedPaymentMethods: [
+                    {
+                      type: 'CARD',
+                      parameters: {
+                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                        allowedCardNetworks: [
+                          'AMEX',
+                          'DISCOVER',
+                          'JCB',
+                          'MASTERCARD',
+                          'VISA',
+                        ],
+                      },
+                      tokenizationSpecification: {
+                        type: 'PAYMENT_GATEWAY',
+                        parameters: {
+                          gateway: 'stripe',
+                          'stripe:version': '2018-10-31',
+                          'stripe:publishableKey': publicKey,
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+              'card',
+            ],
           });
 
           pr.canMakePayment()
