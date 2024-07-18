@@ -131,7 +131,7 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading, user, email }) => {
 
 const CustomPayFormV1 = ({ user }) => {
   const [paymentRequest, setPaymentRequest] = useState(null);
-  const [canMakeGooglePay, setCanMakeGooglePay] = useState(false);
+  const [canMakePaymentRequest, setCanMakePaymentRequest] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState({});
   const [testsTaken, setTestsTaken] = useState(3548);
   const [isLoading, setLoading] = useState(false);
@@ -159,17 +159,14 @@ const CustomPayFormV1 = ({ user }) => {
         },
         requestPayerName: true,
         requestPayerEmail: true,
-        requestPaymentMethod: {
-          type: 'google_pay',
-        },
       });
 
       pr.canMakePayment().then(result => {
-        if (result && result.paymentMethodType === 'google_pay') {
+        if (result) {
           setPaymentRequest(pr);
-          setCanMakeGooglePay(true);
+          setCanMakePaymentRequest(true);
         } else {
-          setCanMakeGooglePay(false);
+          setCanMakePaymentRequest(false);
         }
       });
     }
@@ -247,12 +244,12 @@ const CustomPayFormV1 = ({ user }) => {
         30-Day Money-Back Guarantee.
       </p>
       <div className={s.paymentMethods}>
-        {canMakeGooglePay && (
+        {canMakePaymentRequest && paymentRequest && (
           <>
-            <p>Pay with Google Pay</p>
+            <p>Pay with Apple Pay or Google Pay</p>
             <PaymentRequestButtonElement
               options={{ paymentRequest }}
-              className={s.googlePayButton}
+              className={s.paymentRequestButton}
             />
             <p>or</p>
           </>
