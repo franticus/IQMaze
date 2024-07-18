@@ -164,6 +164,7 @@ const CustomPayFormV1 = ({ user }) => {
             },
             requestPayerName: true,
             requestPayerEmail: true,
+            requestPaymentMethod: ['google_pay', 'apple_pay'],
           });
 
           pr.canMakePayment()
