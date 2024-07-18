@@ -266,7 +266,7 @@ const CustomPayFormV1 = ({ user }) => {
             <p>Pay with Apple Pay or Google Pay</p>
             <PaymentRequestButtonElement
               options={{ paymentRequest }}
-              className={s.googlePayButton}
+              className={s.paymentRequestButton}
             />
             <p>or</p>
           </>
