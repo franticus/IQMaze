@@ -141,7 +141,11 @@ const CustomPayFormV1 = ({ user }) => {
   useEffect(() => {
     const fetchSubscriptionInfo = async () => {
       try {
-        const response = await fetch(`${apiUrl}/subscription-info`);
+        const response = await fetch(`${apiUrl}/subscription-info`, {
+          headers: {
+            Origin: window.location.origin,
+          },
+        });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
