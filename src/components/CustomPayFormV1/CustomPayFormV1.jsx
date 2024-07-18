@@ -140,9 +140,17 @@ const CustomPayFormV1 = ({ user }) => {
 
   useEffect(() => {
     const fetchSubscriptionInfo = async () => {
-      const response = await fetch(`${apiUrl}/subscription-info`);
-      const data = await response.json();
-      setSubscriptionInfo(data);
+      try {
+        const response = await fetch(`${apiUrl}/subscription-info`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('data:', data);
+        setSubscriptionInfo(data);
+      } catch (error) {
+        console.error('Error fetching subscription info:', error);
+      }
     };
 
     fetchSubscriptionInfo();
