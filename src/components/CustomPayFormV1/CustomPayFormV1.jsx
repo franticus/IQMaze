@@ -15,6 +15,7 @@ import { useSubscription } from '../../context/SubscriptionContext';
 
 import cancelAnytime from '../../img/cancelAnytime.svg';
 import guarantee from '../../img/guarantee.svg';
+import Loader from '../Loader/Loader';
 
 const stripePromise = loadStripe(publicKey);
 
@@ -259,7 +260,7 @@ const CustomPayFormV1 = ({ user }) => {
   }
 
   if (!subscriptionInfo.trialPrice) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
@@ -288,14 +289,15 @@ const CustomPayFormV1 = ({ user }) => {
       <div className={s.totalDue}>
         <p>Total due today:</p>
         <p className={s.price}>
-          <del>${subscriptionInfo.regularPrice / 100}</del> $
-          {subscriptionInfo.trialPrice / 100} <br />
+          <del>${(subscriptionInfo.regularPrice / 100).toFixed(2)}</del> $
+          {(subscriptionInfo.trialPrice / 100).toFixed(2)} <br />
           <span className={s.discount}>You save 85%</span>
         </p>
       </div>
       <p className={s.afterwards}>
-        Your 1 month trial will cost only ${subscriptionInfo.trialPrice / 100}.
-        Afterwards, it will be ${subscriptionInfo.regularPrice / 100}/month.
+        Your 1 month trial will cost only $
+        {(subscriptionInfo.trialPrice / 100).toFixed(2)}. Afterwards, it will be
+        ${(subscriptionInfo.regularPrice / 100).toFixed(2)}/month.
       </p>
       <p className={s.noCommitment}>
         <img
@@ -335,7 +337,7 @@ const CustomPayFormV1 = ({ user }) => {
           />
         </Elements>
       </div>
-      {isLoading && <div className={s.loader}>Loading...</div>}
+      {isLoading && <Loader />}
     </div>
   );
 };

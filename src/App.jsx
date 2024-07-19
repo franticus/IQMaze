@@ -9,6 +9,7 @@ import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { SubscriptionProvider } from './context/SubscriptionContext';
 import PreStart from './Pages/PreStart/PreStart';
+import Loader from './components/Loader/Loader';
 
 const PrivacyPolicy = lazy(() => import('./Pages/PrivacyPolicy/PrivacyPolicy'));
 const Terms = lazy(() => import('./Pages/Terms/Terms'));
@@ -55,7 +56,7 @@ function App() {
       <div className='app'>
         <div className='wrapper'>
           <main>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <Routes>
                 <Route
                   path='/'
