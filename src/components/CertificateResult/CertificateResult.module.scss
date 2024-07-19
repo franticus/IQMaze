@@ -1,57 +1,64 @@
+.certificateContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
 .certificate {
 	position: relative;
 	color: #4921af;
+	width: 100%;
+	max-width: 100%;
+}
 
-	&_name {
-		position: absolute;
-		top: 34%;
-		left: 50%;
-		transform: translate(-50%, 0%);
-		font-size: 24px;
-		font-family: 'Times New Roman', Times, serif;
-		font-style: italic;
-		font-weight: 400;
-		text-transform: capitalize;
-	}
+.heroImage {
+	width: 100%;
+}
 
-	&_iq {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, 0%);
-		font-size: 42px;
-		font-family: 'Times New Roman', Times, serif;
-		font-style: italic;
-		font-weight: 400;
-	}
+.certificate_name,
+.certificate_iq,
+.certificate_iqText,
+.certificate_date {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
 
-	&_iqText {
-		position: absolute;
-		top: 70%;
-		left: 50%;
-		transform: translate(-50%, 0%);
-		font-size: 42px;
-		font-family: 'Times New Roman', Times, serif;
-		font-style: italic;
-		font-weight: 400;
-	}
+.certificate_name {
+	top: 34%;
+	font-family: 'Times New Roman', Times, serif;
+	font-style: italic;
+	font-weight: 400;
+	text-transform: capitalize;
+}
 
-	&_date {
-		position: absolute;
-		top: 76%;
-		left: 20%;
-		transform: translate(-50%, 0%);
-		font-size: 14px;
-		font-family: 'Times New Roman', Times, serif;
-		font-style: italic;
-		font-weight: 400;
-	}
+.certificate_iq {
+	top: 50%;
+	font-family: 'Times New Roman', Times, serif;
+	font-style: italic;
+	font-weight: 400;
+}
+
+.certificate_iqText {
+	top: 70%;
+	font-family: 'Times New Roman', Times, serif;
+	font-style: italic;
+	font-weight: 400;
+}
+
+.certificate_date {
+	top: 76%;
+	font-family: 'Times New Roman', Times, serif;
+	font-style: italic;
+	font-weight: 400;
 }
 
 .nameInputContainer {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: 100%;
 }
 
 .nameInput {

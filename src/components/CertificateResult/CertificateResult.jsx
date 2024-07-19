@@ -21,27 +21,20 @@ const CertificateResult = ({
 
   const updateFontSize = useCallback(() => {
     const certificateWidth = certificateRef?.current?.offsetWidth;
-    setFontSize({
-      name: `${certificateWidth / 20}px`,
-      iq: `${certificateWidth / 14}px`,
-      iqText: `${certificateWidth / 30}px`,
-      date: `${certificateWidth / 40}px`,
-    });
+    console.log('certificateWidth:', certificateWidth); // Debugging line
+    if (certificateWidth) {
+      setFontSize({
+        name: `${certificateWidth / 20}px`,
+        iq: `${certificateWidth / 14}px`,
+        iqText: `${certificateWidth / 30}px`,
+        date: `${certificateWidth / 40}px`,
+      });
+    }
   }, []);
 
   useLayoutEffect(() => {
     updateFontSize();
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 100);
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 1000);
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 3000);
     window.addEventListener('resize', updateFontSize);
-
     return () => {
       window.removeEventListener('resize', updateFontSize);
     };
