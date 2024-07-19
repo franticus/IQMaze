@@ -209,7 +209,6 @@ const CustomPayFormV1 = ({ user }) => {
             const clientSecret =
               subscription.latest_invoice.payment_intent.client_secret;
 
-            // Подтверждение PaymentIntent
             const { error: confirmError, paymentIntent } =
               await stripe.confirmCardPayment(clientSecret, {
                 payment_method: ev.paymentMethod.id,
