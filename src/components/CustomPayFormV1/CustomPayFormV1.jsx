@@ -49,14 +49,21 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading, user, email }) => {
 
     setLoading(true);
 
-    const cardNumberElement = elements.getElement(CardNumberElement);
-    const result = await stripe.createToken(cardNumberElement);
+    const cardElement = elements.getElement(CardNumberElement);
+    const result = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+        email: email,
+        name: nameRef.current.value,
+      },
+    });
 
     if (result.error) {
       console.log(result.error.message);
       setLoading(false);
     } else {
-      console.log(result.token);
+      console.log(result.paymentMethod);
 
       const response = await fetch(`${apiUrl}/create-subscription`, {
         method: 'POST',
@@ -64,7 +71,7 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading, user, email }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: result.token.id,
+          paymentMethodId: result.paymentMethod.id,
           email: emailRef.current.value,
           name: nameRef.current.value,
         }),
