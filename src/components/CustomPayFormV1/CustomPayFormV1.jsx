@@ -138,6 +138,10 @@ const CustomPayFormV1 = ({ user }) => {
   const stripe = useStripe();
   const hasSubscription = useSubscription();
 
+  const emailFromStorage = localStorage.getItem('userEmail')
+    ? JSON.parse(localStorage.getItem('userEmail'))
+    : user?.email || '';
+
   useEffect(() => {
     const fetchSubscriptionInfo = async () => {
       try {
@@ -180,6 +184,57 @@ const CustomPayFormV1 = ({ user }) => {
             .catch(error => {
               console.error('Error checking PaymentRequest:', error);
             });
+
+          pr.on('paymentmethod', async ev => {
+            const { clientSecret, error: backendError } = await fetch(
+              `${apiUrl}/create-payment-intent`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  email: emailFromStorage,
+                  paymentMethodId: ev.paymentMethod.id,
+                }),
+              }
+            ).then(r => r.json());
+
+            if (backendError) {
+              console.log(backendError.message);
+              ev.complete('fail');
+              return;
+            }
+
+            // Подтверждение PaymentIntent
+            const { paymentIntent, error: confirmError } =
+              await stripe.confirmCardPayment(
+                clientSecret,
+                {
+                  payment_method: ev.paymentMethod.id,
+                },
+                {
+                  handleActions: false,
+                }
+              );
+
+            if (confirmError) {
+              ev.complete('fail');
+              return;
+            }
+
+            if (paymentIntent.status === 'requires_action') {
+              const { error } = await stripe.confirmCardPayment(clientSecret);
+
+              if (error) {
+                ev.complete('fail');
+                return;
+              }
+            }
+
+            ev.complete('success');
+            window.location.href = '/thanks';
+          });
         }
       } catch (error) {
         console.error('Error fetching subscription info:', error);
@@ -187,7 +242,7 @@ const CustomPayFormV1 = ({ user }) => {
     };
 
     fetchSubscriptionInfo();
-  }, [stripe]);
+  }, [stripe, emailFromStorage]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -204,10 +259,6 @@ const CustomPayFormV1 = ({ user }) => {
   if (!subscriptionInfo.trialPrice) {
     return <div>Loading...</div>;
   }
-
-  const emailFromStorage = localStorage.getItem('userEmail')
-    ? JSON.parse(localStorage.getItem('userEmail'))
-    : user?.email || '';
 
   return (
     <div className={s.container}>
@@ -271,7 +322,7 @@ const CustomPayFormV1 = ({ user }) => {
             <p>or</p>
           </>
         )}
-        <p>Pay with</p>
+        <p>Pay with your credit card</p>
         <Elements stripe={stripePromise}>
           <CardForm
             subscriptionInfo={subscriptionInfo}
