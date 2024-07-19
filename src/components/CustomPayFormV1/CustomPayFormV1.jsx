@@ -206,19 +206,13 @@ const CustomPayFormV1 = ({ user }) => {
               return;
             }
 
-            // Подтверждение PaymentIntent
-            const { paymentIntent, error: confirmError } =
-              await stripe.confirmCardPayment(
-                clientSecret,
-                {
-                  payment_method: ev.paymentMethod.id,
-                },
-                {
-                  handleActions: false,
-                }
-              );
+            const { error: confirmError, paymentIntent } =
+              await stripe.confirmCardPayment(clientSecret, {
+                payment_method: ev.paymentMethod.id,
+              });
 
             if (confirmError) {
+              console.log(confirmError.message);
               ev.complete('fail');
               return;
             }
@@ -227,6 +221,7 @@ const CustomPayFormV1 = ({ user }) => {
               const { error } = await stripe.confirmCardPayment(clientSecret);
 
               if (error) {
+                console.log(error.message);
                 ev.complete('fail');
                 return;
               }
