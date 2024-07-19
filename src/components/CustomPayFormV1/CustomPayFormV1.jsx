@@ -186,8 +186,8 @@ const CustomPayFormV1 = ({ user }) => {
             });
 
           pr.on('paymentmethod', async ev => {
-            const { clientSecret, error: backendError } = await fetch(
-              `${apiUrl}/create-payment-intent`,
+            const { subscription, error: backendError } = await fetch(
+              `${apiUrl}/create-subscription`,
               {
                 method: 'POST',
                 headers: {
@@ -206,6 +206,10 @@ const CustomPayFormV1 = ({ user }) => {
               return;
             }
 
+            const clientSecret =
+              subscription.latest_invoice.payment_intent.client_secret;
+
+            // Подтверждение PaymentIntent
             const { error: confirmError, paymentIntent } =
               await stripe.confirmCardPayment(clientSecret, {
                 payment_method: ev.paymentMethod.id,
