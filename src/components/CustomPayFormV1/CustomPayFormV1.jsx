@@ -138,6 +138,10 @@ const CustomPayFormV1 = ({ user }) => {
   const stripe = useStripe();
   const hasSubscription = useSubscription();
 
+  const emailFromStorage = localStorage.getItem('userEmail')
+    ? JSON.parse(localStorage.getItem('userEmail'))
+    : user?.email || '';
+
   useEffect(() => {
     const fetchSubscriptionInfo = async () => {
       try {
@@ -180,6 +184,40 @@ const CustomPayFormV1 = ({ user }) => {
             .catch(error => {
               console.error('Error checking PaymentRequest:', error);
             });
+
+          pr.on('paymentmethod', async ev => {
+            const { error: backendError, clientSecret } = await fetch(
+              `${apiUrl}/create-subscription`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  payment_method_id: ev.paymentMethod.id,
+                  email: emailFromStorage,
+                }),
+              }
+            ).then(r => r.json());
+
+            if (backendError) {
+              console.log(backendError.message);
+              ev.complete('fail');
+              return;
+            }
+
+            const { error: stripeError } = await stripe.confirmCardPayment(
+              clientSecret
+            );
+            if (stripeError) {
+              console.log(stripeError.message);
+              ev.complete('fail');
+              return;
+            }
+
+            ev.complete('success');
+            window.location.href = '/thanks';
+          });
         }
       } catch (error) {
         console.error('Error fetching subscription info:', error);
@@ -187,7 +225,7 @@ const CustomPayFormV1 = ({ user }) => {
     };
 
     fetchSubscriptionInfo();
-  }, [stripe]);
+  }, [stripe, emailFromStorage]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -204,10 +242,6 @@ const CustomPayFormV1 = ({ user }) => {
   if (!subscriptionInfo.trialPrice) {
     return <div>Loading...</div>;
   }
-
-  const emailFromStorage = localStorage.getItem('userEmail')
-    ? JSON.parse(localStorage.getItem('userEmail'))
-    : user?.email || '';
 
   return (
     <div className={s.container}>
@@ -263,7 +297,7 @@ const CustomPayFormV1 = ({ user }) => {
       <div className={s.paymentMethods}>
         {canMakePaymentRequest && (
           <>
-            <p>Pay with</p>
+            <p>Pay with Apple Pay or Google Pay</p>
             <PaymentRequestButtonElement
               options={{ paymentRequest }}
               className={s.paymentRequestButton}
