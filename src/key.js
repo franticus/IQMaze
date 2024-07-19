@@ -3,7 +3,7 @@ const publicKeyProd =
 const publicKeyDev =
   'pk_test_51PNcn6RrQfUQC5MYaOchK1YrrDtBrxRDbyzQ2rfUIw7QhiIPmOU0vLYBq17pyMSQKAw99bqVnmeYGELIq2KOncST00ysRkRCO0';
 const url = 'https://iqmazestripe-myfirst27.amvera.io';
-const urlDev = 'https://stripeiq-frantunn.amvera.io';
+const urlDev = 'https://iqstripedev-myfirst27.amvera.io';
 const urlLocal = 'http://localhost:4242';
 
 const priceIdProd = 'price_1PTfQzBbDeRYiB9tFL1UaUyp';
