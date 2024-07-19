@@ -180,40 +180,6 @@ const CustomPayFormV1 = ({ user }) => {
             .catch(error => {
               console.error('Error checking PaymentRequest:', error);
             });
-
-          pr.on('paymentmethod', async ev => {
-            const { error: backendError, clientSecret } = await fetch(
-              `${apiUrl}/create-subscription`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  payment_method_id: ev.paymentMethod.id,
-                  email: emailFromStorage,
-                }),
-              }
-            ).then(r => r.json());
-
-            if (backendError) {
-              console.log(backendError.message);
-              ev.complete('fail');
-              return;
-            }
-
-            const { error: stripeError } = await stripe.confirmCardPayment(
-              clientSecret
-            );
-            if (stripeError) {
-              console.log(stripeError.message);
-              ev.complete('fail');
-              return;
-            }
-
-            ev.complete('success');
-            window.location.href = '/thanks';
-          });
         }
       } catch (error) {
         console.error('Error fetching subscription info:', error);
