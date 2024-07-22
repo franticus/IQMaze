@@ -12,6 +12,7 @@ import {
 import s from './CustomPayFormV1.module.scss';
 import { publicKey, apiUrl } from '../../key';
 import { useSubscription } from '../../context/SubscriptionContext';
+import { priceId } from '../../key';
 
 import cancelAnytime from '../../img/cancelAnytime.svg';
 import guarantee from '../../img/guarantee.svg';
@@ -24,7 +25,14 @@ const validateEmail = email => {
   return re.test(String(email).toLowerCase());
 };
 
-const CardForm = ({ subscriptionInfo, isLoading, setLoading, user, email }) => {
+const CardForm = ({
+  subscriptionInfo,
+  isLoading,
+  setLoading,
+  user,
+  email,
+  priceId,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const emailRef = useRef(null);
@@ -75,6 +83,7 @@ const CardForm = ({ subscriptionInfo, isLoading, setLoading, user, email }) => {
           paymentMethodId: result.paymentMethod.id,
           email: emailRef.current.value,
           name: nameRef.current.value,
+          priceId: priceId,
         }),
       });
 
@@ -334,6 +343,7 @@ const CustomPayFormV1 = ({ user }) => {
             setLoading={setLoading}
             user={user}
             email={emailFromStorage}
+            priceId={priceId}
           />
         </Elements>
       </div>
