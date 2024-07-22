@@ -254,8 +254,23 @@ const CustomPayFormV1 = ({ user }) => {
                 'Subscription created or updated successfully:',
                 subscriptionResponse
               );
-              ev.complete('success');
-              customNavigate('/thanks');
+
+              const { clientSecret } =
+                subscriptionResponse.subscription.latest_invoice.payment_intent;
+              const { error: confirmError, paymentIntent } =
+                await stripe.confirmCardPayment(clientSecret);
+
+              if (confirmError) {
+                console.log('Payment confirmation failed:', confirmError);
+                ev.complete('fail');
+                return;
+              }
+
+              if (paymentIntent.status === 'succeeded') {
+                console.log('Payment succeeded:', paymentIntent);
+                ev.complete('success');
+                customNavigate('/thanks');
+              }
             } catch (error) {
               console.error('Error handling token event:', error);
               ev.complete('fail');
