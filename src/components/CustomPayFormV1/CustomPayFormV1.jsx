@@ -240,7 +240,6 @@ const CustomPayFormV1 = ({ user }) => {
 
             if (paymentIntent.status === 'requires_action') {
               const { error } = await stripe.confirmCardPayment(clientSecret);
-
               if (error) {
                 console.log(error.message);
                 ev.complete('fail');
@@ -250,8 +249,17 @@ const CustomPayFormV1 = ({ user }) => {
 
             if (paymentIntent.status === 'succeeded') {
               ev.complete('success');
-              console.log('success:', paymentIntent);
-              customNavigate('/thanks');
+              console.log('Payment succeeded:', paymentIntent);
+              if (hasSubscription) {
+                console.log(
+                  'Subscription verified, navigating to thanks page.'
+                );
+                customNavigate('/thanks');
+              } else {
+                console.log(
+                  'Subscription verification failed, not navigating.'
+                );
+              }
             }
           });
         }

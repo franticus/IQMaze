@@ -15,22 +15,29 @@ export const SubscriptionProvider = ({ user, children }) => {
     const verifySubscription = async () => {
       if (!user || !user.email) {
         setHasSubscription(false);
+        sessionStorage.setItem('hasSubscription', 'false');
         return;
       }
 
-      const email = user.email;
-      console.log('Email to check:', email);
+      try {
+        const email = user.email;
+        console.log('Email to check:', email);
 
-      const { hasSubscription: subscriptionStatus } = await checkSubscription(
-        email
-      );
-      console.log(`Subscription status for ${email}:`, subscriptionStatus);
+        const { hasSubscription: subscriptionStatus } = await checkSubscription(
+          email
+        );
+        console.log(`Subscription status for ${email}:`, subscriptionStatus);
 
-      setHasSubscription(subscriptionStatus);
-      sessionStorage.setItem(
-        'hasSubscription',
-        JSON.stringify(subscriptionStatus)
-      );
+        setHasSubscription(subscriptionStatus);
+        sessionStorage.setItem(
+          'hasSubscription',
+          JSON.stringify(subscriptionStatus)
+        );
+      } catch (error) {
+        console.error('Error checking subscription status:', error);
+        setHasSubscription(false);
+        sessionStorage.setItem('hasSubscription', 'false');
+      }
     };
 
     verifySubscription();
