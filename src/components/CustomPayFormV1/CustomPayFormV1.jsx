@@ -200,57 +200,65 @@ const CustomPayFormV1 = ({ user }) => {
             });
 
           pr.on('token', async ev => {
-            const response = await fetch(`${apiUrl}/create-customer`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                token: ev.token.id,
-                email: emailFromStorage,
-                name: user.name,
-              }),
-            });
-
-            const customerResponse = await response.json();
-
-            if (customerResponse.error) {
-              console.log('Customer creation failed:', customerResponse.error);
-              ev.complete('fail');
-              return;
-            }
-
-            console.log('Customer created successfully:', customerResponse);
-
-            const subscriptionResponse = await fetch(
-              `${apiUrl}/create-subscription`,
-              {
+            try {
+              const response = await fetch(`${apiUrl}/create-customer`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  customerId: customerResponse.customer.id,
-                  priceId: priceId,
+                  token: ev.token.id,
+                  email: emailFromStorage,
+                  name: user ? user.name : '',
                 }),
+              });
+
+              const customerResponse = await response.json();
+
+              if (customerResponse.error) {
+                console.log(
+                  'Customer creation failed:',
+                  customerResponse.error
+                );
+                ev.complete('fail');
+                return;
               }
-            ).then(r => r.json());
 
-            if (subscriptionResponse.error) {
+              console.log('Customer created successfully:', customerResponse);
+
+              const subscriptionResponse = await fetch(
+                `${apiUrl}/create-subscription`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    customerId: customerResponse.customer.id,
+                    priceId: priceId,
+                  }),
+                }
+              ).then(r => r.json());
+
+              if (subscriptionResponse.error) {
+                console.log(
+                  'Subscription creation failed:',
+                  subscriptionResponse.error
+                );
+                ev.complete('fail');
+                return;
+              }
+
               console.log(
-                'Subscription creation failed:',
-                subscriptionResponse.error
+                'Subscription created or updated successfully:',
+                subscriptionResponse
               );
+              ev.complete('success');
+              customNavigate('/thanks');
+            } catch (error) {
+              console.error('Error handling token event:', error);
               ev.complete('fail');
-              return;
             }
-
-            console.log(
-              'Subscription created or updated successfully:',
-              subscriptionResponse
-            );
-            ev.complete('success');
-            customNavigate('/thanks');
           });
         }
       } catch (error) {
