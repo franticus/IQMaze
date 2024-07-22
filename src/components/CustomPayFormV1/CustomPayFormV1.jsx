@@ -159,6 +159,29 @@ const CustomPayFormV1 = ({ user }) => {
   const stripe = useStripe();
   const hasSubscription = useSubscription();
 
+  const verifySubscriptionStatus = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/check-subscription`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailFromStorage,
+        }),
+      });
+      const data = await response.json();
+      if (!data.hasSubscription) {
+        console.log('No active subscription found.');
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error('Error verifying subscription:', error);
+      return false;
+    }
+  };
+
   const emailFromStorage = localStorage.getItem('userEmail')
     ? JSON.parse(localStorage.getItem('userEmail'))
     : user?.email || '';
@@ -250,7 +273,8 @@ const CustomPayFormV1 = ({ user }) => {
             if (paymentIntent.status === 'succeeded') {
               ev.complete('success');
               console.log('Payment succeeded:', paymentIntent);
-              if (hasSubscription) {
+              const isSubscribed = await verifySubscriptionStatus();
+              if (isSubscribed) {
                 console.log(
                   'Subscription verified, navigating to thanks page.'
                 );
