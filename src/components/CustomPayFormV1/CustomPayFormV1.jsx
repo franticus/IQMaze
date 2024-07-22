@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -260,7 +261,7 @@ const CustomPayFormV1 = ({ user }) => {
     };
 
     fetchSubscriptionInfo();
-  }, [stripe, emailFromStorage, customNavigate]);
+  }, [stripe, emailFromStorage]);
 
   useEffect(() => {
     const interval = setInterval(() => {
