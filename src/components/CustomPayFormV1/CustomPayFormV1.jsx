@@ -38,6 +38,7 @@ const CardForm = ({
   const elements = useElements();
   const emailRef = useRef(null);
   const nameRef = useRef(null);
+  const customNavigate = useCustomNavigate();
 
   useEffect(() => {
     emailRef.current.value = email;
@@ -96,7 +97,7 @@ const CardForm = ({
       } else {
         console.log('Subscription succeeded:', data);
         localStorage.setItem('userName', JSON.stringify(nameRef.current.value));
-        customNavigate('/thanks'); // Используйте ваш кастомный метод навигации
+        customNavigate('/thanks');
       }
     }
   };
