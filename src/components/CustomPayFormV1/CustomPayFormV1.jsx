@@ -236,7 +236,7 @@ const CustomPayFormV1 = ({ user }) => {
                   },
                   body: JSON.stringify({
                     customerId: customerResponse.customer.id,
-                    paymentMethodId: ev.token.card.id, // Используем paymentMethodId вместо token.id
+                    paymentMethodId: ev.token.card.id,
                     priceId: priceId,
                   }),
                 }
@@ -256,8 +256,7 @@ const CustomPayFormV1 = ({ user }) => {
                 subscriptionResponse
               );
 
-              const { clientSecret } =
-                subscriptionResponse.subscription.latest_invoice.payment_intent;
+              const { clientSecret } = subscriptionResponse;
               const { error: confirmError, paymentIntent } =
                 await stripe.confirmCardPayment(clientSecret);
 
