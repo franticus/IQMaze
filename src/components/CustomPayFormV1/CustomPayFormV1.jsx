@@ -214,6 +214,7 @@ const CustomPayFormV1 = ({ user }) => {
               });
 
               const customerResponse = await response.json();
+              console.log('customerResponse:', customerResponse);
 
               if (customerResponse.error) {
                 console.log(
