@@ -236,8 +236,8 @@ const CustomPayFormV1 = ({ user }) => {
                   },
                   body: JSON.stringify({
                     customerId: customerResponse.customer.id,
+                    paymentMethodId: ev.token.card.id, // Используем paymentMethodId вместо token.id
                     priceId: priceId,
-                    coupon: subscriptionInfo.coupon,
                   }),
                 }
               ).then(r => r.json());
