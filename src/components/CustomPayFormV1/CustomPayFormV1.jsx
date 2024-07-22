@@ -9,6 +9,7 @@ import {
   CardExpiryElement,
   CardCvcElement,
 } from '@stripe/react-stripe-js';
+import useCustomNavigate from '../../hooks/useCustomNavigate';
 import s from './CustomPayFormV1.module.scss';
 import { publicKey, apiUrl } from '../../key';
 import { useSubscription } from '../../context/SubscriptionContext';
@@ -95,7 +96,7 @@ const CardForm = ({
       } else {
         console.log('Subscription succeeded:', data);
         localStorage.setItem('userName', JSON.stringify(nameRef.current.value));
-        window.location.href = '/thanks';
+        customNavigate('/thanks'); // Используйте ваш кастомный метод навигации
       }
     }
   };
@@ -147,6 +148,7 @@ const CardForm = ({
 };
 
 const CustomPayFormV1 = ({ user }) => {
+  const customNavigate = useCustomNavigate();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePaymentRequest, setCanMakePaymentRequest] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState({});
@@ -244,8 +246,11 @@ const CustomPayFormV1 = ({ user }) => {
               }
             }
 
-            ev.complete('success');
-            window.location.href = '/thanks';
+            if (paymentIntent.status === 'succeeded') {
+              ev.complete('success');
+              console.log('success:', paymentIntent);
+              customNavigate('/thanks');
+            }
           });
         }
       } catch (error) {
@@ -254,7 +259,7 @@ const CustomPayFormV1 = ({ user }) => {
     };
 
     fetchSubscriptionInfo();
-  }, [stripe, emailFromStorage]);
+  }, [stripe, emailFromStorage, customNavigate]);
 
   useEffect(() => {
     const interval = setInterval(() => {
