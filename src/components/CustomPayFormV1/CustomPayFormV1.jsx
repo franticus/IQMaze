@@ -200,7 +200,7 @@ const CustomPayFormV1 = ({ user }) => {
             });
 
           pr.on('token', async ev => {
-            const response = await fetch(`${apiUrl}/process-payment`, {
+            const response = await fetch(`${apiUrl}/create-customer`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -208,18 +208,19 @@ const CustomPayFormV1 = ({ user }) => {
               body: JSON.stringify({
                 token: ev.token.id,
                 email: emailFromStorage,
+                name: user.name,
               }),
             });
 
-            const paymentResponse = await response.json();
+            const customerResponse = await response.json();
 
-            if (paymentResponse.error) {
-              console.log('Payment failed:', paymentResponse.error);
+            if (customerResponse.error) {
+              console.log('Customer creation failed:', customerResponse.error);
               ev.complete('fail');
               return;
             }
 
-            console.log('Payment succeeded:', paymentResponse);
+            console.log('Customer created successfully:', customerResponse);
 
             const subscriptionResponse = await fetch(
               `${apiUrl}/create-subscription`,
@@ -229,8 +230,7 @@ const CustomPayFormV1 = ({ user }) => {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  email: emailFromStorage,
-                  paymentMethodId: ev.token.id,
+                  customerId: customerResponse.customer.id,
                   priceId: priceId,
                 }),
               }
