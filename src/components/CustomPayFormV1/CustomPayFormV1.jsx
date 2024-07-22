@@ -62,20 +62,13 @@ const CardForm = ({
     setLoading(true);
 
     const cardElement = elements.getElement(CardNumberElement);
-    const result = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-      billing_details: {
-        email: email,
-        name: nameRef.current.value,
-      },
-    });
+    const result = await stripe.createToken(cardElement);
 
     if (result.error) {
       console.log(result.error.message);
       setLoading(false);
     } else {
-      console.log(result.paymentMethod);
+      console.log(result.token);
 
       const response = await fetch(`${apiUrl}/create-subscription`, {
         method: 'POST',
@@ -83,7 +76,7 @@ const CardForm = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          paymentMethodId: result.paymentMethod.id,
+          token: result.token.id,
           email: emailRef.current.value,
           name: nameRef.current.value,
           priceId: priceId,
@@ -206,79 +199,36 @@ const CustomPayFormV1 = ({ user }) => {
               console.error('Error checking PaymentRequest:', error);
             });
 
-          pr.on('paymentmethod', async ev => {
-            const { clientSecret, error: backendError } = await fetch(
-              `${apiUrl}/create-payment-intent`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  email: emailFromStorage,
-                  paymentMethodId: ev.paymentMethod.id,
-                }),
-              }
-            ).then(r => r.json());
+          pr.on('token', async ev => {
+            const response = await fetch(`${apiUrl}/create-subscription`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                token: ev.token.id,
+                email: emailFromStorage,
+                priceId: priceId,
+              }),
+            });
 
-            if (backendError) {
-              console.log(backendError.message);
-              ev.complete('fail');
-              return;
-            }
+            const subscriptionResponse = await response.json();
 
-            const { error: confirmError, paymentIntent } =
-              await stripe.confirmCardPayment(clientSecret, {
-                payment_method: ev.paymentMethod.id,
-              });
-
-            if (confirmError) {
-              console.log(confirmError.message);
-              ev.complete('fail');
-              return;
-            }
-
-            if (paymentIntent.status === 'requires_action') {
-              const { error } = await stripe.confirmCardPayment(clientSecret);
-              if (error) {
-                console.log(error.message);
-                ev.complete('fail');
-                return;
-              }
-            }
-
-            if (paymentIntent.status === 'succeeded') {
-              ev.complete('success');
-              console.log('Payment succeeded:', paymentIntent);
-
-              const subscriptionResponse = await fetch(
-                `${apiUrl}/create-subscription`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    email: emailFromStorage,
-                    paymentMethodId: ev.paymentMethod.id,
-                  }),
-                }
-              ).then(r => r.json());
-
-              if (subscriptionResponse.error) {
-                console.log(
-                  'Subscription creation failed:',
-                  subscriptionResponse.error
-                );
-                return;
-              }
-
+            if (subscriptionResponse.error) {
               console.log(
-                'Subscription created or updated successfully:',
-                subscriptionResponse
+                'Subscription creation failed:',
+                subscriptionResponse.error
               );
-              customNavigate('/thanks');
+              ev.complete('fail');
+              return;
             }
+
+            console.log(
+              'Subscription created or updated successfully:',
+              subscriptionResponse
+            );
+            ev.complete('success');
+            customNavigate('/thanks');
           });
         }
       } catch (error) {
