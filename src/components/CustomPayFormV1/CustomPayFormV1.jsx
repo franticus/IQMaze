@@ -83,7 +83,6 @@ const CardForm = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          customerId: user?.id || null,
           paymentMethodId: result.paymentMethod.id,
           email: emailRef.current.value,
           name: nameRef.current.value,
