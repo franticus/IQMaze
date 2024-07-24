@@ -92,13 +92,29 @@ const CardForm = ({
 
       const data = await response.json();
 
-      if (data.error) {
-        console.log(data.error);
-        setLoading(false);
+      if (data.success) {
+        const { clientSecret } = data;
+        const { error: confirmError, paymentIntent } =
+          await stripe.confirmCardPayment(clientSecret);
+
+        if (confirmError) {
+          console.log('Payment confirmation failed:', confirmError);
+          setLoading(false);
+          alert('Payment confirmation failed');
+        } else if (paymentIntent.status === 'succeeded') {
+          console.log('Payment succeeded:', paymentIntent);
+          localStorage.setItem(
+            'userName',
+            JSON.stringify(nameRef.current.value)
+          );
+          customNavigate('/thanks');
+        } else {
+          console.log('Payment status:', paymentIntent.status);
+          setLoading(false);
+        }
       } else {
-        console.log('Subscription succeeded:', data);
-        localStorage.setItem('userName', JSON.stringify(nameRef.current.value));
-        customNavigate('/thanks');
+        console.log('Subscription creation failed:', data.error);
+        setLoading(false);
       }
     }
   };
