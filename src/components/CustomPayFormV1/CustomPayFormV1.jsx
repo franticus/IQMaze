@@ -27,6 +27,8 @@ const validateEmail = email => {
   return re.test(String(email).toLowerCase());
 };
 
+//decline
+
 const CardForm = ({
   subscriptionInfo,
   isLoading,
