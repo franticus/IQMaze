@@ -117,6 +117,8 @@ const CustomPayFormV1 = ({ user }) => {
                     customerId: customerResponse.customer.id,
                     paymentMethodId: ev.token.card.id,
                     priceId: priceId,
+                    email: emailFromStorage,
+                    name: user ? user.name : '',
                   }),
                 }
               ).then(r => r.json());
@@ -162,7 +164,7 @@ const CustomPayFormV1 = ({ user }) => {
     };
 
     fetchSubscriptionInfo();
-  }, [stripe, emailFromStorage]);
+  }, [stripe, emailFromStorage, user]);
 
   if (hasSubscription) {
     return <div>You already have an active subscription.</div>;
