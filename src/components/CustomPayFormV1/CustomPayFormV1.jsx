@@ -1,3 +1,4 @@
+//25.07.2024 Work apple pay
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
