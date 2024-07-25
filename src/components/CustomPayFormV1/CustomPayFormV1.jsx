@@ -27,6 +27,8 @@ const validateEmail = email => {
   return re.test(String(email).toLowerCase());
 };
 
+//decline
+
 const CardForm = ({
   subscriptionInfo,
   isLoading,
@@ -87,7 +89,6 @@ const CardForm = ({
           email: emailRef.current.value,
           name: nameRef.current.value,
           priceId: priceId,
-          ip: await getIp(), // Добавляем IP-адрес
         }),
       });
 
@@ -117,17 +118,6 @@ const CardForm = ({
         console.log('Subscription creation failed:', data.error);
         setLoading(false);
       }
-    }
-  };
-
-  const getIp = async () => {
-    try {
-      const res = await fetch('https://api.ipify.org?format=json');
-      const data = await res.json();
-      return data.ip;
-    } catch (error) {
-      console.error('Failed to get IP address:', error);
-      return '';
     }
   };
 
@@ -237,8 +227,6 @@ const CustomPayFormV1 = ({ user }) => {
 
           pr.on('token', async ev => {
             try {
-              const ip = await getIp();
-
               const response = await fetch(`${apiUrl}/create-customer`, {
                 method: 'POST',
                 headers: {
@@ -248,7 +236,6 @@ const CustomPayFormV1 = ({ user }) => {
                   token: ev.token.id,
                   email: emailFromStorage,
                   name: user ? user.name : '',
-                  ip,
                 }),
               });
 
@@ -277,7 +264,6 @@ const CustomPayFormV1 = ({ user }) => {
                     customerId: customerResponse.customer.id,
                     paymentMethodId: ev.token.card.id,
                     priceId: priceId,
-                    ip,
                   }),
                 }
               ).then(r => r.json());
@@ -332,17 +318,6 @@ const CustomPayFormV1 = ({ user }) => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const getIp = async () => {
-    try {
-      const res = await fetch('https://api.ipify.org?format=json');
-      const data = await res.json();
-      return data.ip;
-    } catch (error) {
-      console.error('Failed to get IP address:', error);
-      return '';
-    }
-  };
 
   if (hasSubscription) {
     return <div>You already have an active subscription.</div>;
