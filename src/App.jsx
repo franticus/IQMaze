@@ -28,8 +28,8 @@ function App() {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
   const currentUrl = window.location.href;
-  const isHomeV2Cereb = currentUrl.includes('homeV2Cereb');
-  const isPaywallV2Cereb = currentUrl.includes('paywallV2Cereb');
+  const homeV1Default = currentUrl.includes('homeV1Default');
+  const paywallV1Default = currentUrl.includes('paywallV1Default');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -41,8 +41,6 @@ function App() {
         console.log('No user is signed in');
         setUser(null);
         setUserId(null);
-        // localStorage.removeItem('userName');
-        // localStorage.removeItem('userEmail');
       }
     });
 
@@ -61,7 +59,7 @@ function App() {
                 <Route
                   path='/'
                   element={
-                    isHomeV2Cereb ? (
+                    !homeV1Default ? (
                       <HomeV2Cereb user={user} userId={userId} />
                     ) : (
                       <Home user={user} userId={userId} />
@@ -71,7 +69,7 @@ function App() {
                 <Route
                   path='/home'
                   element={
-                    isHomeV2Cereb ? (
+                    !homeV1Default ? (
                       <HomeV2Cereb user={user} userId={userId} />
                     ) : (
                       <Home user={user} userId={userId} />
@@ -99,7 +97,7 @@ function App() {
                 <Route
                   path='/paywall'
                   element={
-                    isPaywallV2Cereb ? (
+                    !paywallV1Default ? (
                       <PaywallV2Cereb user={user} userId={userId} />
                     ) : (
                       <Paywall user={user} userId={userId} />
