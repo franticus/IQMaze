@@ -1,4 +1,3 @@
-// authHelpers.js
 import {
   getAuth,
   createUserWithEmailAndPassword,
