@@ -28,7 +28,14 @@ const checkSubscription = async email => {
   }
 };
 
-const createCheckoutSession = async (email, userId, priceId, iqValue, name) => {
+const createCheckoutSession = async (
+  email,
+  userId,
+  priceId,
+  iqValue,
+  name,
+  urlParams
+) => {
   try {
     const apiKey = await fetchApiKey();
     const response = await fetch(`${apiUrl}/create-checkout-session`, {
@@ -43,6 +50,7 @@ const createCheckoutSession = async (email, userId, priceId, iqValue, name) => {
         priceId,
         iqValue,
         userName: name,
+        urlParams: urlParams.toString(),
       }),
     });
 
