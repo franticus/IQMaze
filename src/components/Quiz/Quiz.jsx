@@ -15,7 +15,6 @@ import Pagination from '../Pagination/Pagination.jsx';
 const Quiz = () => {
   const customNavigate = useCustomNavigate();
   const currentUrl = window.location.href;
-  const isProd = currentUrl.includes('iq-check140');
   const isV30q = currentUrl.includes('V30q');
   const isV20q = currentUrl.includes('V20q');
   const eventQuestionsLength = isV30q ? 6 : isV20q ? 4 : 12;
@@ -252,22 +251,6 @@ const Quiz = () => {
     setStep(page);
   };
 
-  const skip = () => {
-    localStorage.removeItem('completePayment');
-    localStorage.setItem(
-      'seriesScores',
-      JSON.stringify({
-        A: 12,
-        B: 8,
-        C: 6,
-        D: 6,
-        E: 6,
-      })
-    );
-
-    customNavigate('/paywall');
-  };
-
   return (
     <div
       className={cn(
@@ -320,7 +303,6 @@ const Quiz = () => {
         totalSteps={quizDataVariant.length}
         onPageChange={goToPage}
       />
-      {!isProd && <button onClick={() => skip()}>Skip</button>}
     </div>
   );
 };

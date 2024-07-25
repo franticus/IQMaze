@@ -91,13 +91,17 @@ const Paywall = ({ user, userId }) => {
 
   const handlePaymentMethodSelection = async method => {
     try {
+      const urlParams = new URLSearchParams(window.location.search);
+
       const session = await createCheckoutSession(
         email,
         userId,
         priceId,
         iqValue,
-        name
+        name,
+        urlParams
       );
+
       const stripe = await stripePromise;
       const result = await stripe.redirectToCheckout({
         sessionId: session.id,
